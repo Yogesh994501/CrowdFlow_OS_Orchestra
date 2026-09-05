@@ -65,35 +65,35 @@ export const DataSourcePanel: React.FC = () => {
     switch (status) {
       case 'live':
         return (
-          <span className="flex items-center gap-1 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span className="flex items-center gap-1 text-xs font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
             <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" />
             LIVE
           </span>
         );
       case 'cached':
         return (
-          <span className="flex items-center gap-1 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+          <span className="flex items-center gap-1 text-xs font-mono font-bold px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
             <Database className="w-2.5 h-2.5 text-cyan-400" />
             CACHED
           </span>
         );
       case 'demo':
         return (
-          <span className="flex items-center gap-1 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
+          <span className="flex items-center gap-1 text-xs font-mono font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
             <Radio className="w-2.5 h-2.5 text-amber-400" />
             DEMO
           </span>
         );
       case 'unavailable':
         return (
-          <span className="flex items-center gap-1 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">
+          <span className="flex items-center gap-1 text-xs font-mono font-bold px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">
             <XCircle className="w-2.5 h-2.5 text-rose-400" />
             UNAVAILABLE
           </span>
         );
       default:
         return (
-          <span className="flex items-center gap-1 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-500/10 text-slate-400 border border-slate-500/20">
+          <span className="flex items-center gap-1 text-xs font-mono font-bold px-2 py-0.5 rounded bg-slate-500/10 text-slate-400 border border-slate-500/20">
             <HelpCircle className="w-2.5 h-2.5" />
             READY
           </span>
@@ -133,7 +133,7 @@ export const DataSourcePanel: React.FC = () => {
           title="Inspect Central Data Sources, Latencies & Confidence"
         >
           <span className="text-cyan-400 font-bold text-sm">⌁</span>
-          <span className="font-bold text-slate-200 tracking-tight text-[11px]">Data Sources</span>
+          <span className="font-bold text-slate-200 tracking-tight text-xs font-mono">Data Sources</span>
           
           {/* Status dots indicator row */}
           <div className="flex items-center gap-1 mx-0.5">
@@ -150,7 +150,7 @@ export const DataSourcePanel: React.FC = () => {
             ))}
           </div>
 
-          <span className="text-cyan-300 font-bold font-mono text-[11px]">{activeConfidence}% Confidence</span>
+          <span className="text-cyan-300 font-bold font-mono text-xs">{activeConfidence}% Confidence</span>
           <ChevronUp className="w-3 h-3 text-slate-400 group-hover:text-white transition-colors" />
         </button>
       ) : (
@@ -165,7 +165,7 @@ export const DataSourcePanel: React.FC = () => {
                 <h4 className="text-xs font-bold font-mono tracking-wider text-slate-100 uppercase">
                   Data Sources & Orchestration
                 </h4>
-                <p className="text-[10px] text-slate-400 font-mono">
+                <p className="text-xs text-slate-400 font-mono">
                   Single Coordinated Intelligence Pipeline
                 </p>
               </div>
@@ -220,10 +220,10 @@ export const DataSourcePanel: React.FC = () => {
                       </div>
 
                       <div className="min-w-0">
-                        <div className="text-xs font-semibold text-slate-200 truncate">
+                        <div className="text-xs font-semibold text-slate-200 truncate font-sans">
                           {source.sourceName || source.name}
                         </div>
-                        <div className="text-[10px] text-slate-400 truncate">
+                        <div className="text-xs text-slate-400 truncate font-mono">
                           {source.status === 'demo' && source.fallbackReason ? 'Calibrated Event Fallback' : source.description?.slice(0, 36) + '...'}
                         </div>
                       </div>
@@ -232,54 +232,54 @@ export const DataSourcePanel: React.FC = () => {
                     {/* Status Badge & Latency */}
                     <div className="flex items-center gap-2 shrink-0">
                       {getStatusBadge(source.status)}
-                      <span className="text-[10px] font-mono text-slate-400 min-w-[38px] text-right">
+                      <span className="text-xs font-mono text-slate-400 min-w-[38px] text-right">
                         {source.latencyMs}ms
                       </span>
                     </div>
                   </div>
 
-                  {/* Detail Accordion Card (Requirement 12) */}
+                  {/* Detail Accordion Card */}
                   {isSelected && (
                     <div className="mt-1 p-3 rounded-xl bg-[#101726] border border-cyan-500/20 text-xs font-mono space-y-2 animate-fadeIn">
-                      <div className="text-[11px] font-bold text-cyan-300 uppercase tracking-wider">
+                      <div className="text-xs font-bold text-cyan-300 uppercase tracking-wider">
                         {source.name}
                       </div>
-                      <p className="text-[10px] text-slate-300 leading-relaxed font-sans">
+                      <p className="text-xs text-slate-300 leading-relaxed font-sans">
                         {source.description || 'Continuous event intelligence stream for CrowdFlow OS.'}
                       </p>
 
-                      <div className="grid grid-cols-2 gap-2 text-[10px] pt-1 border-t border-white/5">
+                      <div className="grid grid-cols-2 gap-2 text-xs pt-1 border-t border-white/5">
                         <div>
-                          <span className="text-slate-500 block">STATUS</span>
+                          <span className="text-slate-400 block">STATUS</span>
                           <span className="font-bold text-slate-200 uppercase">{source.status}</span>
                         </div>
                         <div>
-                          <span className="text-slate-500 block">LATENCY</span>
+                          <span className="text-slate-400 block">LATENCY</span>
                           <span className="font-bold text-cyan-400">{source.latencyMs} ms</span>
                         </div>
                         <div>
-                          <span className="text-slate-500 block">LAST CHECK</span>
+                          <span className="text-slate-400 block">LAST CHECK</span>
                           <span className="text-slate-300">{source.lastCheckedAt || source.lastChecked}</span>
                         </div>
                         <div>
-                          <span className="text-slate-500 block">CACHE AGE</span>
+                          <span className="text-slate-400 block">CACHE AGE</span>
                           <span className="text-slate-300">{source.cacheAgeSeconds ? `${source.cacheAgeSeconds}s` : 'Fresh'}</span>
                         </div>
                       </div>
 
                       {source.fallbackReason && (
-                        <div className="p-1.5 rounded bg-amber-500/10 border border-amber-500/20 text-[10px] text-amber-300">
-                          <span className="font-bold">Fallback Reason: </span>
+                        <div className="p-2 rounded bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300 font-sans">
+                          <span className="font-bold font-mono">Fallback Reason: </span>
                           {source.fallbackReason}
                         </div>
                       )}
 
                       {source.dataUsedBy && source.dataUsedBy.length > 0 && (
                         <div className="pt-1 border-t border-white/5">
-                          <span className="text-slate-500 text-[10px] block mb-1">DATA USED BY:</span>
+                          <span className="text-slate-400 text-xs block mb-1 font-mono">DATA USED BY:</span>
                           <div className="flex flex-wrap gap-1">
                             {source.dataUsedBy.map(tag => (
-                              <span key={tag} className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[9px] text-slate-300">
+                              <span key={tag} className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-xs text-slate-300 font-mono">
                                 • {tag}
                               </span>
                             ))}
@@ -293,19 +293,19 @@ export const DataSourcePanel: React.FC = () => {
             })}
           </div>
 
-          {/* Orchestration Summary Bar (Requirement 11) */}
+          {/* Orchestration Summary Bar */}
           <div className="p-3 bg-[#0E1424] border-t border-white/[0.08] space-y-2.5">
             <div className="flex items-center justify-between text-xs font-mono">
               <div>
-                <span className="text-slate-400 text-[10px] block uppercase">Orchestration</span>
+                <span className="text-slate-400 text-xs block uppercase">Orchestration</span>
                 <span className="font-bold text-cyan-400">Cycle #{activeCycle}</span>
               </div>
               <div>
-                <span className="text-slate-400 text-[10px] block uppercase">Pipeline Latency</span>
+                <span className="text-slate-400 text-xs block uppercase">Pipeline Latency</span>
                 <span className="font-bold text-slate-200">{activeLatency} ms</span>
               </div>
               <div>
-                <span className="text-slate-400 text-[10px] block uppercase">Data Confidence</span>
+                <span className="text-slate-400 text-xs block uppercase">Data Confidence</span>
                 <span className="font-bold text-emerald-400">{activeConfidence}%</span>
               </div>
             </div>
@@ -322,7 +322,7 @@ export const DataSourcePanel: React.FC = () => {
           </div>
 
           {/* Open Data Policies Link Footer (Fair Use Transparency) */}
-          <div className="px-3 py-2 bg-[#090C14] border-t border-white/[0.04] flex items-center justify-between text-[10px] text-slate-400 font-mono">
+          <div className="px-3 py-2 bg-[#090C14] border-t border-white/[0.04] flex items-center justify-between text-xs text-slate-400 font-mono">
             <span className="flex items-center gap-1 text-slate-500">
               <ShieldCheck className="w-3 h-3 text-cyan-400" />
               Free Open Services Only

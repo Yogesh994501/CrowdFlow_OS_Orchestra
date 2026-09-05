@@ -14,7 +14,8 @@ import {
   TrendingUp, 
   UploadCloud, 
   Search,
-  CheckCircle2
+  CheckCircle2,
+  AlertTriangle
 } from 'lucide-react';
 import { 
   ResponsiveContainer, 
@@ -32,7 +33,8 @@ export const CapacityScreen: React.FC = () => {
     accommodations, 
     zones, 
     updateAccommodationCapacity, 
-    toggleEmergencyBeds 
+    toggleEmergencyBeds,
+    setActiveScreen
   } = useCrowdFlowStore();
 
   const [selectedZoneFilter, setSelectedZoneFilter] = useState<string>('all');
@@ -78,7 +80,7 @@ export const CapacityScreen: React.FC = () => {
             <Building2 className="w-6 h-6 text-cyan-400" />
             <span>Capacity Intelligence & Overflow Engine</span>
           </h1>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-400 font-sans">
             Real-time multi-tier occupancy monitoring, predictive check-in curves, and automated buffer rerouting.
           </p>
         </div>
@@ -92,10 +94,61 @@ export const CapacityScreen: React.FC = () => {
           )}
           <button
             onClick={handlePublishUpdate}
-            className="px-4 py-2 rounded-xl text-xs font-bold text-dark-950 bg-gradient-to-r from-cyan-400 to-cyan-300 hover:from-cyan-300 hover:to-cyan-200 shadow-glow-cyan-sm transition-all flex items-center gap-2"
+            className="px-4 py-2 rounded-xl text-xs font-mono font-bold text-slate-950 bg-gradient-to-r from-cyan-400 to-cyan-300 hover:from-cyan-300 hover:to-cyan-200 shadow-md transition-all flex items-center gap-2"
           >
             <UploadCloud className="w-4 h-4" />
             Publish Capacity Update
+          </button>
+        </div>
+      </div>
+
+      {/* Section 5: Dominant Crowd Density & AI Forecast Block */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        {/* Dominant Density Status & Zone Summary */}
+        <div className="lg:col-span-8 p-5 rounded-2xl panel-elevated space-y-3">
+          <div className="flex items-center justify-between text-xs font-mono pb-2 border-b border-white/10">
+            <span className="text-slate-400 uppercase tracking-wider font-semibold">Live Crowd Density Status</span>
+            <span className="text-amber-400 font-bold flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+              Overall Status: ⚠ Elevated
+            </span>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 font-mono">
+            <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/25 flex items-center justify-between">
+              <span className="text-xs font-semibold text-white">Gate A</span>
+              <span className="text-xs font-bold text-rose-400 flex items-center gap-1">🔴 94%</span>
+            </div>
+            <div className="p-3 rounded-xl bg-orange-500/10 border border-orange-500/25 flex items-center justify-between">
+              <span className="text-xs font-semibold text-white">Main Arena</span>
+              <span className="text-xs font-bold text-orange-400 flex items-center gap-1">🟠 87%</span>
+            </div>
+            <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-between">
+              <span className="text-xs font-semibold text-white">Food Court</span>
+              <span className="text-xs font-bold text-amber-400 flex items-center gap-1">🟡 72%</span>
+            </div>
+            <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-between">
+              <span className="text-xs font-semibold text-white">Gate B</span>
+              <span className="text-xs font-bold text-emerald-400 flex items-center gap-1">🟢 54%</span>
+            </div>
+          </div>
+        </div>
+
+        {/* AI Crowd Forecast */}
+        <div className="lg:col-span-4 p-5 rounded-2xl panel-elevated border-cyan-500/30 flex flex-col justify-between space-y-3">
+          <div>
+            <div className="text-xs font-mono uppercase tracking-wider text-cyan-300 font-bold flex items-center gap-1.5 pb-2 border-b border-white/10">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              AI CROWD FORECAST
+            </div>
+            <p className="text-xs text-slate-300 mt-2.5 leading-relaxed font-sans">
+              Gate A may exceed maximum safety capacity within <strong className="text-rose-400 font-mono">18 minutes</strong> under current arrival velocity.
+            </p>
+          </div>
+          <button
+            onClick={() => setActiveScreen('simulation')}
+            className="w-full py-2.5 rounded-xl text-xs font-bold font-mono text-slate-950 bg-cyan-400 hover:bg-cyan-300 transition-all flex items-center justify-center gap-1.5 shadow-md"
+          >
+            Simulate Response
           </button>
         </div>
       </div>
@@ -105,15 +158,15 @@ export const CapacityScreen: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-white/10">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-500/20 flex items-center gap-1">
-                <Sparkles className="w-3 h-3" />
+              <span className="text-xs font-mono uppercase tracking-wider text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded-full border border-cyan-500/20 flex items-center gap-1">
+                <Sparkles className="w-3.5 h-3.5" />
                 Automated Buffer Diversion
               </span>
               <span className="text-xs font-mono text-slate-300">
                 Active Benchmark: BKC Pressure Score (91/100)
               </span>
             </div>
-            <h3 className="text-base font-bold text-white mt-0.5">
+            <h3 className="text-base font-bold text-white mt-1">
               Ranked Overflow Accommodation Alternatives
             </h3>
           </div>
@@ -126,11 +179,11 @@ export const CapacityScreen: React.FC = () => {
           {overflowOptions.slice(0, 3).map(rec => (
             <div
               key={rec.provider.id}
-              className="p-4 rounded-2xl bg-dark-900/90 border border-white/10 hover:border-cyan-500/40 transition-all space-y-3 relative group"
+              className="p-4 rounded-2xl bg-[#0C1424] border border-white/10 hover:border-cyan-500/40 transition-all space-y-3 relative group shadow-lg"
             >
               <div className="flex items-start justify-between">
                 <div>
-                  <span className="text-[11px] font-mono font-bold text-cyan-400">
+                  <span className="text-xs font-mono font-bold text-cyan-400">
                     Rank #{rec.rank} • {rec.provider.zoneName}
                   </span>
                   <h4 className="text-sm font-bold text-white leading-snug">
@@ -142,39 +195,40 @@ export const CapacityScreen: React.FC = () => {
                 </span>
               </div>
 
+
               {/* Metrics Grid */}
-              <div className="grid grid-cols-2 gap-2 text-[11px] font-mono">
-                <div className="p-2 rounded-lg bg-dark-800 border border-white/5">
-                  <span className="text-slate-400 block text-[10px]">Available Beds</span>
-                  <span className="text-sm font-bold text-emerald-400">{rec.availableBeds}</span>
+              <div className="grid grid-cols-2 gap-2 text-xs font-mono">
+                <div className="p-2.5 rounded-xl bg-black/40 border border-white/5">
+                  <span className="text-slate-400 block text-xs">Available Beds</span>
+                  <span className="text-sm font-bold text-emerald-400 mt-0.5 block">{rec.availableBeds}</span>
                 </div>
-                <div className="p-2 rounded-lg bg-dark-800 border border-white/5">
-                  <span className="text-slate-400 block text-[10px]">Travel to Venue</span>
-                  <span className="text-sm font-bold text-white">{rec.travelTimeMin} min</span>
+                <div className="p-2.5 rounded-xl bg-black/40 border border-white/5">
+                  <span className="text-slate-400 block text-xs">Travel to Venue</span>
+                  <span className="text-sm font-bold text-white mt-0.5 block">{rec.travelTimeMin} min</span>
                 </div>
-                <div className="p-2 rounded-lg bg-dark-800 border border-white/5">
-                  <span className="text-slate-400 block text-[10px]">Crowd Pressure</span>
-                  <span className="text-sm font-bold text-cyan-300">{rec.crowdScore} / 100</span>
+                <div className="p-2.5 rounded-xl bg-black/40 border border-white/5">
+                  <span className="text-slate-400 block text-xs">Crowd Pressure</span>
+                  <span className="text-sm font-bold text-cyan-300 mt-0.5 block">{rec.crowdScore} / 100</span>
                 </div>
-                <div className="p-2 rounded-lg bg-dark-800 border border-white/5">
-                  <span className="text-slate-400 block text-[10px]">Transit Access</span>
-                  <span className="text-sm font-bold text-slate-200">{rec.transitEase}</span>
+                <div className="p-2.5 rounded-xl bg-black/40 border border-white/5">
+                  <span className="text-slate-400 block text-xs">Transit Access</span>
+                  <span className="text-sm font-bold text-slate-200 mt-0.5 block">{rec.transitEase}</span>
                 </div>
               </div>
 
               {/* Transparent Recommendation Reason */}
-              <div className="p-2.5 rounded-xl bg-dark-850 border border-white/5 text-xs text-slate-300 leading-relaxed font-sans">
+              <div className="p-3 rounded-xl bg-black/30 border border-white/5 text-xs text-slate-300 leading-relaxed font-sans">
                 {rec.explainabilityNote}
               </div>
 
               <div className="pt-1 flex items-center justify-between">
                 <button
                   onClick={() => toggleEmergencyBeds(rec.provider.id, 100)}
-                  className="px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-cyan-300 hover:text-white bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 transition-colors"
+                  className="px-3 py-1.5 rounded-xl text-xs font-mono font-semibold text-cyan-300 hover:text-white bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 transition-colors"
                 >
                   +100 Reserve Beds
                 </button>
-                <span className="text-[11px] font-mono text-slate-400">
+                <span className="text-xs font-mono text-slate-400">
                   Safety Index: {rec.safetyScore}%
                 </span>
               </div>
@@ -297,7 +351,7 @@ export const CapacityScreen: React.FC = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-mono border-collapse">
             <thead>
-              <tr className="border-b border-white/10 text-slate-400 text-[11px] uppercase tracking-wider">
+              <tr className="border-b border-white/10 text-slate-400 text-xs uppercase tracking-wider">
                 <th className="py-2.5 px-3">Property</th>
                 <th className="py-2.5 px-3">Zone</th>
                 <th className="py-2.5 px-3 text-right">Total Rooms</th>
@@ -313,15 +367,15 @@ export const CapacityScreen: React.FC = () => {
               {filteredAccommodations.map(acc => (
                 <tr key={acc.id} className="hover:bg-white/[0.02] transition-colors">
                   <td className="py-3 px-3">
-                    <div className="font-bold text-white flex items-center gap-1.5">
+                    <div className="font-bold text-white flex items-center gap-1.5 font-sans">
                       {acc.name}
                       {acc.isEmergencyBuffer && (
-                        <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                        <span className="text-xs px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                           Buffer
                         </span>
                       )}
                     </div>
-                    <div className="text-[10px] text-slate-400 font-sans">{acc.priceBand} • ₹{acc.pricePerNight.toLocaleString()}/night</div>
+                    <div className="text-xs text-slate-400 font-sans">{acc.priceBand} • ₹{acc.pricePerNight.toLocaleString()}/night</div>
                   </td>
                   <td className="py-3 px-3 text-slate-300 font-medium">
                     {acc.zoneName}
@@ -349,7 +403,7 @@ export const CapacityScreen: React.FC = () => {
                         style={{ width: `${acc.pressure}%` }}
                       />
                     </div>
-                    <span className="text-[10px] text-slate-400">{acc.pressure}%</span>
+                    <span className="text-xs text-slate-400 font-mono">{acc.pressure}%</span>
                   </td>
                   <td className="py-3 px-3">
                     <StatusBadge status={acc.status} size="sm" />
@@ -357,7 +411,7 @@ export const CapacityScreen: React.FC = () => {
                   <td className="py-3 px-3 text-right">
                     <button
                       onClick={() => toggleEmergencyBeds(acc.id, 50)}
-                      className="px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-dark-800 hover:bg-cyan-500/20 text-cyan-300 hover:text-white border border-white/10 hover:border-cyan-500/40 transition-colors"
+                      className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-dark-800 hover:bg-cyan-500/20 text-cyan-300 hover:text-white border border-white/10 hover:border-cyan-500/40 transition-colors"
                     >
                       +50 Beds
                     </button>

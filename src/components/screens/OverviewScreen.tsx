@@ -75,17 +75,17 @@ export const OverviewScreen: React.FC = () => {
       {/* ========================================================================= */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         
-        {/* Dominant Hero: System Status & Radial Pressure Gauge (Prompt Section 6) */}
+        {/* Dominant Hero: System Status & Radial Pressure Gauge (Prompt Section 3 & 6) */}
         <div className="lg:col-span-7 rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden shadow-2xl transition-all panel-elevated">
           <div>
             {/* Header meta */}
             <div className="flex items-center justify-between text-xs text-slate-400 pb-3 border-b border-white/[0.08]">
-              <span className="font-mono uppercase tracking-widest text-[11px] font-bold text-slate-300 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-                CURRENT SYSTEM STATUS
+              <span className="font-mono uppercase tracking-widest text-xs font-bold text-slate-300 flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
+                SYSTEM OPERATIONS STATUS
               </span>
-              <div className="flex items-center gap-2 font-mono text-[11px] text-slate-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+              <div className="flex items-center gap-2 font-mono text-xs text-slate-400">
+                <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
                 <span>Weather Risk: <strong className="text-cyan-300">{weather.weatherRisk}%</strong> · {weather.condition}</span>
               </div>
             </div>
@@ -96,15 +96,15 @@ export const OverviewScreen: React.FC = () => {
               {/* Left Side: Status & Concise 2-line narrative */}
               <div className="sm:col-span-7 space-y-2.5">
                 <div className="flex items-center gap-3">
-                  <span className="text-4xl font-extrabold tracking-tight text-slate-100">
+                  <span className="text-4xl font-extrabold tracking-tight text-white font-mono">
                     WATCH
                   </span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 text-xs font-mono font-medium shadow-[0_0_12px_rgba(245,158,11,0.15)]">
-                    Pressure rising but contained
+                  <span className="px-3 py-1 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 text-xs font-mono font-medium shadow-[0_0_12px_rgba(245,158,11,0.15)]">
+                    Contained Pressure Elevation
                   </span>
                 </div>
                 <p className="text-sm text-slate-300 leading-relaxed font-sans">
-                  Mumbai operations are stable overall. BKC accommodation and Dadar transit require attention before the evening peak.
+                  Mumbai operations are stable overall. Bandra-Kurla Complex (BKC) accommodation and Dadar transit require attention before the evening peak.
                 </p>
               </div>
 
@@ -147,13 +147,13 @@ export const OverviewScreen: React.FC = () => {
                     />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-3xl font-extrabold font-mono text-slate-100 tracking-tight leading-none">
+                    <span className="text-3xl font-extrabold font-mono text-white tracking-tight leading-none">
                       {systemPressureScore}
                     </span>
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 mt-1">
+                    <span className="text-xs font-mono uppercase tracking-widest text-slate-400 mt-1">
                       PRESSURE
                     </span>
-                    <span className="text-[9px] font-mono text-slate-500">
+                    <span className="text-xs font-mono text-slate-500">
                       /100
                     </span>
                   </div>
@@ -162,16 +162,16 @@ export const OverviewScreen: React.FC = () => {
 
             </div>
 
-            {/* Refined Event Timeline Bar (Prompt Section 6) */}
+            {/* Refined Event Timeline Bar (Prompt Section 3 & 6) */}
             <div className="pt-5 mt-4 border-t border-white/[0.08]">
-              <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 pb-2">
-                <span className="tracking-widest uppercase text-slate-300 font-semibold">EVENT TIMELINE</span>
+              <div className="flex items-center justify-between text-xs font-mono text-slate-400 pb-2">
+                <span className="tracking-widest uppercase text-slate-300 font-semibold">EVENT TIMELINE & OPERATIONAL SLOTS</span>
                 <span className="text-cyan-400">Peak Window: 17:30 - 20:00</span>
               </div>
               <div className="flex items-center justify-between gap-2 pt-1">
                 {timelineSlots.map((slot) => (
                   <div key={slot.time} className="flex-1 flex flex-col items-center gap-1.5">
-                    <span className={`text-[10px] font-mono ${slot.isPeak ? 'text-amber-400 font-bold' : 'text-slate-400'}`}>
+                    <span className={`text-xs font-mono ${slot.isPeak ? 'text-amber-400 font-bold' : 'text-slate-400'}`}>
                       {slot.time}
                     </span>
                     <div 
@@ -190,7 +190,7 @@ export const OverviewScreen: React.FC = () => {
           {/* Bottom Primary Bottleneck Action */}
           <div className="pt-4 mt-5 border-t border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
             <div className="space-y-0.5">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-semibold">
+              <span className="text-xs font-mono uppercase tracking-widest text-slate-400 font-semibold">
                 PRIMARY BOTTLENECK
               </span>
               <div className="text-sm font-semibold text-slate-100 flex items-center gap-2">
@@ -213,17 +213,17 @@ export const OverviewScreen: React.FC = () => {
 
         </div>
 
-        {/* Actionable Recommended Intervention (Prompt Section 7) */}
+        {/* Actionable Recommended Intervention (Prompt Section 3 & 7) */}
         <div className="lg:col-span-5 rounded-2xl p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden transition-all panel-elevated border-cyan-500/30">
           <div className="space-y-4">
             {/* Header */}
             <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-cyan-300 font-bold flex items-center gap-1.5">
+              <span className="text-xs font-mono uppercase tracking-wider text-cyan-300 font-bold flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
                 ✦ RECOMMENDED ACTION
               </span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/25">
-                Actionable Intelligence
+              <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/25">
+                AI Decision Engine
               </span>
             </div>
 
@@ -238,9 +238,9 @@ export const OverviewScreen: React.FC = () => {
                   </p>
                 </div>
 
-                {/* WHY NOW Callout Box (Prompt Section 7) */}
+                {/* WHY NOW Callout Box (Prompt Section 3 & 7) */}
                 <div className="p-3.5 rounded-xl bg-cyan-500/[0.06] border border-cyan-500/20 space-y-1 text-xs">
-                  <div className="text-[10px] font-mono uppercase tracking-widest text-cyan-300 font-bold">
+                  <div className="text-xs font-mono uppercase tracking-widest text-cyan-300 font-bold">
                     WHY NOW
                   </div>
                   <p className="text-slate-300 leading-relaxed font-sans text-xs">
@@ -250,21 +250,21 @@ export const OverviewScreen: React.FC = () => {
 
                 {/* Expected Impact Grid */}
                 <div className="pt-1">
-                  <div className="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-semibold mb-2">
+                  <div className="text-xs font-mono uppercase tracking-widest text-slate-400 font-semibold mb-2">
                     EXPECTED IMPACT
                   </div>
                   <div className="grid grid-cols-3 gap-2">
                     <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.08] text-center">
                       <div className="text-lg font-extrabold font-mono text-emerald-400">-12</div>
-                      <div className="text-[10px] text-slate-400">Pressure Pts</div>
+                      <div className="text-xs text-slate-400 font-mono">Pressure Pts</div>
                     </div>
                     <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.08] text-center">
                       <div className="text-lg font-extrabold font-mono text-cyan-300">88%</div>
-                      <div className="text-[10px] text-slate-400">Confidence</div>
+                      <div className="text-xs text-slate-400 font-mono">Confidence</div>
                     </div>
                     <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.08] text-center">
                       <div className="text-lg font-extrabold font-mono text-slate-200">+11m</div>
-                      <div className="text-[10px] text-slate-400">Travel Trade-off</div>
+                      <div className="text-xs text-slate-400 font-mono">Travel Trade-off</div>
                     </div>
                   </div>
                 </div>
@@ -312,6 +312,67 @@ export const OverviewScreen: React.FC = () => {
       </div>
 
       {/* ========================================================================= */}
+      {/* DEDICATED ACTIONABLE CRITICAL ALERT (Prompt Section 3 Requirement)        */}
+      {/* ========================================================================= */}
+      <div className="rounded-2xl p-5 border border-rose-500/40 bg-gradient-to-r from-rose-950/40 via-[#0E1528] to-rose-950/20 shadow-2xl relative overflow-hidden">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="flex items-start gap-3.5">
+            <div className="p-2.5 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30 shrink-0">
+              <ShieldAlert className="w-5 h-5 animate-pulse" />
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-0.5 rounded bg-rose-500/20 text-rose-300 font-mono text-xs font-bold uppercase tracking-wider border border-rose-500/30">
+                  🔴 CRITICAL
+                </span>
+                <span className="text-white font-bold text-sm">
+                  Gate 1 / BKC Perimeter approaching maximum physical capacity
+                </span>
+              </div>
+              <div className="flex flex-wrap items-center gap-3 text-xs font-mono text-slate-300">
+                <span className="text-rose-400 font-bold">94% Occupancy</span>
+                <span className="text-slate-500">•</span>
+                <span className="text-amber-300 flex items-center gap-1 font-semibold">
+                  <TrendingUp className="w-3.5 h-3.5" />
+                  ↑ 8% increase in the last 10 minutes
+                </span>
+                <span className="text-slate-500">•</span>
+                <span className="text-slate-300">
+                  Recommended response: <strong className="text-cyan-300 font-semibold">Redirect incoming attendees toward Gate B & Kurla buffer</strong>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Action Buttons (Section 3) */}
+          <div className="flex items-center gap-2.5 shrink-0">
+            <button
+              onClick={() => setActiveScreen('interventions')}
+              className="px-3.5 py-2 rounded-xl text-xs font-mono font-bold bg-rose-500 hover:bg-rose-400 text-slate-950 transition-all shadow-[0_0_16px_rgba(244,63,94,0.4)]"
+            >
+              Redirect Flow
+            </button>
+            <button
+              onClick={() => {
+                setSelectedZoneId('bkc');
+                setActiveScreen('capacity');
+              }}
+              className="px-3 py-2 rounded-xl text-xs font-mono font-medium glass-tab text-slate-200 hover:text-white transition-all"
+            >
+              View Zone
+            </button>
+            <button
+              onClick={() => setActiveScreen('operators')}
+              className="px-3 py-2 rounded-xl text-xs font-mono font-medium glass-tab text-cyan-300 hover:text-white transition-all"
+            >
+              Assign Team
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+      {/* ========================================================================= */}
       {/* 2. MIDDLE ROW: 4 DISTINCT GLASS KPI CARDS (Prompt Section 8)                */}
       {/* ========================================================================= */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -321,7 +382,7 @@ export const OverviewScreen: React.FC = () => {
             <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
               <Users className="w-4 h-4" />
             </div>
-            <span className="text-[11px] font-mono font-bold text-emerald-400 flex items-center gap-0.5">
+            <span className="text-xs font-mono font-bold text-emerald-400 flex items-center gap-0.5">
               <TrendingUp className="w-3 h-3" />
               +12.4% vs baseline
             </span>
@@ -348,7 +409,7 @@ export const OverviewScreen: React.FC = () => {
             <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
               <Activity className="w-4 h-4" />
             </div>
-            <span className="text-[11px] font-mono text-cyan-300">
+            <span className="text-xs font-mono text-cyan-300">
               8 metro zones
             </span>
           </div>
@@ -374,7 +435,7 @@ export const OverviewScreen: React.FC = () => {
             <div className="p-2 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/30">
               <Building2 className="w-4 h-4" />
             </div>
-            <span className="text-[11px] font-mono text-amber-300 flex items-center gap-1.5 font-semibold">
+            <span className="text-xs font-mono text-amber-300 flex items-center gap-1.5 font-semibold">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
               Primary Risk
             </span>
@@ -401,7 +462,7 @@ export const OverviewScreen: React.FC = () => {
             <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
               <Bus className="w-4 h-4" />
             </div>
-            <span className="text-[11px] font-mono text-indigo-300">
+            <span className="text-xs font-mono text-indigo-300">
               Evening surge expected
             </span>
           </div>
@@ -457,7 +518,7 @@ export const OverviewScreen: React.FC = () => {
             {/* Critical & High Pressure Zones */}
             {(criticalZones.length > 0 || highZones.length > 0) && (
               <div className="space-y-2">
-                <div className="text-[10px] font-mono uppercase tracking-wider text-rose-400/90 font-semibold flex items-center gap-1.5">
+                <div className="text-xs font-mono uppercase tracking-wider text-rose-400/90 font-semibold flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse" />
                   <span>HIGH & CRITICAL ATTENTION REQUIRED</span>
                 </div>
@@ -483,7 +544,7 @@ export const OverviewScreen: React.FC = () => {
                         <div className="text-2xl font-bold font-mono text-rose-400">
                           {zone.pressureScore}
                         </div>
-                        <div className="text-[10px] font-mono text-rose-400 flex items-center justify-end gap-0.5">
+                        <div className="text-xs font-mono text-rose-400 flex items-center justify-end gap-0.5">
                           <TrendingUp className="w-3 h-3" />
                           <span>↑ 8</span>
                         </div>
@@ -497,7 +558,7 @@ export const OverviewScreen: React.FC = () => {
             {/* Watch Zones */}
             {watchZones.length > 0 && (
               <div className="space-y-2 pt-1">
-                <div className="text-[10px] font-mono uppercase tracking-wider text-amber-400/90 font-semibold flex items-center gap-1.5">
+                <div className="text-xs font-mono uppercase tracking-wider text-amber-400/90 font-semibold flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
                   <span>WATCH ZONES</span>
                 </div>
@@ -512,7 +573,7 @@ export const OverviewScreen: React.FC = () => {
                         <div className="text-xs font-semibold text-white group-hover:text-cyan-electric transition-colors truncate max-w-[130px]">
                           {zone.shortName || zone.name}
                         </div>
-                        <div className="text-[10px] font-mono text-amber-400">
+                        <div className="text-xs font-mono text-amber-400">
                           {zone.activeVisitors.toLocaleString()} in zone
                         </div>
                       </div>
@@ -521,7 +582,7 @@ export const OverviewScreen: React.FC = () => {
                         <div className="text-xl font-bold font-mono text-amber-400">
                           {zone.pressureScore}
                         </div>
-                        <div className="text-[10px] font-mono text-amber-400 flex items-center justify-end">
+                        <div className="text-xs font-mono text-amber-400 flex items-center justify-end">
                           <TrendingUp className="w-2.5 h-2.5" />
                         </div>
                       </div>
@@ -534,7 +595,7 @@ export const OverviewScreen: React.FC = () => {
             {/* Stable Zones */}
             {stableZones.length > 0 && (
               <div className="space-y-2 pt-1">
-                <div className="text-[10px] font-mono uppercase tracking-wider text-emerald-400/90 font-semibold flex items-center gap-1.5">
+                <div className="text-xs font-mono uppercase tracking-wider text-emerald-400/90 font-semibold flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                   <span>STABLE BUFFER ZONES</span>
                 </div>
@@ -549,7 +610,7 @@ export const OverviewScreen: React.FC = () => {
                         <div className="text-xs font-semibold text-slate-300 group-hover:text-white transition-colors truncate max-w-[130px]">
                           {zone.shortName || zone.name}
                         </div>
-                        <div className="text-[10px] font-mono text-emerald-400">
+                        <div className="text-xs font-mono text-emerald-400">
                           Ready for overflow
                         </div>
                       </div>
@@ -558,7 +619,7 @@ export const OverviewScreen: React.FC = () => {
                         <div className="text-xl font-bold font-mono text-emerald-400">
                           {zone.pressureScore}
                         </div>
-                        <div className="text-[10px] font-mono text-[#94A3B8] flex items-center justify-end">
+                        <div className="text-xs font-mono text-[#94A3B8] flex items-center justify-end">
                           <Minus className="w-2.5 h-2.5" />
                         </div>
                       </div>
@@ -577,7 +638,7 @@ export const OverviewScreen: React.FC = () => {
           
           <div className="space-y-3">
             <div className="flex items-center justify-between pb-3 border-b border-white/[0.06]">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-[#94A3B8] font-semibold flex items-center gap-1.5">
+              <span className="text-xs font-mono uppercase tracking-wider text-[#94A3B8] font-semibold flex items-center gap-1.5">
                 <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
                 ACTIVE ALERTS
               </span>
@@ -593,7 +654,7 @@ export const OverviewScreen: React.FC = () => {
                   onClick={() => setActiveScreen('alerts')}
                   className="p-3 rounded-xl glass-tab hover:border-cyan-400/40 cursor-pointer transition-all space-y-1 group"
                 >
-                  <div className="flex items-center justify-between text-[10px] font-mono">
+                  <div className="flex items-center justify-between text-xs font-mono">
                     <span className={`font-bold uppercase ${alert.severity === 'critical' ? 'text-rose-400' : 'text-amber-400'}`}>
                       {alert.severity}
                     </span>
@@ -602,7 +663,7 @@ export const OverviewScreen: React.FC = () => {
                   <div className="text-xs font-semibold text-white group-hover:text-cyan-electric transition-colors truncate">
                     {alert.title}
                   </div>
-                  <p className="text-[11px] text-[#94A3B8] line-clamp-1">
+                  <p className="text-xs text-[#94A3B8] line-clamp-1">
                     {alert.cause || alert.message}
                   </p>
                 </div>
@@ -636,7 +697,7 @@ export const OverviewScreen: React.FC = () => {
               {/* Drawer Header */}
               <div className="flex items-start justify-between pb-4 border-b border-white/[0.08]">
                 <div>
-                  <div className="text-[10px] font-mono uppercase tracking-wider text-cyan-electric font-semibold">
+                  <div className="text-xs font-mono uppercase tracking-wider text-cyan-electric font-semibold">
                     ZONE DIAGNOSTIC INTEL
                   </div>
                   <h3 className="text-xl font-bold text-white mt-1">
@@ -658,7 +719,7 @@ export const OverviewScreen: React.FC = () => {
               {/* Pressure Score & Status */}
               <div className="p-4 rounded-xl glass-tab flex items-center justify-between shadow-sm">
                 <div>
-                  <div className="text-[10px] font-mono uppercase tracking-wider text-[#94A3B8]">
+                  <div className="text-xs font-mono uppercase tracking-wider text-[#94A3B8]">
                     CALCULATED PRESSURE
                   </div>
                   <div className="text-3xl font-extrabold font-mono text-white mt-0.5">
@@ -748,7 +809,7 @@ export const OverviewScreen: React.FC = () => {
 
               {/* Recommended Action for this Zone */}
               <div className="p-3.5 rounded-xl glass-tab border-cyan-500/25 space-y-1 text-xs shadow-sm">
-                <div className="text-[10px] font-mono uppercase tracking-wider text-cyan-electric font-semibold">
+                <div className="text-xs font-mono uppercase tracking-wider text-cyan-electric font-semibold">
                   OPERATIONAL RECOMMENDATION
                 </div>
                 <p className="text-slate-300 leading-relaxed">

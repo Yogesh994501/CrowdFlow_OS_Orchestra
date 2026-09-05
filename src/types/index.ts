@@ -15,6 +15,19 @@ export type DemoScenario =
   | 'gate_closure' 
   | 'demand_surge';
 
+export type ScreenType = 
+  | 'landing' 
+  | 'overview' 
+  | 'map' 
+  | 'capacity' 
+  | 'mobility' 
+  | 'alerts' 
+  | 'interventions' 
+  | 'simulation' 
+  | 'dependency' 
+  | 'operators' 
+  | 'attendee';
+
 export interface GateInfo {
   id: string;
   name: string;

@@ -40,14 +40,14 @@ export const DemoModeBadge: React.FC = () => {
       <span className="text-slate-600">|</span>
 
       {/* Scenario badge */}
-      <span className="text-[11px] font-mono text-slate-300 hidden sm:inline-block">
+      <span className="text-xs font-mono text-slate-300 hidden sm:inline-block">
         {getScenarioLabel()}
       </span>
 
       <span className="text-slate-600 hidden sm:inline-block">|</span>
 
       {/* Timestamp */}
-      <span className="text-[11px] font-mono text-slate-400 flex items-center gap-1">
+      <span className="text-xs font-mono text-slate-400 flex items-center gap-1">
         <RefreshCw className={`w-3 h-3 text-cyan-400 ${isLiveDemoRunning ? 'animate-spin' : ''}`} style={{ animationDuration: '4s' }} />
         {lastTickTimestamp}
       </span>

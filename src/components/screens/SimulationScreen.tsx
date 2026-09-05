@@ -114,7 +114,7 @@ export const SimulationScreen: React.FC = () => {
                 });
                 runSimulation();
               }}
-              className="text-[11px] font-mono text-[#94A3B8] hover:text-white flex items-center gap-1"
+              className="text-xs font-mono text-[#94A3B8] hover:text-white flex items-center gap-1"
             >
               <RotateCcw className="w-3 h-3" /> Reset
             </button>
@@ -140,7 +140,7 @@ export const SimulationScreen: React.FC = () => {
               onChange={e => setSimulationParams({ attendanceDelta: Number(e.target.value) })}
               className="w-full accent-cyan-400 cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] font-mono text-slate-500">
+            <div className="flex justify-between text-xs font-mono text-slate-500">
               <span>-30%</span>
               <span>Baseline (184k)</span>
               <span>+50%</span>
@@ -224,31 +224,31 @@ export const SimulationScreen: React.FC = () => {
           
           {/* Below Sequence: CURRENT → SIMULATED → AFTER INTERVENTION (Section 12) */}
           <div className="p-4 rounded-2xl panel-elevated">
-            <div className="text-[10px] font-mono uppercase tracking-wider text-[#94A3B8] mb-3 font-semibold">
+            <div className="text-xs font-mono uppercase tracking-wider text-[#94A3B8] mb-3 font-semibold">
               Three-Tier Progression Model:
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-mono">
               
               <div className="p-3 rounded-xl glass-tab space-y-1">
-                <span className="text-[10px] text-[#94A3B8] uppercase">1. CURRENT BASELINE</span>
+                <span className="text-xs text-[#94A3B8] uppercase">1. CURRENT BASELINE</span>
                 <div className="text-xl font-bold text-[#F8FAFC]">Pressure {currentAvgPressure}</div>
-                <span className="text-[11px] text-[#94A3B8]">Normal Metropolitan Load</span>
+                <span className="text-xs text-[#94A3B8]">Normal Metropolitan Load</span>
               </div>
 
               <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/25 space-y-1 backdrop-blur-md">
-                <span className="text-[10px] text-rose-400 uppercase font-bold">2. SIMULATED STRAIN</span>
+                <span className="text-xs text-rose-400 uppercase font-bold">2. SIMULATED STRAIN</span>
                 <div className="text-xl font-bold text-rose-400">
                   Pressure {simulationResult?.simulatedPressureAverage || 86}
                 </div>
-                <span className="text-[11px] text-rose-300">+{Math.max(0, (simulationResult?.simulatedPressureAverage || 86) - currentAvgPressure)} pts increase</span>
+                <span className="text-xs text-rose-300">+{Math.max(0, (simulationResult?.simulatedPressureAverage || 86) - currentAvgPressure)} pts increase</span>
               </div>
 
               <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/25 space-y-1 backdrop-blur-md">
-                <span className="text-[10px] text-emerald-400 uppercase font-bold">3. AFTER INTERVENTION</span>
+                <span className="text-xs text-emerald-400 uppercase font-bold">3. AFTER INTERVENTION</span>
                 <div className="text-xl font-bold text-emerald-400">
                   Pressure {simulationResult?.afterInterventionPressure || 68}
                 </div>
-                <span className="text-[11px] text-emerald-300 font-semibold">
+                <span className="text-xs text-emerald-300 font-semibold">
                   -{Math.max(0, (simulationResult?.simulatedPressureAverage || 86) - (simulationResult?.afterInterventionPressure || 68))} pts recovered
                 </span>
               </div>
@@ -258,7 +258,7 @@ export const SimulationScreen: React.FC = () => {
 
           {/* AI Narrative */}
           <div className="p-4 rounded-2xl panel-elevated space-y-1.5">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-electric font-semibold flex items-center gap-1">
+            <span className="text-xs font-mono uppercase tracking-wider text-cyan-electric font-semibold flex items-center gap-1">
               <Sparkles className="w-3.5 h-3.5" />
               SYNTHESIZED SCENARIO NARRATIVE
             </span>
@@ -273,19 +273,19 @@ export const SimulationScreen: React.FC = () => {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={comparisonData} margin={{ top: 10, right: 10, left: -15, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#1E293B" opacity={0.5} />
-                  <XAxis dataKey="metric" stroke="#64748B" fontSize={11} fontFamily="monospace" />
-                  <YAxis stroke="#64748B" fontSize={11} fontFamily="monospace" />
+                  <XAxis dataKey="metric" stroke="#64748B" fontSize={12} fontFamily="monospace" />
+                  <YAxis stroke="#64748B" fontSize={12} fontFamily="monospace" />
                   <RechartsTooltip 
                     contentStyle={{ 
                       backgroundColor: '#0E121B', 
                       borderColor: 'rgba(255,255,255,0.1)', 
                       borderRadius: '10px',
                       color: '#fff',
-                      fontSize: '11px',
+                      fontSize: '12px',
                       fontFamily: 'monospace'
                     }} 
                   />
-                  <Legend wrapperStyle={{ fontSize: '11px', fontFamily: 'monospace' }} />
+                  <Legend wrapperStyle={{ fontSize: '12px', fontFamily: 'monospace' }} />
                   <Bar dataKey="Current" fill="#64748B" radius={[3, 3, 0, 0]} />
                   <Bar dataKey="Simulated" fill="#EF4444" radius={[3, 3, 0, 0]} />
                   <Bar dataKey="AfterIntervention" fill="#22C55E" radius={[3, 3, 0, 0]} />

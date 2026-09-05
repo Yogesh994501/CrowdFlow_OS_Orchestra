@@ -47,7 +47,7 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
               <h3 className="text-sm font-bold font-mono tracking-tight text-[#F8FAFC]">
                 CENTRAL DATA SOURCES & FAILOVER STATUS
               </h3>
-              <p className="text-[11px] text-[#94A3B8] font-mono">
+              <p className="text-xs text-slate-400 font-mono">
                 Real-time Open-Data API Adapters & Graceful Fallback Transparency
               </p>
             </div>
@@ -79,7 +79,7 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
             <ShieldCheck className="w-5 h-5 text-cyan-electric shrink-0 mt-0.5" />
             <div className="text-xs space-y-1">
               <span className="font-semibold text-cyan-200">Strict Free & Open-Data Architecture:</span>
-              <p className="text-slate-300 leading-relaxed">
+              <p className="text-slate-300 leading-relaxed font-sans">
                 CrowdFlow OS uses only free, public open-data services (OpenStreetMap, Overpass, Nominatim, Open-Meteo, OSRM, GTFS). 
                 Zero paid subscriptions or API keys required. Automatic in-memory caching and authentic Mumbai local mock fallbacks prevent any service outage.
               </p>
@@ -100,19 +100,19 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-semibold text-[#F8FAFC]">{s.name}</span>
-                      <span className={`text-[10px] font-mono px-2 py-0.2 rounded-full border ${
+                      <span className={`text-xs font-mono px-2 py-0.5 rounded-full border ${
                         isLive 
-                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25'
+                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25 font-bold'
                           : isCached
-                          ? 'bg-cyan-500/10 text-cyan-electric border-cyan-500/25'
-                          : 'bg-amber-500/10 text-amber-400 border-amber-500/25'
+                          ? 'bg-cyan-500/10 text-cyan-electric border-cyan-500/25 font-bold'
+                          : 'bg-amber-500/10 text-amber-400 border-amber-500/25 font-bold'
                       }`}>
                         {isLive ? '● LIVE' : isCached ? '● CACHED' : '● SIMULATED'}
                       </span>
                     </div>
 
                     {s.fallbackReason && (
-                      <p className="text-[11px] text-[#94A3B8]/80 font-mono">
+                      <p className="text-xs text-slate-400 font-mono">
                         {s.fallbackReason}
                       </p>
                     )}
@@ -120,11 +120,11 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
 
                   <div className="flex items-center gap-4 text-right shrink-0">
                     <div>
-                      <div className="text-[10px] font-mono text-[#94A3B8]">LATENCY</div>
+                      <div className="text-xs font-mono text-slate-400">LATENCY</div>
                       <div className="text-xs font-mono font-bold text-white">{s.latencyMs} ms</div>
                     </div>
                     <div>
-                      <div className="text-[10px] font-mono text-[#94A3B8]">STATUS</div>
+                      <div className="text-xs font-mono text-slate-400">STATUS</div>
                       <div className="flex items-center gap-1 text-xs font-mono text-emerald-400">
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         <span className="capitalize">{s.status}</span>
@@ -137,19 +137,19 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
           </div>
 
           {/* Orchestration Pipeline Architecture Summary */}
-          <div className="p-3 rounded-xl bg-[#141A26] border border-white/[0.08] text-xs font-mono text-[#94A3B8] space-y-1.5">
+          <div className="p-3 rounded-xl bg-[#141A26] border border-white/[0.08] text-xs font-mono text-slate-300 space-y-1.5">
             <div className="text-white font-bold flex items-center gap-1.5">
               <Server className="w-3.5 h-3.5 text-cyan-electric" />
               Intelligence Pipeline Flow
             </div>
-            <p className="text-[11px] leading-relaxed">
+            <p className="text-xs leading-relaxed font-sans text-slate-400">
               External Feeds → Adapters → Data Normalization → Central Intelligence Engine (30% Occupancy + 25% Arrivals + 20% Transit + 15% Venue + 10% Weather) → Zustand Central State → All Consoles
             </p>
           </div>
 
-          {/* Strict Public API Policy & Documentation Links (Hackathon Requirement) */}
+          {/* Strict Public API Policy & Documentation Links */}
           <div className="p-3.5 rounded-xl bg-[#0B101A] border border-white/[0.06] space-y-2">
-            <div className="text-[11px] font-mono font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+            <div className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
               <ExternalLink className="w-3 h-3 text-cyan-electric" />
               Approved Open-Service Policies & Documentation
             </div>
@@ -162,7 +162,7 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
               >
                 <div>
                   <div className="font-semibold text-[#F8FAFC] group-hover:text-cyan-electric transition-colors">Open-Meteo</div>
-                  <div className="text-[10px] text-[#94A3B8]">Free open-meteo weather API terms</div>
+                  <div className="text-xs text-slate-400">Free open-meteo weather API terms</div>
                 </div>
                 <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-electric shrink-0" />
               </a>
@@ -175,7 +175,7 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
               >
                 <div>
                   <div className="font-semibold text-[#F8FAFC] group-hover:text-cyan-electric transition-colors">OpenStreetMap Policies</div>
-                  <div className="text-[10px] text-[#94A3B8]">OSMF tile usage & fair-use rules</div>
+                  <div className="text-xs text-slate-400">OSMF tile usage & fair-use rules</div>
                 </div>
                 <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-electric shrink-0" />
               </a>
@@ -188,7 +188,7 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
               >
                 <div>
                   <div className="font-semibold text-[#F8FAFC] group-hover:text-cyan-electric transition-colors">Nominatim Usage Policy</div>
-                  <div className="text-[10px] text-[#94A3B8]">1 req/s max, no auto-complete spam</div>
+                  <div className="text-xs text-slate-400">1 req/s max, no auto-complete spam</div>
                 </div>
                 <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-electric shrink-0" />
               </a>
@@ -201,7 +201,7 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
               >
                 <div>
                   <div className="font-semibold text-[#F8FAFC] group-hover:text-cyan-electric transition-colors">OSRM Documentation</div>
-                  <div className="text-[10px] text-[#94A3B8]">Routing protocol & HTTP endpoints</div>
+                  <div className="text-xs text-slate-400">Routing protocol & HTTP endpoints</div>
                 </div>
                 <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-electric shrink-0" />
               </a>

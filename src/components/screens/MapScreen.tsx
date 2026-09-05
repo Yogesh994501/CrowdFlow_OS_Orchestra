@@ -244,7 +244,7 @@ export const MapScreen: React.FC = () => {
         {/* Layer Controls Pill (Section 10) */}
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl glass-tab text-xs font-mono">
           <Layers className="w-3.5 h-3.5 text-cyan-electric" />
-          <span className="text-[#94A3B8] text-[11px] hidden sm:inline">Layers:</span>
+          <span className="text-[#94A3B8] text-xs hidden sm:inline">Layers:</span>
           <label className="flex items-center gap-1 cursor-pointer select-none">
             <input
               type="checkbox"
@@ -307,7 +307,7 @@ export const MapScreen: React.FC = () => {
               <span className="text-[#F8FAFC] font-semibold">Corridor Inflow:</span>
               <span className="text-cyan-electric">14,200/hr peak rate</span>
             </div>
-            <div className="flex items-center gap-3 text-[11px] text-[#94A3B8]">
+            <div className="flex items-center gap-3 text-xs text-[#94A3B8]">
               <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#22C55E]"></span> Stable</span>
               <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#F59E0B]"></span> Watch</span>
               <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#F97316]"></span> High</span>
@@ -324,7 +324,7 @@ export const MapScreen: React.FC = () => {
               {/* Context Header */}
               <div className="flex items-start justify-between pb-3 border-b border-white/[0.08]">
                 <div>
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-electric font-semibold">
+                  <span className="text-xs font-mono uppercase tracking-wider text-cyan-electric font-semibold">
                     SELECTED ZONE
                   </span>
                   <h3 className="text-lg font-bold text-white mt-0.5">
@@ -342,34 +342,34 @@ export const MapScreen: React.FC = () => {
               {/* 4 Core Metrics Tiles */}
               <div className="grid grid-cols-2 gap-2 text-xs font-mono">
                 <div className="p-2.5 rounded-xl glass-tab space-y-0.5 shadow-sm">
-                  <span className="text-[10px] text-[#94A3B8] uppercase">Active Crowd</span>
+                  <span className="text-xs text-[#94A3B8] uppercase">Active Crowd</span>
                   <div className="text-base font-bold text-[#F8FAFC]">{selectedZone.activeVisitors.toLocaleString()}</div>
-                  <span className="text-[10px] text-[#94A3B8]">Limit: {selectedZone.capacityLimit.toLocaleString()}</span>
+                  <span className="text-xs text-[#94A3B8]">Limit: {selectedZone.capacityLimit.toLocaleString()}</span>
                 </div>
 
                 <div className="p-2.5 rounded-xl glass-tab space-y-0.5 shadow-sm">
-                  <span className="text-[10px] text-[#94A3B8] uppercase">Hotels</span>
+                  <span className="text-xs text-[#94A3B8] uppercase">Hotels</span>
                   <div className={`text-base font-bold ${selectedZone.accommodationOccupancy > 90 ? 'text-rose-400' : 'text-[#F8FAFC]'}`}>
                     {selectedZone.accommodationOccupancy}%
                   </div>
-                  <span className="text-[10px] text-[#94A3B8]">Occupancy</span>
+                  <span className="text-xs text-[#94A3B8]">Occupancy</span>
                 </div>
 
                 <div className="p-2.5 rounded-xl glass-tab space-y-0.5 shadow-sm">
-                  <span className="text-[10px] text-[#94A3B8] uppercase">Transit Load</span>
+                  <span className="text-xs text-[#94A3B8] uppercase">Transit Load</span>
                   <div className="text-base font-bold text-[#F8FAFC]">{selectedZone.transitLoad}%</div>
-                  <span className="text-[10px] text-[#94A3B8]">Arterial Dwell</span>
+                  <span className="text-xs text-[#94A3B8]">Arterial Dwell</span>
                 </div>
 
                 <div className="p-2.5 rounded-xl glass-tab space-y-0.5 shadow-sm">
-                  <span className="text-[10px] text-[#94A3B8] uppercase">Peak Window</span>
+                  <span className="text-xs text-[#94A3B8] uppercase">Peak Window</span>
                   <div className="text-xs font-bold text-cyan-electric mt-1">{selectedZone.predictedPeak}</div>
                 </div>
               </div>
 
               {/* Primary Risk */}
               <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 space-y-1">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-rose-400 font-bold flex items-center gap-1">
+                <span className="text-xs font-mono uppercase tracking-wider text-rose-400 font-bold flex items-center gap-1">
                   <AlertTriangle className="w-3.5 h-3.5" />
                   Primary Risk
                 </span>
@@ -380,12 +380,12 @@ export const MapScreen: React.FC = () => {
 
               {/* Contributing Weights */}
               <div className="space-y-1 text-xs">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-[#94A3B8] font-semibold">
+                <span className="text-xs font-mono uppercase tracking-wider text-[#94A3B8] font-semibold">
                   Contributing Factors:
                 </span>
                 <div className="space-y-1">
                   {selectedZone.topContributors.map((c, i) => (
-                    <div key={i} className="p-1.5 rounded-lg glass-tab flex items-center justify-between text-[11px] font-mono">
+                    <div key={i} className="p-1.5 rounded-lg glass-tab flex items-center justify-between text-xs font-mono">
                       <span className="text-[#94A3B8]">{c.split(': ')[0]}</span>
                       <span className="font-bold text-white">{c.split(': ')[1]}</span>
                     </div>
@@ -395,7 +395,7 @@ export const MapScreen: React.FC = () => {
 
               {/* Prescribed Action */}
               <div className="p-3 rounded-xl glass-tab border-cyan-500/20 space-y-1">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-electric font-semibold flex items-center gap-1">
+                <span className="text-xs font-mono uppercase tracking-wider text-cyan-electric font-semibold flex items-center gap-1">
                   <Sparkles className="w-3.5 h-3.5" />
                   Prescribed Action:
                 </span>

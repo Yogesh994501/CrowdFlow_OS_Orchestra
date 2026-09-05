@@ -74,7 +74,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
     >
       <div className="flex items-start justify-between mb-3">
         <div className="space-y-1">
-          <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 block">
+          <span className="text-xs font-mono uppercase tracking-wider text-slate-400 block font-semibold">
             {title}
           </span>
           <div className="flex items-baseline gap-1.5">
@@ -95,7 +95,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
         <div className="flex items-center gap-2">
           {change && (
             <span
-              className={`inline-flex items-center gap-0.5 text-[11px] font-mono font-medium px-1.5 py-0.5 rounded border ${trendColorClass}`}
+              className={`inline-flex items-center gap-0.5 text-xs font-mono font-medium px-2 py-0.5 rounded border ${trendColorClass}`}
             >
               {trend === 'up' && <TrendingUp className="w-3 h-3" />}
               {trend === 'down' && <TrendingDown className="w-3 h-3" />}
@@ -103,7 +103,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
             </span>
           )}
           {subtitle && (
-            <span className="text-[11px] text-slate-400 line-clamp-1">{subtitle}</span>
+            <span className="text-xs text-slate-400 line-clamp-1">{subtitle}</span>
           )}
         </div>
 

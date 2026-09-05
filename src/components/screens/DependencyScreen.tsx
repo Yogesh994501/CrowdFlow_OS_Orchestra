@@ -164,7 +164,7 @@ export const DependencyScreen: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="text-[10px] font-mono text-slate-500 mt-3 pt-2 border-t border-white/5">
+                <div className="text-xs font-mono text-slate-400 mt-3 pt-2 border-t border-white/5">
                   {node.category}
                 </div>
               </div>
@@ -182,7 +182,7 @@ export const DependencyScreen: React.FC = () => {
                 <activeNode.icon className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-bold">
+                <span className="text-xs font-mono uppercase tracking-wider text-cyan-400 font-bold">
                   Node Analysis • Step {activeNode.step} of 6
                 </span>
                 <h3 className="text-lg font-bold text-white leading-tight">
@@ -233,7 +233,7 @@ export const DependencyScreen: React.FC = () => {
 
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-cyan-500/20">
               <div className="space-y-0.5">
-                <span className="text-[11px] font-mono font-bold text-cyan-300 uppercase flex items-center gap-1">
+                <span className="text-xs font-mono font-bold text-cyan-300 uppercase flex items-center gap-1">
                   <Sparkles className="w-3.5 h-3.5" />
                   Prescribed Decoupling Intervention:
                 </span>

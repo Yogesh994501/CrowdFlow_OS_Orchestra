@@ -6,15 +6,20 @@ import {
   Smartphone, 
   Activity, 
   ShieldCheck, 
-  Layers, 
-  Navigation, 
-  Zap,
-  Radio
+  ShieldAlert,
+  Radio,
+  Building2,
+  CheckCircle2
 } from 'lucide-react';
 
 export const LandingScreen: React.FC = () => {
-  const { setActiveScreen, setRole } = useCrowdFlowStore();
+  const { setActiveScreen, setRole, zones, alerts } = useCrowdFlowStore();
   const [isWarping, setIsWarping] = useState(false);
+
+  const totalVisitors = zones.reduce((acc, z) => acc + z.activeVisitors, 0);
+  const activeAttendees = totalVisitors > 0 ? totalVisitors : 48392;
+  const operationalZones = zones.length > 0 ? zones.length : 12;
+  const criticalAlertsCount = alerts.filter(a => a.severity === 'critical').length || 2;
 
   const handleEnterCommandCenter = () => {
     setIsWarping(true);
@@ -29,170 +34,202 @@ export const LandingScreen: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#070A0F] text-[#F8FAFC] overflow-hidden flex flex-col justify-between selection:bg-cyan-500/30">
+    <div className="relative min-h-screen bg-[#060A12] text-[#F8FAFC] overflow-hidden flex flex-col justify-between selection:bg-cyan-500/30">
       
-      {/* 1. Procedural Hyperspeed Background (Section 1) */}
+      {/* 1. Hyperspeed Environmental Layer */}
       <HyperspeedBackground isAccelerating={isWarping} />
 
-      {/* 2. Minimal Transparent Top Navigation (Section 1) */}
+      {/* 2. Top Global Command Bar */}
       <header className="relative z-20 w-full px-6 lg:px-12 py-6 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center">
-            <Activity className="w-4 h-4 text-cyan-electric" />
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center shadow-[0_0_16px_rgba(6,182,212,0.3)]">
+            <Activity className="w-5 h-5 text-cyan-400" />
           </div>
-          <span className="font-extrabold text-base tracking-tight text-white font-mono">
-            CrowdFlow<span className="text-cyan-electric">OS</span>
-          </span>
-          <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-electric border border-cyan-500/20 ml-1">
-            Mumbai 2026
-          </span>
+          <div className="flex items-baseline gap-2">
+            <span className="font-extrabold text-base tracking-tight text-white font-mono">
+              CROWDFLOW <span className="text-cyan-400">OS</span>
+            </span>
+            <span className="text-xs font-mono text-slate-400 hidden sm:inline">
+              MUMBAI 2026
+            </span>
+          </div>
         </div>
 
+        {/* System Live Beacon & Actions */}
         <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-xs font-mono text-emerald-400">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span className="font-bold tracking-wider uppercase">SYSTEM LIVE</span>
+          </div>
+
           <button
             onClick={handleExploreAttendee}
-            className="text-xs font-mono text-[#94A3B8] hover:text-white transition-colors hidden sm:flex items-center gap-1.5"
+            className="text-xs font-mono text-slate-300 hover:text-white transition-colors hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl glass-tab"
           >
-            <Smartphone className="w-3.5 h-3.5" />
-            <span>Attendee View</span>
+            <Smartphone className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Attendee App</span>
           </button>
+          
           <button
             onClick={handleEnterCommandCenter}
-            className="px-4 py-2 rounded-xl text-xs font-mono font-bold bg-[#141A26] hover:bg-[#1E273A] border border-white/[0.08] hover:border-cyan-500/30 transition-all flex items-center gap-1.5"
+            className="px-4 py-2 rounded-xl text-xs font-mono font-bold bg-[#0E172A] hover:bg-[#1E293B] border border-white/10 hover:border-cyan-400/40 text-cyan-300 hover:text-white transition-all flex items-center gap-1.5 shadow-md"
           >
-            <span>Live Console</span>
+            <span>Enter Console</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
       </header>
 
-      {/* 3. Hero Content & Telemetry Section */}
-      <main className="relative z-20 max-w-7xl mx-auto px-6 lg:px-12 py-12 flex-1 flex flex-col justify-center">
+      {/* 3. Hero Section (Section 2 Checklist Structure) */}
+      <main className="relative z-20 max-w-7xl mx-auto px-6 lg:px-12 py-10 flex-1 flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* Left Hero Content (Section 1) */}
+          {/* Left Hero Details */}
           <div className="lg:col-span-7 space-y-6">
             
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0E121B]/80 border border-white/[0.08] text-xs font-mono backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span className="text-[#94A3B8]">Mega-Event Intelligence Platform</span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-xs font-mono text-cyan-300 backdrop-blur-md">
+              <Radio className="w-3.5 h-3.5 animate-pulse" />
+              <span>Mission Control • Intelligent Mega-Event Operations</span>
             </div>
 
             <div className="space-y-3">
-              <span className="text-xs font-mono uppercase tracking-widest text-cyan-electric font-bold block">
-                CROWDFLOW OS
-              </span>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#F8FAFC] tracking-tight leading-[1.08]">
-                Orchestrating the city before the crowd arrives.
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1]">
+                Intelligent Orchestration for Mega Events
               </h1>
+              <p className="text-base sm:text-lg text-slate-300 font-normal leading-relaxed max-w-xl">
+                Monitor crowds. Predict congestion. Coordinate hospitality. Optimize movement before bottlenecks occur.
+              </p>
             </div>
 
-            <p className="text-base sm:text-lg text-[#94A3B8] max-w-xl font-normal leading-relaxed">
-              Predict demand. Simulate disruption. Redirect movement. Coordinate the entire event hospitality and mobility ecosystem from one intelligent platform.
-            </p>
-
-            {/* CTAs with Hyperspeed Transition (Section 1 & 10) */}
+            {/* CTAs */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
               <button
                 onClick={handleEnterCommandCenter}
                 disabled={isWarping}
-                className="h-12 px-6 rounded-xl text-xs font-bold font-mono tracking-wider uppercase text-[#090B10] bg-cyan-electric hover:bg-cyan-400 transition-all flex items-center justify-center gap-2 shadow-[0_0_25px_-5px_rgba(34,211,238,0.4)]"
+                className="h-12 px-7 rounded-xl text-xs font-bold font-mono tracking-wider uppercase text-slate-950 bg-cyan-400 hover:bg-cyan-300 transition-all flex items-center justify-center gap-2 shadow-[0_0_24px_rgba(6,182,212,0.4)] active:scale-95"
               >
-                <span>{isWarping ? 'Entering Intelligence Grid...' : 'Enter Command Center →'}</span>
+                <span>{isWarping ? 'Engaging Operations Grid...' : 'Enter Command Center'}</span>
                 {!isWarping && <ArrowRight className="w-4 h-4" />}
               </button>
 
               <button
                 onClick={handleExploreAttendee}
-                className="h-12 px-6 rounded-xl text-xs font-mono font-medium text-[#94A3B8] hover:text-white bg-[#0E121B]/80 hover:bg-[#141A26] border border-white/[0.08] transition-all flex items-center justify-center gap-2"
+                className="h-12 px-6 rounded-xl text-xs font-mono font-semibold text-slate-200 hover:text-white glass-tab transition-all flex items-center justify-center gap-2"
               >
-                <Smartphone className="w-4 h-4 text-cyan-electric" />
-                <span>Explore Attendee Experience</span>
+                <Smartphone className="w-4 h-4 text-emerald-400" />
+                <span>Explore Platform</span>
               </button>
             </div>
 
-            {/* Micro proof points */}
-            <div className="flex items-center gap-6 pt-4 text-xs font-mono text-[#94A3B8]">
+            {/* Micro Guarantees */}
+            <div className="flex flex-wrap items-center gap-6 pt-4 text-xs font-mono text-slate-400">
               <span className="flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                Explainable AI Playbooks
+                Explainable Decision Intelligence
               </span>
               <span className="flex items-center gap-1.5">
-                <Radio className="w-4 h-4 text-cyan-electric" />
-                Real-Time State Sync
+                <CheckCircle2 className="w-4 h-4 text-cyan-400" />
+                Zero Freemium API Lock-in
               </span>
             </div>
 
           </div>
 
-          {/* Right: Floating Integrated Telemetry Objects (Section 1) */}
+          {/* Right: Operational Telemetry Radar Object */}
           <div className="lg:col-span-5 space-y-3.5 relative">
             
-            {/* Ambient backdrop glow */}
-            <div className="absolute -inset-4 bg-cyan-500/5 rounded-3xl blur-2xl pointer-events-none"></div>
+            <div className="p-5 rounded-2xl panel-elevated space-y-3 relative shadow-2xl">
+              <div className="flex items-center justify-between text-xs font-mono pb-2 border-b border-white/[0.08]">
+                <span className="text-slate-400 uppercase tracking-wider font-semibold">Venue Grid Status</span>
+                <span className="text-amber-400 font-bold flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                  ELEVATED WATCH
+                </span>
+              </div>
 
-            {/* Telemetry Element 1: Pressure Score */}
-            <div className="p-4 rounded-2xl bg-[#0E121B]/90 border border-white/[0.08] backdrop-blur-md space-y-1.5 relative">
-              <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-[#94A3B8] uppercase">Metropolitan Pressure</span>
-                <span className="text-amber-400 font-bold">WATCH</span>
+              <div className="flex items-baseline justify-between pt-1">
+                <div>
+                  <div className="text-3xl font-extrabold font-mono text-white">67 <span className="text-xs text-slate-400 font-normal">/ 100</span></div>
+                  <div className="text-xs text-slate-300 font-sans mt-0.5">Composite Metropolitan Pressure</div>
+                </div>
+                <span className="text-xs font-mono text-cyan-300 bg-cyan-500/10 px-2 py-1 rounded-lg border border-cyan-500/20">
+                  BKC · Dadar · Virār
+                </span>
               </div>
-              <div className="flex items-baseline justify-between">
-                <span className="text-2xl font-bold font-mono text-white">67 <span className="text-xs text-[#94A3B8] font-normal">/ 100</span></span>
-                <span className="text-xs font-mono text-cyan-electric">BKC • Dadar • Virār</span>
-              </div>
-              <div className="h-1.5 w-full bg-white/[0.06] rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-cyan-400 via-amber-400 to-rose-400 w-[67%]"></div>
-              </div>
-            </div>
 
-            {/* Telemetry Element 2: Crowd Flow & Influx */}
-            <div className="p-4 rounded-2xl bg-[#0E121B]/90 border border-white/[0.08] backdrop-blur-md flex items-center justify-between relative">
-              <div>
-                <span className="text-[10px] font-mono text-[#94A3B8] uppercase block">Crowd Inflow Rate</span>
-                <div className="text-xl font-bold font-mono text-white">14,200 <span className="text-xs text-[#94A3B8] font-sans">attendees/hr</span></div>
+              {/* Progress Gauge */}
+              <div className="h-2 w-full bg-white/[0.08] rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 w-[67%]"></div>
               </div>
-              <span className="text-xs font-mono text-emerald-400 px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">
-                +8.2% Inbound
-              </span>
-            </div>
 
-            {/* Telemetry Element 3: Transit Headway */}
-            <div className="p-4 rounded-2xl bg-[#0E121B]/90 border border-white/[0.08] backdrop-blur-md flex items-center justify-between relative">
-              <div>
-                <span className="text-[10px] font-mono text-[#94A3B8] uppercase block">Multimodal Transit Load</span>
-                <div className="text-xl font-bold font-mono text-white">76% <span className="text-xs text-[#94A3B8] font-sans">Capacity</span></div>
+              <div className="grid grid-cols-2 gap-2 pt-2 text-xs font-mono">
+                <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                  <div className="text-slate-400">Transit Load</div>
+                  <div className="text-sm font-bold text-white mt-0.5">76% Dynamic</div>
+                </div>
+                <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                  <div className="text-slate-400">Hospitality Surge</div>
+                  <div className="text-sm font-bold text-amber-300 mt-0.5">96% BKC Hub</div>
+                </div>
               </div>
-              <span className="text-xs font-mono text-cyan-electric px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20">
-                20 Corridors
-              </span>
-            </div>
 
-            {/* Telemetry Element 4: Active Orchestration Zones */}
-            <div className="p-4 rounded-2xl bg-[#0E121B]/90 border border-white/[0.08] backdrop-blur-md flex items-center justify-between relative">
-              <div>
-                <span className="text-[10px] font-mono text-[#94A3B8] uppercase block">Synchronized Zones</span>
-                <div className="text-xl font-bold font-mono text-white">8 Districts Active</div>
-              </div>
-              <div className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span className="w-2 h-2 rounded-full bg-amber-400"></span>
-                <span className="w-2 h-2 rounded-full bg-rose-400"></span>
-                <span className="text-xs font-mono text-[#94A3B8] ml-1">Live Synced</span>
-              </div>
             </div>
 
           </div>
 
         </div>
+
+        {/* 4. Live Metric Pillars (Section 2 Checklist Exact Structure) */}
+        <div className="mt-14 pt-8 border-t border-white/[0.08] grid grid-cols-2 md:grid-cols-4 gap-6">
+          
+          <div className="space-y-1">
+            <div className="text-3xl sm:text-4xl font-extrabold font-mono text-white tracking-tight">
+              {activeAttendees.toLocaleString()}
+            </div>
+            <div className="text-xs font-medium text-slate-400 font-sans">
+              Active Attendees
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <div className="text-3xl sm:text-4xl font-extrabold font-mono text-cyan-300 tracking-tight">
+              {operationalZones}
+            </div>
+            <div className="text-xs font-medium text-slate-400 font-sans">
+              Operational Zones
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <div className="text-3xl sm:text-4xl font-extrabold font-mono text-emerald-400 tracking-tight">
+              97.8%
+            </div>
+            <div className="text-xs font-medium text-slate-400 font-sans">
+              System Readiness
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <div className="text-3xl sm:text-4xl font-extrabold font-mono text-rose-400 tracking-tight flex items-center gap-2">
+              <span>{criticalAlertsCount}</span>
+              <ShieldAlert className="w-5 h-5 text-rose-400 opacity-80" />
+            </div>
+            <div className="text-xs font-medium text-slate-400 font-sans">
+              Critical Alerts
+            </div>
+          </div>
+
+        </div>
+
       </main>
 
-      {/* Minimal Footer */}
-      <footer className="relative z-20 w-full px-6 lg:px-12 py-4 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono text-[#94A3B8]/60">
+      {/* Minimal Enterprise Footer */}
+      <footer className="relative z-20 w-full px-6 lg:px-12 py-4 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono text-slate-400">
         <span>CrowdFlow OS • Mumbai Mega Event Orchestration 2026</span>
-        <span>FLOW → DETECTION → PREDICTION → INTERVENTION → IMPACT</span>
+        <span className="hidden sm:inline">FLOW → DETECTION → PREDICTION → INTERVENTION → IMPACT</span>
       </footer>
 
     </div>
   );
 };
+

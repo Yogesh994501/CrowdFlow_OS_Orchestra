@@ -44,7 +44,7 @@ export const InterventionsScreen: React.FC = () => {
         </div>
 
         {/* Tab switch */}
-        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-dark-900 border border-white/10 text-xs font-mono">
+        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-black/40 border border-white/10 text-xs font-mono">
           <button
             onClick={() => setActiveTab('active')}
             className={`px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 transition-all ${
@@ -71,7 +71,7 @@ export const InterventionsScreen: React.FC = () => {
       </div>
 
       {/* Operational Workflow Progress Stepper */}
-      <div className="p-4 rounded-2xl glass-panel border border-white/10">
+      <div className="p-4 rounded-2xl panel-elevated">
         <div className="flex items-center justify-between overflow-x-auto pb-1 text-xs font-mono">
           {[
             { step: '1', title: 'AI Recommendation', desc: 'Continuous Telemetry Fusion' },
@@ -81,12 +81,12 @@ export const InterventionsScreen: React.FC = () => {
             { step: '5', title: 'Measure Impact', desc: 'Verify Pressure Drop' },
           ].map((s, idx) => (
             <div key={s.step} className="flex items-center gap-2 shrink-0 px-2">
-              <div className="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 flex items-center justify-center font-bold text-[11px]">
+              <div className="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 flex items-center justify-center font-bold text-xs">
                 {s.step}
               </div>
               <div>
                 <div className="font-semibold text-white">{s.title}</div>
-                <div className="text-[10px] text-slate-400 font-sans">{s.desc}</div>
+                <div className="text-xs text-slate-400 font-sans">{s.desc}</div>
               </div>
               {idx < 4 && <ArrowRight className="w-4 h-4 text-slate-600 mx-2" />}
             </div>
@@ -98,7 +98,7 @@ export const InterventionsScreen: React.FC = () => {
       {activeTab === 'active' ? (
         <div className="space-y-4">
           {pendingInterventions.length === 0 ? (
-            <div className="p-12 text-center rounded-3xl glass-panel border border-white/10 space-y-2">
+            <div className="p-12 text-center rounded-2xl panel-elevated space-y-2">
               <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
               <h3 className="text-base font-bold text-white">All Recommended Interventions Executed</h3>
               <p className="text-xs text-slate-400">
@@ -120,17 +120,17 @@ export const InterventionsScreen: React.FC = () => {
       ) : (
         /* History View with Before/After Pressure Delta */
         <div className="space-y-4">
-          <div className="overflow-x-auto rounded-3xl glass-panel border border-white/10 p-5">
+          <div className="overflow-x-auto rounded-2xl panel-elevated p-5">
             <h3 className="text-base font-bold text-white mb-1">
               Executed Interventions Audit Log
             </h3>
-            <p className="text-xs text-slate-400 mb-4">
+            <p className="text-xs text-slate-400 mb-4 font-sans">
               Historical record of authorized interventions, designated operators, and actual measured pressure reductions.
             </p>
 
             <table className="w-full text-left text-xs font-mono border-collapse">
               <thead>
-                <tr className="border-b border-white/10 text-slate-400 text-[11px] uppercase tracking-wider">
+                <tr className="border-b border-white/10 text-slate-400 text-xs uppercase tracking-wider">
                   <th className="py-2.5 px-3">Intervention Action</th>
                   <th className="py-2.5 px-3">Target Zone</th>
                   <th className="py-2.5 px-3">Assigned Operator</th>
@@ -142,15 +142,15 @@ export const InterventionsScreen: React.FC = () => {
               </thead>
               <tbody className="divide-y divide-white/5">
                 {historyInterventions.map(int => (
-                  <tr key={int.id} className="hover:bg-white/[0.02]">
+                  <tr key={int.id} className="hover:bg-white/[0.02] transition-colors">
                     <td className="py-3 px-3">
-                      <div className="font-bold text-white">{int.title}</div>
-                      <div className="text-[10px] text-slate-400 font-sans">{int.actionType}</div>
+                      <div className="font-bold text-white font-sans">{int.title}</div>
+                      <div className="text-xs text-slate-400 font-mono">{int.actionType}</div>
                     </td>
                     <td className="py-3 px-3 text-cyan-300 font-medium">
                       {int.targetZoneName}
                     </td>
-                    <td className="py-3 px-3 text-slate-300">
+                    <td className="py-3 px-3 text-slate-300 font-sans">
                       {int.assignedOperator}
                     </td>
                     <td className="py-3 px-3 text-center text-rose-400 font-bold">

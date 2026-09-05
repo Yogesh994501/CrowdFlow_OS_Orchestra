@@ -39,9 +39,9 @@ export const PressureScoreBadge: React.FC<PressureScoreBadgeProps> = ({
 
   return (
     <div className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border backdrop-blur-sm ${getColorClass()}`}>
-      {showLabel && <span className="text-[11px] uppercase tracking-wider text-slate-400 font-mono">Pressure:</span>}
+      {showLabel && <span className="text-xs uppercase tracking-wider text-slate-400 font-mono">Pressure:</span>}
       <span className={`font-mono font-bold ${size === 'lg' ? 'text-lg' : size === 'sm' ? 'text-xs' : 'text-sm'}`}>
-        {score} <span className="text-[11px] font-normal opacity-70">/ 100</span>
+        {score} <span className="text-xs font-normal opacity-70">/ 100</span>
       </span>
       {trend && getTrendIcon()}
     </div>

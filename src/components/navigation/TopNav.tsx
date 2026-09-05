@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCrowdFlowStore } from '../../store/useCrowdFlowStore';
-import type { UserRole, DemoScenario } from '../../types';
+import type { UserRole, DemoScenario, ScreenType } from '../../types';
 import { DemoModeBadge } from '../common/DemoModeBadge';
 import { 
   Users, 
@@ -16,7 +16,16 @@ import {
   CloudRain,
   SlidersHorizontal,
   X,
-  Database
+  Database,
+  Menu,
+  LayoutDashboard,
+  MapPin,
+  Building2,
+  ShieldAlert,
+  Sparkles,
+  FlaskConical,
+  GitBranch,
+  Sliders
 } from 'lucide-react';
 import { DataSourcesDrawer } from '../common/DataSourcesDrawer';
 
@@ -37,6 +46,16 @@ export const TopNav: React.FC = () => {
   const [isHealthModalOpen, setIsHealthModalOpen] = useState(false);
   const [isNotificationDrawerOpen, setIsNotificationDrawerOpen] = useState(false);
   const [isDataSourcesOpen, setIsDataSourcesOpen] = useState(false);
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+  const [secondsAgo, setSecondsAgo] = useState(2);
+
+  // Live updated ticker
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSecondsAgo(prev => (prev >= 3 ? 1 : prev + 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const unreadAlerts = alerts.filter(a => !a.acknowledged);
 
@@ -64,13 +83,22 @@ export const TopNav: React.FC = () => {
       >
         <div className="flex items-center justify-between w-full gap-4">
           
-          {/* Left: Operation Breadcrumb & Brand */}
-          <div className="flex items-center gap-3 shrink-0">
+          {/* Left: Hamburger (Mobile) & Operation Breadcrumb & Brand */}
+          <div className="flex items-center gap-2.5 shrink-0">
+            {/* Operator Mobile Drawer Hamburger Button */}
+            <button
+              onClick={() => setIsMobileDrawerOpen(true)}
+              className="md:hidden p-2 rounded-xl glass-tab text-slate-300 hover:text-white transition-colors"
+              title="Open Operator Navigation"
+            >
+              <Menu className="w-4 h-4 text-cyan-400" />
+            </button>
+
             <div 
               onClick={() => setActiveScreen('overview')}
               className="flex items-center gap-2.5 cursor-pointer group select-none"
             >
-              <div className="w-8 h-8 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center shadow-[0_0_12px_rgba(34,211,238,0.25)]">
+              <div className="w-8 h-8 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center shadow-[0_0_12px_rgba(6,182,212,0.25)]">
                 <Activity className="w-4 h-4 text-cyan-400" />
               </div>
               <div className="flex items-baseline gap-2">
@@ -90,6 +118,13 @@ export const TopNav: React.FC = () => {
               <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
               <span className="text-slate-200 font-semibold">Mumbai Mega Event 2026</span>
               <span className="text-slate-400 font-mono">• Day 1</span>
+            </div>
+
+            {/* Real-time Status & Live Updated Ticker */}
+            <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-mono text-emerald-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="font-bold">LIVE</span>
+              <span className="text-slate-400">· {secondsAgo}s ago</span>
             </div>
           </div>
 
@@ -132,7 +167,7 @@ export const TopNav: React.FC = () => {
 
               {/* Dropdown */}
               <div className="absolute right-0 mt-1 w-64 rounded-2xl glass-overlay p-2 shadow-2xl opacity-0 translate-y-1 invisible group-hover:opacity-100 group-hover:translate-y-0 group-hover:visible transition-all z-50">
-                <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 px-2 py-1 border-b border-white/[0.06] mb-1">
+                <div className="text-xs font-mono uppercase tracking-wider text-slate-400 px-2 py-1 border-b border-white/[0.06] mb-1">
                   Demo Scenarios:
                 </div>
                 {scenarios.map(sc => (
@@ -159,7 +194,7 @@ export const TopNav: React.FC = () => {
             >
               <Bell className="w-4 h-4" />
               {unreadAlerts.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-rose-500 text-white text-[9px] font-mono font-bold flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-xs font-mono font-bold flex items-center justify-center">
                   {unreadAlerts.length}
                 </span>
               )}
@@ -190,7 +225,7 @@ export const TopNav: React.FC = () => {
               </button>
 
               <div className="absolute right-0 mt-1 w-56 rounded-xl glass-overlay p-1.5 shadow-2xl opacity-0 translate-y-1 invisible group-hover:opacity-100 group-hover:translate-y-0 group-hover:visible transition-all z-50">
-                <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 px-2 py-1 border-b border-white/[0.08] mb-1">
+                <div className="text-xs font-mono uppercase tracking-wider text-slate-400 px-2 py-1 border-b border-white/[0.08] mb-1">
                   Active User Role:
                 </div>
                 {roles.map(r => {
@@ -210,7 +245,7 @@ export const TopNav: React.FC = () => {
                         <Icon className="w-3.5 h-3.5" />
                         {r.label}
                       </span>
-                      {isSelected && <span className="text-[10px] text-cyan-electric">●</span>}
+                      {isSelected && <span className="text-xs text-cyan-electric">●</span>}
                     </button>
                   );
                 })}
@@ -273,7 +308,7 @@ export const TopNav: React.FC = () => {
               <div className="flex items-center gap-2">
                 <Bell className="w-4 h-4 text-cyan-electric" />
                 <h3 className="font-bold text-sm text-white">Active Operational Alerts</h3>
-                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-rose-500/15 text-rose-400 border border-rose-500/30">
+                <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-400 border border-rose-500/30 font-bold">
                   {unreadAlerts.length}
                 </span>
               </div>
@@ -296,17 +331,17 @@ export const TopNav: React.FC = () => {
                   className="p-3 rounded-xl glass-tab hover:border-cyan-400/40 text-xs cursor-pointer transition-all space-y-1 shadow-sm"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-[10px] text-cyan-electric font-bold uppercase">
+                    <span className="font-mono text-xs text-cyan-electric font-bold uppercase">
                       {alert.zoneName}
                     </span>
-                    <span className="font-mono text-[10px] text-slate-500">
+                    <span className="font-mono text-xs text-slate-400">
                       {alert.timestamp}
                     </span>
                   </div>
                   <div className="font-semibold text-white leading-tight">
                     {alert.title}
                   </div>
-                  <div className="text-[#94A3B8] text-[11px] line-clamp-2">
+                  <div className="text-[#94A3B8] text-xs line-clamp-2">
                     {alert.message}
                   </div>
                 </div>
@@ -320,10 +355,189 @@ export const TopNav: React.FC = () => {
                 setActiveScreen('alerts');
                 setIsNotificationDrawerOpen(false);
               }}
-              className="w-full py-2 rounded-xl text-xs font-semibold glass-tab text-cyan-electric hover:text-cyan-300 transition-colors shadow-sm"
+              className="w-full py-2.5 rounded-xl text-xs font-semibold glass-tab text-cyan-300 hover:text-cyan-200 transition-colors shadow-sm font-mono"
             >
               Open Full Alert Center ({alerts.length})
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Operator Mobile Navigation Drawer (< md screens) */}
+      {isMobileDrawerOpen && (
+        <div className="fixed inset-0 z-50 flex md:hidden animate-fade-in">
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 bg-black/70 backdrop-blur-md" 
+            onClick={() => setIsMobileDrawerOpen(false)} 
+          />
+
+          {/* Drawer Content */}
+          <div className="relative w-80 max-w-[85vw] h-full glass-overlay border-r border-white/10 p-5 flex flex-col justify-between overflow-y-auto z-10 animate-slide-right">
+            <div className="space-y-5">
+              
+              {/* Header */}
+              <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center">
+                    <Activity className="w-4 h-4 text-cyan-400" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-sm text-white">CrowdFlow <span className="text-cyan-400 font-mono text-xs">OS</span></div>
+                    <div className="text-xs text-slate-400 font-mono">Mission Control</div>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setIsMobileDrawerOpen(false)}
+                  className="p-1.5 rounded-lg glass-tab text-slate-400 hover:text-white"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Navigation Categories */}
+              <div className="space-y-4 text-xs font-mono">
+                {/* Event Overview */}
+                <div className="space-y-1">
+                  <div className="text-xs uppercase tracking-widest text-slate-400 font-semibold px-2 py-0.5">
+                    EVENT OVERVIEW
+                  </div>
+                  <button
+                    onClick={() => { setActiveScreen('overview'); setIsMobileDrawerOpen(false); }}
+                    className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all ${
+                      activeScreen === 'overview' ? 'glass-tab-active font-bold text-white' : 'glass-tab text-slate-300'
+                    }`}
+                  >
+                    <LayoutDashboard className="w-4 h-4 text-cyan-400" />
+                    <span>Command Center</span>
+                  </button>
+                  <button
+                    onClick={() => { setActiveScreen('map'); setIsMobileDrawerOpen(false); }}
+                    className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all ${
+                      activeScreen === 'map' ? 'glass-tab-active font-bold text-white' : 'glass-tab text-slate-300'
+                    }`}
+                  >
+                    <MapPin className="w-4 h-4 text-cyan-400" />
+                    <span>Live City Map</span>
+                  </button>
+                </div>
+
+                {/* Crowd Intelligence */}
+                <div className="space-y-1">
+                  <div className="text-xs uppercase tracking-widest text-slate-400 font-semibold px-2 py-0.5">
+                    CROWD INTELLIGENCE
+                  </div>
+                  <button
+                    onClick={() => { setActiveScreen('capacity'); setIsMobileDrawerOpen(false); }}
+                    className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all ${
+                      activeScreen === 'capacity' ? 'glass-tab-active font-bold text-white' : 'glass-tab text-slate-300'
+                    }`}
+                  >
+                    <Building2 className="w-4 h-4 text-amber-400" />
+                    <span>Capacity Intelligence</span>
+                  </button>
+                  <button
+                    onClick={() => { setActiveScreen('mobility'); setIsMobileDrawerOpen(false); }}
+                    className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all ${
+                      activeScreen === 'mobility' ? 'glass-tab-active font-bold text-white' : 'glass-tab text-slate-300'
+                    }`}
+                  >
+                    <Bus className="w-4 h-4 text-indigo-400" />
+                    <span>Mobility Control</span>
+                  </button>
+                  <button
+                    onClick={() => { setActiveScreen('alerts'); setIsMobileDrawerOpen(false); }}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all ${
+                      activeScreen === 'alerts' ? 'glass-tab-active font-bold text-white' : 'glass-tab text-slate-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <ShieldAlert className="w-4 h-4 text-rose-400" />
+                      <span>Alert Center</span>
+                    </div>
+                    {unreadAlerts.length > 0 && (
+                      <span className="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs">
+                        {unreadAlerts.length}
+                      </span>
+                    )}
+                  </button>
+                </div>
+
+                {/* Predictive Labs */}
+                <div className="space-y-1">
+                  <div className="text-xs uppercase tracking-widest text-slate-400 font-semibold px-2 py-0.5">
+                    PREDICTIVE LABS
+                  </div>
+                  <button
+                    onClick={() => { setActiveScreen('interventions'); setIsMobileDrawerOpen(false); }}
+                    className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all ${
+                      activeScreen === 'interventions' ? 'glass-tab-active font-bold text-white' : 'glass-tab text-slate-300'
+                    }`}
+                  >
+                    <Sparkles className="w-4 h-4 text-cyan-400" />
+                    <span>Interventions</span>
+                  </button>
+                  <button
+                    onClick={() => { setActiveScreen('simulation'); setIsMobileDrawerOpen(false); }}
+                    className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all ${
+                      activeScreen === 'simulation' ? 'glass-tab-active font-bold text-white' : 'glass-tab text-slate-300'
+                    }`}
+                  >
+                    <FlaskConical className="w-4 h-4 text-indigo-400" />
+                    <span>Simulation Lab</span>
+                  </button>
+                  <button
+                    onClick={() => { setActiveScreen('dependency'); setIsMobileDrawerOpen(false); }}
+                    className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all ${
+                      activeScreen === 'dependency' ? 'glass-tab-active font-bold text-white' : 'glass-tab text-slate-300'
+                    }`}
+                  >
+                    <GitBranch className="w-4 h-4 text-slate-300" />
+                    <span>Resource Cascades</span>
+                  </button>
+                  <button
+                    onClick={() => { setActiveScreen('operators'); setIsMobileDrawerOpen(false); }}
+                    className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all ${
+                      activeScreen === 'operators' ? 'glass-tab-active font-bold text-white' : 'glass-tab text-slate-300'
+                    }`}
+                  >
+                    <Sliders className="w-4 h-4 text-slate-300" />
+                    <span>Operator Hubs</span>
+                  </button>
+                </div>
+
+                {/* End-User Guidance */}
+                <div className="space-y-1">
+                  <div className="text-xs uppercase tracking-widest text-slate-400 font-semibold px-2 py-0.5">
+                    END-USER GUIDANCE
+                  </div>
+                  <button
+                    onClick={() => { setActiveScreen('attendee'); setIsMobileDrawerOpen(false); }}
+                    className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all ${
+                      activeScreen === 'attendee' ? 'glass-tab-active font-bold text-white' : 'glass-tab text-emerald-400'
+                    }`}
+                  >
+                    <Smartphone className="w-4 h-4 text-emerald-400" />
+                    <span>Attendee Portal</span>
+                  </button>
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* Bottom Status */}
+            <div className="pt-4 border-t border-white/10 space-y-2 text-xs font-mono text-slate-400">
+              <div className="flex items-center justify-between">
+                <span>Cluster Node:</span>
+                <span className="text-cyan-400 font-bold">MUMBAI-AP-1</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Weather Risk:</span>
+                <span className="text-slate-200">{weather.weatherRisk}% · {weather.condition}</span>
+              </div>
+            </div>
+
           </div>
         </div>
       )}
@@ -336,3 +550,4 @@ export const TopNav: React.FC = () => {
     </>
   );
 };
+

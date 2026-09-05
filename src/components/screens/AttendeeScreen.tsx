@@ -17,7 +17,10 @@ import {
   ArrowRight,
   ShieldCheck,
   Compass,
-  AlertTriangle
+  AlertTriangle,
+  Bus,
+  Sparkles,
+  Ticket
 } from 'lucide-react';
 
 export const AttendeeScreen: React.FC = () => {
@@ -56,12 +59,15 @@ export const AttendeeScreen: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-sm mx-auto min-h-[660px] bg-[#070D18]/90 backdrop-blur-2xl text-[#F8FAFC] rounded-[32px] border border-white/15 shadow-2xl overflow-hidden flex flex-col justify-between relative font-sans">
+    <div className="w-full max-w-sm mx-auto min-h-[680px] panel-elevated text-slate-100 rounded-[32px] border border-white/15 shadow-2xl overflow-hidden flex flex-col justify-between relative font-sans">
       
       {/* Mobile Top Bar */}
-      <div className="pt-3 px-5 pb-2 flex items-center justify-between text-[11px] font-mono text-[#94A3B8] border-b border-white/[0.08] bg-white/[0.03] backdrop-blur-md">
+      <div className="pt-3 px-5 pb-2 flex items-center justify-between text-xs font-mono text-slate-400 border-b border-white/[0.08] bg-black/40 backdrop-blur-md">
         <span>05:05 PM</span>
-        <span className="font-semibold text-cyan-electric">CrowdFlow Guide</span>
+        <span className="font-semibold text-cyan-300 flex items-center gap-1">
+          <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+          CrowdFlow Companion
+        </span>
         <span>5G • 100%</span>
       </div>
 
@@ -70,59 +76,75 @@ export const AttendeeScreen: React.FC = () => {
         
         {/* Toast */}
         {toastMsg && (
-          <div className="p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2 animate-fade-in backdrop-blur-md">
+          <div className="p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2 animate-fade-in backdrop-blur-md shadow-md">
             <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
             <span>{toastMsg}</span>
           </div>
         )}
 
-        {/* 1. HOME TAB (Sections 16 & 17) */}
+        {/* 1. HOME TAB (Section 17: Mobile-First Attendee Architecture) */}
         {activeMobileTab === 'home' && (
           <div className="space-y-4 animate-fade-in">
             
-            {/* Friendly Greeting Header */}
-            <div>
-              <span className="text-xs text-[#94A3B8] block">Welcome back,</span>
-              <h2 className="text-xl font-bold text-white tracking-tight">
+            {/* Friendly Greeting Header & Status Beacon */}
+            <div className="space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-slate-400 font-sans">Good Evening 👋</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 flex items-center gap-1 font-semibold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Entry Normal
+                </span>
+              </div>
+              <h2 className="text-xl font-extrabold text-white tracking-tight">
                 Aarav Sharma
               </h2>
             </div>
 
-            {/* DOMINANT HERO CARD: YOUR SMARTEST ARRIVAL PLAN (Section 16) */}
+            {/* DOMINANT HERO CARD: Recommended Action (Section 17) */}
             <div className="p-5 rounded-2xl panel-elevated border-cyan-500/40 space-y-4 shadow-xl">
               <div className="flex items-center justify-between pb-2 border-b border-white/[0.08]">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-electric font-semibold">
-                  YOUR SMARTEST ARRIVAL PLAN
+                <span className="text-xs font-mono uppercase tracking-wider text-cyan-300 font-semibold flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                  RECOMMENDED ACTION
                 </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/25">
-                  Recommended
+                <span className="text-xs font-mono px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/25">
+                  Optimal Flow
                 </span>
               </div>
 
+              <div>
+                <h3 className="text-sm font-bold text-white leading-snug font-sans">
+                  Use Gate B (🚶 6 min walk, 👥 Moderate crowd)
+                </h3>
+                <p className="text-xs text-slate-300 mt-0.5 leading-relaxed font-sans">
+                  Turnstile congestion at Gate 1 is surging. Gate B offers express badge screening with minimal dwell time.
+                </p>
+              </div>
+
               {/* 4 Core Hero Data Points */}
-              <div className="grid grid-cols-2 gap-3 text-xs font-mono">
+              <div className="grid grid-cols-2 gap-2.5 text-xs font-mono">
                 <div className="p-2.5 rounded-xl glass-tab">
-                  <span className="text-[10px] text-[#94A3B8] uppercase block">Departure</span>
-                  <div className="text-lg font-bold text-cyan-electric">05:05 PM</div>
-                  <span className="text-[10px] text-[#94A3B8]">In 8 mins</span>
+                  <span className="text-xs text-slate-400 uppercase block">Departure</span>
+                  <div className="text-lg font-bold text-cyan-300">05:05 PM</div>
+                  <span className="text-xs text-slate-400">In 8 mins</span>
                 </div>
 
                 <div className="p-2.5 rounded-xl glass-tab">
-                  <span className="text-[10px] text-[#94A3B8] uppercase block">ETA</span>
+                  <span className="text-xs text-slate-400 uppercase block">ETA</span>
                   <div className="text-lg font-bold text-white">42 min</div>
-                  <span className="text-[10px] text-emerald-400">On Schedule</span>
+                  <span className="text-xs text-emerald-400">On Schedule</span>
                 </div>
 
                 <div className="p-2.5 rounded-xl glass-tab">
-                  <span className="text-[10px] text-[#94A3B8] uppercase block">Crowd</span>
+                  <span className="text-xs text-slate-400 uppercase block">Crowd</span>
                   <div className="text-lg font-bold text-emerald-400">LOW</div>
-                  <span className="text-[10px] text-[#94A3B8]">Bypasses Dadar</span>
+                  <span className="text-xs text-slate-400">Bypasses Dadar</span>
                 </div>
 
                 <div className="p-2.5 rounded-xl glass-tab">
-                  <span className="text-[10px] text-[#94A3B8] uppercase block">Gate</span>
-                  <div className="text-lg font-bold text-cyan-electric">Gate 2 (C)</div>
-                  <span className="text-[10px] text-emerald-400">4 min queue</span>
+                  <span className="text-xs text-slate-400 uppercase block">Concourse</span>
+                  <div className="text-lg font-bold text-cyan-300">Gate B (North)</div>
+                  <span className="text-xs text-emerald-400 font-medium">3 min queue</span>
                 </div>
               </div>
 
@@ -132,20 +154,57 @@ export const AttendeeScreen: React.FC = () => {
                   setIsJourneyStarted(true);
                   setActiveMobileTab('plan');
                 }}
-                className="w-full h-11 rounded-xl text-xs font-bold text-[#090B10] bg-cyan-electric hover:bg-cyan-400 transition-colors flex items-center justify-center gap-2 shadow-sm"
+                className="w-full h-11 rounded-xl text-xs font-mono font-bold text-slate-950 bg-gradient-to-r from-cyan-400 to-cyan-300 hover:from-cyan-300 hover:to-cyan-200 transition-all flex items-center justify-center gap-2 shadow-md"
               >
                 <Navigation className="w-4 h-4 fill-current" />
-                <span>{isJourneyStarted ? 'Continue Navigation' : 'Start Journey'}</span>
+                <span>{isJourneyStarted ? 'Continue Navigation' : 'Start Navigation'}</span>
               </button>
             </div>
 
-            {/* Weather / Risk Warning */}
+            {/* Quick Access Tiles (Section 17) */}
+            <div className="space-y-2">
+              <span className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold block">
+                Quick Access Modules
+              </span>
+              <div className="grid grid-cols-4 gap-2 text-xs font-mono text-center">
+                <button
+                  onClick={() => setActiveMobileTab('map')}
+                  className="p-3 rounded-xl glass-tab hover:border-cyan-400/40 transition-all flex flex-col items-center justify-center gap-1.5"
+                >
+                  <BedDouble className="w-4 h-4 text-cyan-400" />
+                  <span className="text-xs text-slate-200">🏨 Stay</span>
+                </button>
+                <button
+                  onClick={() => setActiveMobileTab('plan')}
+                  className="p-3 rounded-xl glass-tab hover:border-cyan-400/40 transition-all flex flex-col items-center justify-center gap-1.5"
+                >
+                  <Bus className="w-4 h-4 text-emerald-400" />
+                  <span className="text-xs text-slate-200">🚇 Travel</span>
+                </button>
+                <button
+                  onClick={() => setActiveMobileTab('profile')}
+                  className="p-3 rounded-xl glass-tab hover:border-cyan-400/40 transition-all flex flex-col items-center justify-center gap-1.5"
+                >
+                  <Ticket className="w-4 h-4 text-amber-400" />
+                  <span className="text-xs text-slate-200">🎟 Pass</span>
+                </button>
+                <button
+                  onClick={() => setActiveMobileTab('alerts')}
+                  className="p-3 rounded-xl glass-tab hover:border-cyan-400/40 transition-all flex flex-col items-center justify-center gap-1.5"
+                >
+                  <Bell className="w-4 h-4 text-rose-400" />
+                  <span className="text-xs text-slate-200">🔔 Alerts</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Weather Alert */}
             {weather.weatherRisk > 25 && (
               <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300 flex items-start gap-2.5">
                 <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                <div>
+                <div className="font-sans">
                   <strong className="block font-semibold">Passing Coastal Shower</strong>
-                  <span>Occasional light rain between 18:00 and 19:30. Covered shuttles operating normally.</span>
+                  <span className="text-xs text-amber-200/90">Occasional light rain between 18:00 and 19:30. Covered shuttles operating normally.</span>
                 </div>
               </div>
             )}
@@ -158,16 +217,16 @@ export const AttendeeScreen: React.FC = () => {
               {attendeeIncentives.slice(0, 2).map(inc => (
                 <div key={inc.id} className="p-3 rounded-xl glass-tab flex items-center justify-between gap-3 text-xs shadow-sm">
                   <div>
-                    <div className="font-semibold text-white">{inc.reward}</div>
-                    <span className="text-[11px] text-[#94A3B8]">{inc.title}</span>
+                    <div className="font-semibold text-white font-sans">{inc.reward}</div>
+                    <span className="text-xs text-slate-400 font-sans">{inc.title}</span>
                   </div>
                   <button
                     onClick={() => handleClaimReward(inc.id)}
                     disabled={inc.claimed}
-                    className={`h-8 px-3 rounded-lg text-xs font-semibold transition-colors shrink-0 ${
+                    className={`h-8 px-3 rounded-xl text-xs font-mono font-semibold transition-colors shrink-0 ${
                       inc.claimed
                         ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20'
-                        : 'glass-tab text-cyan-electric hover:text-white'
+                        : 'glass-tab text-cyan-300 hover:text-white'
                     }`}
                   >
                     {inc.claimed ? 'Claimed' : 'Claim'}
@@ -184,7 +243,7 @@ export const AttendeeScreen: React.FC = () => {
           <div className="space-y-3 animate-fade-in">
             <div>
               <h3 className="text-base font-bold text-white">Recommended Accommodation</h3>
-              <p className="text-xs text-[#94A3B8]">
+              <p className="text-xs text-slate-400">
                 Stays ranked to help you avoid crowd congestion.
               </p>
             </div>
@@ -193,12 +252,12 @@ export const AttendeeScreen: React.FC = () => {
               <select
                 value={selectedZone}
                 onChange={e => setSelectedZone(e.target.value)}
-                className="w-full p-2.5 rounded-xl glass-tab text-slate-200"
+                className="w-full p-2.5 rounded-xl glass-tab text-slate-200 focus:outline-none"
               >
-                <option value="all" className="bg-[#09101C]">All Zones</option>
-                <option value="virar" className="bg-[#09101C]">Virār (Low Crowd Buffer)</option>
-                <option value="navi_mumbai" className="bg-[#09101C]">Navi Mumbai</option>
-                <option value="bkc" className="bg-[#09101C]">BKC (High Demand)</option>
+                <option value="all" className="bg-slate-900">All Zones</option>
+                <option value="virar" className="bg-slate-900">Virār (Low Crowd Buffer)</option>
+                <option value="navi_mumbai" className="bg-slate-900">Navi Mumbai</option>
+                <option value="bkc" className="bg-slate-900">BKC (High Demand)</option>
               </select>
             </div>
 
@@ -207,16 +266,16 @@ export const AttendeeScreen: React.FC = () => {
                 <div key={stay.id} className="p-3.5 rounded-xl glass-tab space-y-2 text-xs shadow-sm">
                   <div className="flex items-start justify-between">
                     <div>
-                      <h4 className="font-bold text-white">{stay.name}</h4>
-                      <span className="text-[11px] text-cyan-electric font-mono">{stay.zoneName}</span>
+                      <h4 className="font-bold text-white font-sans">{stay.name}</h4>
+                      <span className="text-xs text-cyan-300 font-mono">{stay.zoneName}</span>
                     </div>
                     <div className="text-right font-mono">
                       <span className="font-bold text-emerald-400">₹{stay.pricePerNight}</span>
-                      <span className="text-[10px] text-[#94A3B8] block">/night</span>
+                      <span className="text-xs text-slate-400 block">/night</span>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between text-[11px] font-mono text-[#94A3B8]">
+                  <div className="flex items-center justify-between text-xs font-mono text-slate-400">
                     <span>{stay.availableRooms} rooms free</span>
                     <span>{stay.travelTimeToVenue}m transit</span>
                     <span className="text-emerald-400 font-bold">Crowd: {stay.crowdScore}/100</span>
@@ -224,7 +283,7 @@ export const AttendeeScreen: React.FC = () => {
 
                   <button
                     onClick={() => handleClaimReward('rew_hotel')}
-                    className="w-full py-2 rounded-lg bg-cyan-electric/15 text-cyan-electric hover:bg-cyan-500/25 border border-cyan-500/30 font-bold transition-colors font-mono"
+                    className="w-full py-2 rounded-xl bg-cyan-500/15 text-cyan-300 hover:bg-cyan-500/25 border border-cyan-500/30 font-bold transition-colors font-mono text-xs"
                   >
                     Reserve Buffer Stay
                   </button>
@@ -239,7 +298,7 @@ export const AttendeeScreen: React.FC = () => {
           <div className="space-y-3 animate-fade-in">
             <div>
               <h3 className="text-base font-bold text-white">Live Route Guidance</h3>
-              <p className="text-xs text-[#94A3B8]">
+              <p className="text-xs text-slate-400">
                 Arrive smoothly without waiting in concourse queues.
               </p>
             </div>
@@ -253,10 +312,10 @@ export const AttendeeScreen: React.FC = () => {
                 <button
                   key={t.id}
                   onClick={() => setActiveRouteTier(t.id as any)}
-                  className={`py-1.5 rounded-lg text-center border transition-colors ${
+                  className={`py-1.5 rounded-xl text-center border transition-colors ${
                     activeRouteTier === t.id
-                      ? 'bg-cyan-500/20 text-cyan-electric border-cyan-500/40 font-bold shadow-[0_0_12px_rgba(6,182,212,0.2)]'
-                      : 'glass-tab text-[#94A3B8]'
+                      ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40 font-bold shadow-sm'
+                      : 'glass-tab text-slate-400'
                   }`}
                 >
                   {t.label}
@@ -267,25 +326,25 @@ export const AttendeeScreen: React.FC = () => {
             <div className="p-4 rounded-xl panel-elevated space-y-3 text-xs shadow-md">
               <div className="flex items-center justify-between pb-2 border-b border-white/[0.06]">
                 <div>
-                  <span className="font-bold text-white block">{currentRoute.title}</span>
-                  <span className="text-[11px] text-cyan-electric font-mono">{currentRoute.totalTimeMin} min total</span>
+                  <span className="font-bold text-white block font-sans">{currentRoute.title}</span>
+                  <span className="text-xs text-cyan-300 font-mono">{currentRoute.totalTimeMin} min total</span>
                 </div>
                 <div className="text-right font-mono">
                   <span className="font-bold text-emerald-400 block">ETA {currentRoute.eta}</span>
-                  <span className="text-[10px] text-[#94A3B8]">{currentRoute.assignedGate}</span>
+                  <span className="text-xs text-slate-400">{currentRoute.assignedGate}</span>
                 </div>
               </div>
 
               {/* Turn by turn */}
               <div className="space-y-2">
                 {currentRoute.steps.map((s, idx) => (
-                  <div key={idx} className="flex items-start gap-2 p-2 rounded-lg glass-tab">
-                    <span className="w-4 h-4 rounded-full bg-cyan-500/20 text-cyan-electric font-mono text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                  <div key={idx} className="flex items-start gap-2.5 p-2.5 rounded-xl glass-tab">
+                    <span className="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-300 font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                       {idx + 1}
                     </span>
                     <div>
-                      <div className="text-slate-200">{s.instruction}</div>
-                      <span className="text-[10px] font-mono text-[#94A3B8]">{s.durationMin}m • {s.mode.toUpperCase()}</span>
+                      <div className="text-slate-200 font-sans leading-relaxed">{s.instruction}</div>
+                      <span className="text-xs font-mono text-slate-400">{s.durationMin}m • {s.mode.toUpperCase()}</span>
                     </div>
                   </div>
                 ))}
@@ -299,22 +358,22 @@ export const AttendeeScreen: React.FC = () => {
           <div className="space-y-3 animate-fade-in text-xs">
             <div>
               <h3 className="text-base font-bold text-white">Attendee Advisories</h3>
-              <p className="text-xs text-[#94A3B8]">
+              <p className="text-xs text-slate-400">
                 Real-time updates regarding gate queues and transit shuttles.
               </p>
             </div>
 
             <div className="space-y-2">
               <div className="p-3.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 space-y-1 backdrop-blur-md">
-                <span className="text-[10px] font-mono text-cyan-electric font-bold uppercase">Gate 2 Express Open</span>
-                <p className="text-slate-200">
+                <span className="text-xs font-mono text-cyan-300 font-bold uppercase">Gate 2 Express Open</span>
+                <p className="text-slate-200 font-sans leading-relaxed">
                   Digital badge holders can use Gate 2 with under 4 minutes queue time.
                 </p>
               </div>
 
               <div className="p-3.5 rounded-xl glass-tab space-y-1 shadow-sm">
-                <span className="text-[10px] font-mono text-[#94A3B8] font-bold uppercase">Shuttle Departure</span>
-                <p className="text-slate-300">
+                <span className="text-xs font-mono text-slate-400 font-bold uppercase">Shuttle Departure</span>
+                <p className="text-slate-300 font-sans leading-relaxed">
                   Electric express coaches departing every 6 minutes from Dadar East Depot.
                 </p>
               </div>
@@ -326,12 +385,12 @@ export const AttendeeScreen: React.FC = () => {
         {activeMobileTab === 'profile' && (
           <div className="space-y-4 animate-fade-in text-center text-xs">
             <div className="p-5 rounded-2xl panel-elevated space-y-3 shadow-xl">
-              <div className="w-12 h-12 rounded-full bg-cyan-500/15 border border-cyan-500/30 mx-auto flex items-center justify-center text-cyan-electric">
+              <div className="w-12 h-12 rounded-full bg-cyan-500/15 border border-cyan-500/30 mx-auto flex items-center justify-center text-cyan-300">
                 <User className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-white">Aarav Sharma</h3>
-                <span className="text-[11px] font-mono text-cyan-electric">Delegate Pass • Verified</span>
+                <h3 className="text-base font-bold text-white font-sans">Aarav Sharma</h3>
+                <span className="text-xs font-mono text-cyan-300">Delegate Pass • Verified</span>
               </div>
 
               {/* QR representation */}
@@ -341,8 +400,8 @@ export const AttendeeScreen: React.FC = () => {
                     <div className="w-6 h-6 bg-black"></div>
                     <div className="w-6 h-6 bg-black"></div>
                   </div>
-                  <div className="font-mono font-bold text-[10px] text-center">
-                    CROWDFLOW-2026<br/>GATE-2-OK
+                  <div className="font-mono font-bold text-xs text-center">
+                    CROWDFLOW-2026<br/>GATE-B-OK
                   </div>
                   <div className="w-full flex justify-between">
                     <div className="w-6 h-6 bg-black"></div>
@@ -351,7 +410,7 @@ export const AttendeeScreen: React.FC = () => {
                 </div>
               </div>
 
-              <div className="text-[11px] font-mono text-[#94A3B8]">
+              <div className="text-xs font-mono text-slate-400">
                 Assigned: Jio World Convention Centre<br/>
                 Entry Window: 17:00 - 19:30
               </div>
@@ -362,7 +421,7 @@ export const AttendeeScreen: React.FC = () => {
       </div>
 
       {/* Mobile Bottom Navigation (Section 17) */}
-      <nav className="h-16 border-t border-white/[0.08] bg-white/[0.03] backdrop-blur-lg flex items-center justify-around text-[10px] font-mono text-[#94A3B8]">
+      <nav className="h-16 border-t border-white/[0.08] bg-black/50 backdrop-blur-lg flex items-center justify-around text-xs font-mono text-slate-400">
         {[
           { id: 'home', label: 'Home', icon: Home },
           { id: 'map', label: 'Stays', icon: BedDouble },
@@ -377,7 +436,7 @@ export const AttendeeScreen: React.FC = () => {
               key={item.id}
               onClick={() => setActiveMobileTab(item.id as any)}
               className={`flex flex-col items-center justify-center w-14 h-12 rounded-xl transition-colors ${
-                isActive ? 'text-cyan-electric font-bold' : 'hover:text-white'
+                isActive ? 'text-cyan-300 font-bold' : 'hover:text-white'
               }`}
             >
               <Icon className="w-4 h-4 mb-0.5" />
