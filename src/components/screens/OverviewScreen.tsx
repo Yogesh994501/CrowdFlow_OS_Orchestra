@@ -27,7 +27,8 @@ export const OverviewScreen: React.FC = () => {
     setActiveScreen, 
     setSelectedZoneId,
     approveIntervention,
-    weather 
+    weather,
+    currentScenario 
   } = useCrowdFlowStore();
 
   const [selectedZone, setSelectedZone] = useState<Zone | null>(null);
@@ -43,13 +44,92 @@ export const OverviewScreen: React.FC = () => {
 
   const activeIntervention = pendingInterventions[0];
 
-  const timelineSlots = [
-    { time: '12:00', isPeak: false },
-    { time: '14:00', isPeak: false },
-    { time: '16:00', isPeak: false },
-    { time: '▲ 18:00 (PEAK)', isPeak: true },
-    { time: '20:00', isPeak: false },
-  ];
+  // Improvement 5: Scenario-reactive operational timeline slots & bottleneck
+  const getScenarioTimelineData = () => {
+    switch (currentScenario) {
+      case 'heavy_rain':
+        return {
+          slots: [
+            { time: '12:00', isPeak: false },
+            { time: '▲ 14:00 (EARLY INFLOW)', isPeak: true },
+            { time: '▲ 16:00 (RAIN PEAK)', isPeak: true },
+            { time: '18:00', isPeak: false },
+            { time: '20:00', isPeak: false },
+          ],
+          peakWindow: 'Peak Window: 14:00 - 17:30 (Early Inflow / Rain)',
+          bottleneckTitle: 'Dadar & BKC Transit Hub Concourse Saturation',
+          bottleneckSub: '· Platform drainage warning · +2,140 delayed arrivals'
+        };
+      case 'metro_disruption':
+        return {
+          slots: [
+            { time: '12:00', isPeak: false },
+            { time: '14:00', isPeak: false },
+            { time: '▲ 16:00 (BUS RELIEF)', isPeak: true },
+            { time: '▲ 18:00 (GRIDLOCK)', isPeak: true },
+            { time: '▲ 20:00 (EVENING CROWD)', isPeak: true },
+          ],
+          peakWindow: 'Peak Window: 16:00 - 21:00 (Extended Disruption)',
+          bottleneckTitle: 'Metro Line 3 Intermodal Surface Backlog',
+          bottleneckSub: '· Bus bridges operating at 94% load · +3,400 queued'
+        };
+      case 'hotel_saturation':
+        return {
+          slots: [
+            { time: '12:00', isPeak: false },
+            { time: '14:00', isPeak: false },
+            { time: '16:00', isPeak: false },
+            { time: '▲ 18:00 (CHECK-IN)', isPeak: true },
+            { time: '▲ 20:00 (SPIKE)', isPeak: true },
+          ],
+          peakWindow: 'Peak Window: 18:00 - 22:30 (Overnight Stays)',
+          bottleneckTitle: 'BKC & Bandra Accommodation Depletion',
+          bottleneckSub: '· 98.4% occupied · +1,850 delegates awaiting buffer hubs'
+        };
+      case 'gate_closure':
+        return {
+          slots: [
+            { time: '12:00', isPeak: false },
+            { time: '14:00', isPeak: false },
+            { time: '16:00', isPeak: false },
+            { time: '▲ 18:00 (GATE SPIKE)', isPeak: true },
+            { time: '20:00', isPeak: false },
+          ],
+          peakWindow: 'Peak Window: 17:00 - 19:30 (Gate 2 Diversion)',
+          bottleneckTitle: 'Gate 1 & 3 Turnstile Convergence Bottleneck',
+          bottleneckSub: '· Gate 2 shutdown causing +18m queue delays'
+        };
+      case 'demand_surge':
+        return {
+          slots: [
+            { time: '12:00', isPeak: false },
+            { time: '▲ 14:00 (INFLOW)', isPeak: true },
+            { time: '▲ 16:00 (HIGH SURGE)', isPeak: true },
+            { time: '▲ 18:00 (PEAK CAPACITY)', isPeak: true },
+            { time: '▲ 20:00 (DISPERSAL)', isPeak: true },
+          ],
+          peakWindow: 'Peak Window: 14:00 - 21:00 (Sustained Inflow)',
+          bottleneckTitle: 'Venue Perimeter & Concourse Overcapacity',
+          bottleneckSub: '· 97% max envelope reached · Buffer holding active'
+        };
+      default:
+        return {
+          slots: [
+            { time: '12:00', isPeak: false },
+            { time: '14:00', isPeak: false },
+            { time: '16:00', isPeak: false },
+            { time: '▲ 18:00 (PEAK)', isPeak: true },
+            { time: '20:00', isPeak: false },
+          ],
+          peakWindow: 'Peak Window: 17:30 - 20:00',
+          bottleneckTitle: 'BKC accommodation approaching capacity',
+          bottleneckSub: '· 96% occupied · +1,240 predicted arrivals'
+        };
+    }
+  };
+
+  const scenarioData = getScenarioTimelineData();
+  const timelineSlots = scenarioData.slots;
 
   const handleApprove = (id: string) => {
     approveIntervention(id);
@@ -166,7 +246,7 @@ export const OverviewScreen: React.FC = () => {
             <div className="pt-5 mt-4 border-t border-white/[0.08]">
               <div className="flex items-center justify-between text-xs font-mono text-slate-400 pb-2">
                 <span className="tracking-widest uppercase text-slate-300 font-semibold">EVENT TIMELINE & OPERATIONAL SLOTS</span>
-                <span className="text-cyan-400">Peak Window: 17:30 - 20:00</span>
+                <span className="text-cyan-400">{scenarioData.peakWindow}</span>
               </div>
               <div className="flex items-center justify-between gap-2 pt-1">
                 {timelineSlots.map((slot) => (
@@ -194,8 +274,8 @@ export const OverviewScreen: React.FC = () => {
                 PRIMARY BOTTLENECK
               </span>
               <div className="text-sm font-semibold text-slate-100 flex items-center gap-2">
-                <span>BKC accommodation approaching capacity</span>
-                <span className="text-slate-400 font-normal text-xs font-mono">· 96% occupied · +1,240 predicted arrivals</span>
+                <span>{scenarioData.bottleneckTitle}</span>
+                <span className="text-slate-400 font-normal text-xs font-mono">{scenarioData.bottleneckSub}</span>
               </div>
             </div>
             

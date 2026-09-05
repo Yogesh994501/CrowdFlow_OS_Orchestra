@@ -397,19 +397,44 @@ export const useCrowdFlowStore = create<CrowdFlowState>((set, get) => ({
   setSelectedZoneId: (zoneId) => set({ selectedZoneId: zoneId }),
   toggleLiveDemo: (forceState) => set((s) => ({ isLiveDemoRunning: forceState ?? !s.isLiveDemoRunning })),
 
+  // Improvement 12: Performance-optimized tickMetrics (structural sharing & zero-delta guard)
   tickMetrics: () => {
     const { zones, isLiveDemoRunning, demoTickCount } = get();
     if (!isLiveDemoRunning) return;
 
     const delta = ((demoTickCount % 2 === 0) ? 1 : -1) * (Math.random() > 0.5 ? 1 : 0);
 
+    // Fast-path: if delta is 0, advance tick count without creating new object references
+    if (delta === 0) {
+      set({
+        demoTickCount: demoTickCount + 1,
+        lastTickTimestamp: new Date().toLocaleTimeString()
+      });
+      return;
+    }
+
+    let hasAnyChanged = false;
     const updatedZones = zones.map(z => {
       const occ = Math.min(99, Math.max(20, z.accommodationOccupancy + (z.id === 'bkc' ? 0 : delta)));
       const transit = Math.min(99, Math.max(20, z.transitLoad + delta));
       const arrivals = Math.min(99, Math.max(15, z.predictedArrivalsNorm + delta));
       const pressure = crowdService.calculatePressureScore(occ, arrivals, transit, z.venueLoad, z.weatherRisk);
       const status = crowdService.getPressureStatus(pressure);
+      const newVisitors = Math.max(1000, z.activeVisitors + (delta * 12));
 
+      // Structural sharing check: if values haven't changed, reuse existing object reference
+      if (
+        occ === z.accommodationOccupancy &&
+        transit === z.transitLoad &&
+        arrivals === z.predictedArrivalsNorm &&
+        pressure === z.pressureScore &&
+        status === z.status &&
+        newVisitors === z.activeVisitors
+      ) {
+        return z;
+      }
+
+      hasAnyChanged = true;
       return {
         ...z,
         accommodationOccupancy: occ,
@@ -417,12 +442,12 @@ export const useCrowdFlowStore = create<CrowdFlowState>((set, get) => ({
         predictedArrivalsNorm: arrivals,
         pressureScore: pressure,
         status,
-        activeVisitors: Math.max(1000, z.activeVisitors + (delta * 12))
+        activeVisitors: newVisitors
       };
     });
 
     set({
-      zones: updatedZones,
+      zones: hasAnyChanged ? updatedZones : zones,
       demoTickCount: demoTickCount + 1,
       lastTickTimestamp: new Date().toLocaleTimeString()
     });

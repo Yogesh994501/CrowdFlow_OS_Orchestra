@@ -31,7 +31,8 @@ export const AttendeeScreen: React.FC = () => {
     weather, 
     attendeeIncentives, 
     claimIncentive, 
-    reserveStayInterest 
+    reserveStayInterest,
+    currentScenario 
   } = useCrowdFlowStore();
 
   const [selectedZone, setSelectedZone] = useState<string>('all');
@@ -39,7 +40,8 @@ export const AttendeeScreen: React.FC = () => {
   const [toastMsg, setToastMsg] = useState<string | null>(null);
   const [isJourneyStarted, setIsJourneyStarted] = useState(false);
 
-  const smartRoutes = routingService.getSmartArrivalPlan('andheri', 'Jio World Convention Centre BKC');
+  // Improvement 3: Route steps scenario-reactive
+  const smartRoutes = routingService.getSmartArrivalPlan('andheri', 'Jio World Convention Centre BKC', currentScenario);
   const currentRoute = smartRoutes.find(r => r.tier === activeRouteTier) || smartRoutes[0];
 
   const filteredStays = accommodations.filter(acc => {
