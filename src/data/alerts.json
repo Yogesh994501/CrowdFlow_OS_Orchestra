@@ -1,0 +1,50 @@
+[
+  {
+    "id": "alert-bkc-occ-1",
+    "severity": "critical",
+    "title": "BKC Hospitality Saturation Imminent",
+    "timestamp": "18:14",
+    "impactedZone": "bkc",
+    "cause": "Hotel occupancy reached 96.8% with 14,200 predicted arrivals heading to BKC precinct.",
+    "confidence": 94,
+    "recommendedAction": "Enforce Virār / Navi Mumbai buffer redistribution and dispatch EV rapid shuttles.",
+    "status": "active",
+    "assignedOwner": "Chief Event Operations Officer"
+  },
+  {
+    "id": "alert-dadar-transit-2",
+    "severity": "high",
+    "title": "Dadar Interchange Platform Overcrowding",
+    "timestamp": "18:08",
+    "impactedZone": "dadar",
+    "cause": "Western & Central rail line synchronization surge creating a platform density of 4.2 people/m².",
+    "confidence": 89,
+    "recommendedAction": "Hold northbound commuters for 6 minutes; route BKC arrivals via Metro Line 3.",
+    "status": "active",
+    "assignedOwner": "Mumbai Railway Police & Western Railway Desk"
+  },
+  {
+    "id": "alert-weather-monsoon-3",
+    "severity": "watch",
+    "title": "Monsoon Inflow Pre-Alert (South Konkan Front)",
+    "timestamp": "17:55",
+    "impactedZone": "colaba",
+    "cause": "Open-Meteo convective precipitation radar shows 22mm/hr rainfall band arriving in 45 minutes.",
+    "confidence": 82,
+    "recommendedAction": "Deploy covered queuing awnings at Gates 1 & 4; prepare sheltered bus pick-up zones.",
+    "status": "active",
+    "assignedOwner": "Venue Logistics & BMC Disaster Cell"
+  },
+  {
+    "id": "alert-virar-buffer-4",
+    "severity": "monitoring",
+    "title": "Virār Northern Buffer Capacity Ready",
+    "timestamp": "17:40",
+    "impactedZone": "virar",
+    "cause": "1,240 confirmed vacant rooms and low pressure index (28) verified by hotel federation.",
+    "confidence": 96,
+    "recommendedAction": "Maintain ₹800 transit voucher incentive on Attendee Companion App.",
+    "status": "active",
+    "assignedOwner": "Hospitality Coordination Desk"
+  }
+]

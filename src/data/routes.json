@@ -1,0 +1,117 @@
+[
+  {
+    "id": "route-m3-bkc",
+    "name": "Metro Line 3 (Aqua Line) Express",
+    "mode": "metro",
+    "origin": "Colaba / CSMT",
+    "destination": "BKC Metro Interchange",
+    "frequencyMinutes": 3.5,
+    "currentLoadPercentage": 86,
+    "delayMinutes": 2,
+    "fare": "₹40",
+    "crowdTrend": "rising",
+    "coordinates": [
+      [18.930, 72.830],
+      [18.960, 72.825],
+      [19.015, 72.845],
+      [19.065, 72.868]
+    ],
+    "activeVehicles": 18,
+    "seatsRemaining": 140,
+    "capacity": 22000,
+    "status": "high",
+    "source": "live"
+  },
+  {
+    "id": "route-wr-fast",
+    "name": "Western Railway Fast Suburban",
+    "mode": "rail",
+    "origin": "Churchgate Terminus",
+    "destination": "Bandra / Andheri / Virār",
+    "frequencyMinutes": 4.0,
+    "currentLoadPercentage": 92,
+    "delayMinutes": 6,
+    "fare": "₹15",
+    "crowdTrend": "critical",
+    "coordinates": [
+      [18.932, 72.827],
+      [19.018, 72.843],
+      [19.055, 72.840],
+      [19.119, 72.846],
+      [19.456, 72.811]
+    ],
+    "activeVehicles": 26,
+    "seatsRemaining": 45,
+    "capacity": 38000,
+    "status": "critical",
+    "source": "live"
+  },
+  {
+    "id": "route-cr-main",
+    "name": "Central Railway Main Line",
+    "mode": "rail",
+    "origin": "CSMT Terminus",
+    "destination": "Dadar / Kurla / Thane",
+    "frequencyMinutes": 4.5,
+    "currentLoadPercentage": 84,
+    "delayMinutes": 4,
+    "fare": "₹15",
+    "crowdTrend": "stable",
+    "coordinates": [
+      [18.940, 72.835],
+      [19.018, 72.848],
+      [19.068, 72.885],
+      [19.218, 72.978]
+    ],
+    "activeVehicles": 24,
+    "seatsRemaining": 190,
+    "capacity": 34000,
+    "status": "high",
+    "source": "live"
+  },
+  {
+    "id": "route-shuttle-ev-bkc",
+    "name": "BKC Circuit Electric Express Shuttles",
+    "mode": "shuttle",
+    "origin": "Bandra West Station",
+    "destination": "Jio World Gate 2 & Gate 4",
+    "frequencyMinutes": 2.5,
+    "currentLoadPercentage": 64,
+    "delayMinutes": 0,
+    "fare": "Free (Event Pass)",
+    "crowdTrend": "stable",
+    "coordinates": [
+      [19.054, 72.840],
+      [19.060, 72.855],
+      [19.065, 72.868]
+    ],
+    "activeVehicles": 16,
+    "seatsRemaining": 320,
+    "capacity": 8500,
+    "status": "stable",
+    "source": "live"
+  },
+  {
+    "id": "route-buffer-virar-exp",
+    "name": "Virār Mega-Event Rapid Shuttle Corridors",
+    "mode": "shuttle",
+    "origin": "Virār Eco-Resort Hub",
+    "destination": "BKC Direct Express Terminal",
+    "frequencyMinutes": 8.0,
+    "currentLoadPercentage": 38,
+    "delayMinutes": 0,
+    "fare": "₹80 (Rebated)",
+    "crowdTrend": "stable",
+    "coordinates": [
+      [19.456, 72.811],
+      [19.250, 72.860],
+      [19.120, 72.850],
+      [19.065, 72.868]
+    ],
+    "activeVehicles": 12,
+    "seatsRemaining": 540,
+    "capacity": 6000,
+    "status": "stable",
+    "source": "live"
+  }
+]

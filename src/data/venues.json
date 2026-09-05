@@ -1,0 +1,56 @@
+[
+  {
+    "id": "jio_world",
+    "name": "Jio World Convention Centre",
+    "zoneId": "bkc",
+    "coordinates": [19.0645, 72.8682],
+    "capacity": 45000,
+    "currentAttendance": 41200,
+    "entryGates": [
+      { "id": "G1", "name": "Gate 1 - North Plaza", "queueTimeMinutes": 18, "status": "critical", "throughputPerHour": 3600 },
+      { "id": "G2", "name": "Gate 2 - Express Transit", "queueTimeMinutes": 6, "status": "stable", "throughputPerHour": 5400 },
+      { "id": "G3", "name": "Gate 3 - Hospitality VIP", "queueTimeMinutes": 4, "status": "stable", "throughputPerHour": 2200 },
+      { "id": "G4", "name": "Gate 4 - South Shuttle Drop", "queueTimeMinutes": 12, "status": "high", "throughputPerHour": 4100 }
+    ],
+    "evacuationRoutes": ["BKC North Connector", "MMRDA Avenue", "CST Link Road"]
+  },
+  {
+    "id": "mmrda_grounds",
+    "name": "MMRDA Grounds Arena",
+    "zoneId": "bkc",
+    "coordinates": [19.0689, 72.8631],
+    "capacity": 65000,
+    "currentAttendance": 58200,
+    "entryGates": [
+      { "id": "M1", "name": "Main Gate West", "queueTimeMinutes": 22, "status": "critical", "throughputPerHour": 4800 },
+      { "id": "M2", "name": "Subway Link Gate", "queueTimeMinutes": 14, "status": "high", "throughputPerHour": 3900 }
+    ],
+    "evacuationRoutes": ["BKC Western Flyover", "Kalanagar Junction"]
+  },
+  {
+    "id": "wankhede",
+    "name": "Wankhede Stadium",
+    "zoneId": "colaba",
+    "coordinates": [18.9389, 72.8258],
+    "capacity": 33000,
+    "currentAttendance": 24500,
+    "entryGates": [
+      { "id": "W1", "name": "Vinoo Mankad Gate", "queueTimeMinutes": 8, "status": "stable", "throughputPerHour": 3500 },
+      { "id": "W2", "name": "Polly Umrigar Gate", "queueTimeMinutes": 9, "status": "stable", "throughputPerHour": 3200 }
+    ],
+    "evacuationRoutes": ["Marine Drive Corridor", "Churchgate Underpass"]
+  },
+  {
+    "id": "dy_patil",
+    "name": "DY Patil Sports Stadium",
+    "zoneId": "navi_mumbai",
+    "coordinates": [19.0435, 73.0256],
+    "capacity": 55000,
+    "currentAttendance": 23000,
+    "entryGates": [
+      { "id": "D1", "name": "Sion-Panvel Highway Gate", "queueTimeMinutes": 4, "status": "stable", "throughputPerHour": 5000 },
+      { "id": "D2", "name": "Nerul Station Access", "queueTimeMinutes": 5, "status": "stable", "throughputPerHour": 4200 }
+    ],
+    "evacuationRoutes": ["Palm Beach Expressway", "Thane-Belapur Road"]
+  }
+]

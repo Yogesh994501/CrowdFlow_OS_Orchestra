@@ -1,0 +1,14 @@
+[
+  { "hour": "12:00", "pressureScore": 34, "crowdVolume": 38000, "hotelOccupancy": 72, "transitLoad": 48, "weatherRisk": 15 },
+  { "hour": "13:00", "pressureScore": 38, "crowdVolume": 45000, "hotelOccupancy": 76, "transitLoad": 52, "weatherRisk": 18 },
+  { "hour": "14:00", "pressureScore": 42, "crowdVolume": 54000, "hotelOccupancy": 81, "transitLoad": 58, "weatherRisk": 22 },
+  { "hour": "15:00", "pressureScore": 46, "crowdVolume": 68000, "hotelOccupancy": 86, "transitLoad": 65, "weatherRisk": 25 },
+  { "hour": "16:00", "pressureScore": 51, "crowdVolume": 82000, "hotelOccupancy": 89, "transitLoad": 72, "weatherRisk": 30 },
+  { "hour": "17:00", "pressureScore": 55, "crowdVolume": 98000, "hotelOccupancy": 92, "transitLoad": 79, "weatherRisk": 35 },
+  { "hour": "18:00", "pressureScore": 68, "crowdVolume": 118000, "hotelOccupancy": 96, "transitLoad": 88, "weatherRisk": 45 },
+  { "hour": "19:00", "pressureScore": 74, "crowdVolume": 132000, "hotelOccupancy": 98, "transitLoad": 91, "weatherRisk": 52 },
+  { "hour": "20:00", "pressureScore": 78, "crowdVolume": 140000, "hotelOccupancy": 98, "transitLoad": 94, "weatherRisk": 48 },
+  { "hour": "21:00", "pressureScore": 71, "crowdVolume": 126000, "hotelOccupancy": 97, "transitLoad": 86, "weatherRisk": 40 },
+  { "hour": "22:00", "pressureScore": 58, "crowdVolume": 95000, "hotelOccupancy": 96, "transitLoad": 70, "weatherRisk": 32 },
+  { "hour": "23:00", "pressureScore": 44, "crowdVolume": 62000, "hotelOccupancy": 95, "transitLoad": 54, "weatherRisk": 25 }
+]

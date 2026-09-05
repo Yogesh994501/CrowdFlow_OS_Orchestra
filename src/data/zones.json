@@ -1,0 +1,154 @@
+[
+  {
+    "id": "bkc",
+    "name": "Bandra Kurla Complex (BKC)",
+    "category": "core",
+    "coordinates": [19.0657, 72.8687],
+    "polygon": [
+      [19.073, 72.858],
+      [19.073, 72.879],
+      [19.058, 72.879],
+      [19.058, 72.858]
+    ],
+    "baseCapacity": 120000,
+    "currentOccupancy": 115200,
+    "densityPerSqm": 4.8,
+    "flowRateIn": 6800,
+    "flowRateOut": 2100,
+    "majorVenues": ["Jio World Convention Centre", "MMRDA Grounds"],
+    "transitHubs": ["BKC Metro Station", "Bandra Terminus", "Kurla Junction"]
+  },
+  {
+    "id": "dadar",
+    "name": "Dadar Central Interchange",
+    "category": "transit_hub",
+    "coordinates": [19.0178, 72.8478],
+    "polygon": [
+      [19.026, 72.839],
+      [19.026, 72.858],
+      [19.009, 72.858],
+      [19.009, 72.839]
+    ],
+    "baseCapacity": 95000,
+    "currentOccupancy": 83600,
+    "densityPerSqm": 4.2,
+    "flowRateIn": 8200,
+    "flowRateOut": 7600,
+    "majorVenues": ["Shivaji Park Event Ground"],
+    "transitHubs": ["Dadar Western", "Dadar Central", "Asiad Bus Terminus"]
+  },
+  {
+    "id": "andheri",
+    "name": "Andheri West & Metro Hub",
+    "category": "transit_hub",
+    "coordinates": [19.1197, 72.8468],
+    "polygon": [
+      [19.130, 72.835],
+      [19.130, 72.858],
+      [19.109, 72.858],
+      [19.109, 72.835]
+    ],
+    "baseCapacity": 85000,
+    "currentOccupancy": 64600,
+    "densityPerSqm": 3.1,
+    "flowRateIn": 4500,
+    "flowRateOut": 4100,
+    "majorVenues": ["Andheri Sports Complex"],
+    "transitHubs": ["Andheri Metro Line 1 & Line 7", "Andheri Railway Station"]
+  },
+  {
+    "id": "kurla",
+    "name": "Kurla Transit Corridor",
+    "category": "transit_hub",
+    "coordinates": [19.0688, 72.8856],
+    "polygon": [
+      [19.079, 72.875],
+      [19.079, 72.898],
+      [19.058, 72.898],
+      [19.058, 72.875]
+    ],
+    "baseCapacity": 75000,
+    "currentOccupancy": 58500,
+    "densityPerSqm": 3.2,
+    "flowRateIn": 5100,
+    "flowRateOut": 4700,
+    "majorVenues": ["Phoenix Marketcity Hub"],
+    "transitHubs": ["Lokmanya Tilak Terminus (LTT)", "Kurla Junction"]
+  },
+  {
+    "id": "colaba",
+    "name": "Colaba / Marine Lines",
+    "category": "hospitality",
+    "coordinates": [18.9220, 72.8347],
+    "polygon": [
+      [18.935, 72.822],
+      [18.935, 72.845],
+      [18.910, 72.845],
+      [18.910, 72.822]
+    ],
+    "baseCapacity": 60000,
+    "currentOccupancy": 46800,
+    "densityPerSqm": 2.6,
+    "flowRateIn": 2800,
+    "flowRateOut": 3200,
+    "majorVenues": ["Brabourne Stadium", "Wankhede Stadium"],
+    "transitHubs": ["Churchgate Station", "CSMT Terminus"]
+  },
+  {
+    "id": "navi_mumbai",
+    "name": "Navi Mumbai Buffer Hub",
+    "category": "buffer",
+    "coordinates": [19.0330, 73.0297],
+    "polygon": [
+      [19.055, 73.010],
+      [19.055, 73.050],
+      [19.015, 73.050],
+      [19.015, 73.010]
+    ],
+    "baseCapacity": 140000,
+    "currentOccupancy": 58800,
+    "densityPerSqm": 1.4,
+    "flowRateIn": 3200,
+    "flowRateOut": 3400,
+    "majorVenues": ["DY Patil Sports Stadium"],
+    "transitHubs": ["Vashi Inter-city Hub", "Nerul Railway Junction"]
+  },
+  {
+    "id": "virar",
+    "name": "Virār Northern Buffer",
+    "category": "buffer",
+    "coordinates": [19.4564, 72.8111],
+    "polygon": [
+      [19.480, 72.795],
+      [19.480, 72.830],
+      [19.435, 72.830],
+      [19.435, 72.795]
+    ],
+    "baseCapacity": 110000,
+    "currentOccupancy": 30800,
+    "densityPerSqm": 0.9,
+    "flowRateIn": 1400,
+    "flowRateOut": 1600,
+    "majorVenues": ["Virār Sports Complex"],
+    "transitHubs": ["Virār Western Railway Terminus"]
+  },
+  {
+    "id": "thane",
+    "name": "Thane West Interchange",
+    "category": "transit_hub",
+    "coordinates": [19.2183, 72.9781],
+    "polygon": [
+      [19.235, 72.960],
+      [19.235, 72.995],
+      [19.200, 72.995],
+      [19.200, 72.960]
+    ],
+    "baseCapacity": 90000,
+    "currentOccupancy": 55800,
+    "densityPerSqm": 2.4,
+    "flowRateIn": 4200,
+    "flowRateOut": 4100,
+    "majorVenues": ["Dadoji Kondadev Stadium"],
+    "transitHubs": ["Thane Central Railway Hub", "Cadbury Junction"]
+  }
+]

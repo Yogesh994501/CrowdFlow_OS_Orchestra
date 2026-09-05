@@ -1,0 +1,226 @@
+import React, { useState } from 'react';
+import { fallbackManager } from '../../orchestrator/fallbackManager';
+import { 
+  Database, 
+  CheckCircle2, 
+  Clock, 
+  ExternalLink, 
+  Layers, 
+  ShieldCheck, 
+  X, 
+  RefreshCw,
+  Server
+} from 'lucide-react';
+
+interface DataSourcesDrawerProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, onClose }) => {
+  const [statuses, setStatuses] = useState(() => fallbackManager.getAllStatuses());
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  if (!isOpen) return null;
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    setTimeout(() => {
+      setStatuses(fallbackManager.getAllStatuses());
+      setIsRefreshing(false);
+    }, 450);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md animate-fade-in">
+      <div 
+        className="w-full max-w-2xl glass-overlay border border-white/15 rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="px-6 py-4 border-b border-white/[0.08] flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center shadow-[0_0_12px_rgba(6,182,212,0.2)]">
+              <Database className="w-4 h-4 text-cyan-electric" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold font-mono tracking-tight text-[#F8FAFC]">
+                CENTRAL DATA SOURCES & FAILOVER STATUS
+              </h3>
+              <p className="text-[11px] text-[#94A3B8] font-mono">
+                Real-time Open-Data API Adapters & Graceful Fallback Transparency
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className="p-1.5 rounded-lg glass-tab text-[#94A3B8] hover:text-white transition-colors"
+              title="Refresh Feeds Status"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
+            </button>
+            <button
+              onClick={onClose}
+              className="p-1.5 rounded-lg glass-tab text-[#94A3B8] hover:text-white transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Content Body */}
+        <div className="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
+          
+          {/* Strict Policy Banner */}
+          <div className="p-3.5 rounded-xl bg-cyan-500/10 border border-cyan-500/25 flex items-start gap-3 backdrop-blur-md">
+            <ShieldCheck className="w-5 h-5 text-cyan-electric shrink-0 mt-0.5" />
+            <div className="text-xs space-y-1">
+              <span className="font-semibold text-cyan-200">Strict Free & Open-Data Architecture:</span>
+              <p className="text-slate-300 leading-relaxed">
+                CrowdFlow OS uses only free, public open-data services (OpenStreetMap, Overpass, Nominatim, Open-Meteo, OSRM, GTFS). 
+                Zero paid subscriptions or API keys required. Automatic in-memory caching and authentic Mumbai local mock fallbacks prevent any service outage.
+              </p>
+            </div>
+          </div>
+
+          {/* Sources List */}
+          <div className="space-y-2.5">
+            {statuses.map(s => {
+              const isLive = s.source === 'live';
+              const isCached = s.source === 'cached';
+
+              return (
+                <div 
+                  key={s.id}
+                  className="p-3.5 rounded-xl glass-tab hover:border-white/20 transition-all flex items-center justify-between gap-4 shadow-sm"
+                >
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-semibold text-[#F8FAFC]">{s.name}</span>
+                      <span className={`text-[10px] font-mono px-2 py-0.2 rounded-full border ${
+                        isLive 
+                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25'
+                          : isCached
+                          ? 'bg-cyan-500/10 text-cyan-electric border-cyan-500/25'
+                          : 'bg-amber-500/10 text-amber-400 border-amber-500/25'
+                      }`}>
+                        {isLive ? '● LIVE' : isCached ? '● CACHED' : '● SIMULATED'}
+                      </span>
+                    </div>
+
+                    {s.fallbackReason && (
+                      <p className="text-[11px] text-[#94A3B8]/80 font-mono">
+                        {s.fallbackReason}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-4 text-right shrink-0">
+                    <div>
+                      <div className="text-[10px] font-mono text-[#94A3B8]">LATENCY</div>
+                      <div className="text-xs font-mono font-bold text-white">{s.latencyMs} ms</div>
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-mono text-[#94A3B8]">STATUS</div>
+                      <div className="flex items-center gap-1 text-xs font-mono text-emerald-400">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <span className="capitalize">{s.status}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Orchestration Pipeline Architecture Summary */}
+          <div className="p-3 rounded-xl bg-[#141A26] border border-white/[0.08] text-xs font-mono text-[#94A3B8] space-y-1.5">
+            <div className="text-white font-bold flex items-center gap-1.5">
+              <Server className="w-3.5 h-3.5 text-cyan-electric" />
+              Intelligence Pipeline Flow
+            </div>
+            <p className="text-[11px] leading-relaxed">
+              External Feeds → Adapters → Data Normalization → Central Intelligence Engine (30% Occupancy + 25% Arrivals + 20% Transit + 15% Venue + 10% Weather) → Zustand Central State → All Consoles
+            </p>
+          </div>
+
+          {/* Strict Public API Policy & Documentation Links (Hackathon Requirement) */}
+          <div className="p-3.5 rounded-xl bg-[#0B101A] border border-white/[0.06] space-y-2">
+            <div className="text-[11px] font-mono font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+              <ExternalLink className="w-3 h-3 text-cyan-electric" />
+              Approved Open-Service Policies & Documentation
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <a 
+                href="https://open-meteo.com/en/about" 
+                target="_blank" 
+                rel="noreferrer"
+                className="p-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.05] transition-colors flex items-center justify-between group"
+              >
+                <div>
+                  <div className="font-semibold text-[#F8FAFC] group-hover:text-cyan-electric transition-colors">Open-Meteo</div>
+                  <div className="text-[10px] text-[#94A3B8]">Free open-meteo weather API terms</div>
+                </div>
+                <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-electric shrink-0" />
+              </a>
+
+              <a 
+                href="https://operations.osmfoundation.org/policies/" 
+                target="_blank" 
+                rel="noreferrer"
+                className="p-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.05] transition-colors flex items-center justify-between group"
+              >
+                <div>
+                  <div className="font-semibold text-[#F8FAFC] group-hover:text-cyan-electric transition-colors">OpenStreetMap Policies</div>
+                  <div className="text-[10px] text-[#94A3B8]">OSMF tile usage & fair-use rules</div>
+                </div>
+                <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-electric shrink-0" />
+              </a>
+
+              <a 
+                href="https://operations.osmfoundation.org/policies/nominatim/" 
+                target="_blank" 
+                rel="noreferrer"
+                className="p-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.05] transition-colors flex items-center justify-between group"
+              >
+                <div>
+                  <div className="font-semibold text-[#F8FAFC] group-hover:text-cyan-electric transition-colors">Nominatim Usage Policy</div>
+                  <div className="text-[10px] text-[#94A3B8]">1 req/s max, no auto-complete spam</div>
+                </div>
+                <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-electric shrink-0" />
+              </a>
+
+              <a 
+                href="https://project-osrm.org/docs/v26.4.0/http" 
+                target="_blank" 
+                rel="noreferrer"
+                className="p-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.05] transition-colors flex items-center justify-between group"
+              >
+                <div>
+                  <div className="font-semibold text-[#F8FAFC] group-hover:text-cyan-electric transition-colors">OSRM Documentation</div>
+                  <div className="text-[10px] text-[#94A3B8]">Routing protocol & HTTP endpoints</div>
+                </div>
+                <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-electric shrink-0" />
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-3 border-t border-white/[0.08] flex items-center justify-between text-xs font-mono text-[#94A3B8]">
+          <span>MUMBAI CLUSTER: AP-SOUTH-1</span>
+          <button
+            onClick={onClose}
+            className="px-4 py-1.5 rounded-lg bg-cyan-electric text-[#090B10] font-bold hover:bg-cyan-400 transition-colors shadow-sm"
+          >
+            Close Panel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
