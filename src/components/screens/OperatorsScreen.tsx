@@ -261,6 +261,7 @@ export const OperatorsScreen: React.FC = () => {
                   <div className="pt-2 border-t border-white/5 flex items-center justify-between gap-2">
                     <button
                       onClick={() => {
+                        if (!window.confirm(`Activate 50 Emergency Reserve Beds at ${acc.name}? This action cannot be undone.`)) return;
                         toggleEmergencyBeds(acc.id, 50);
                         showNotification(`Added 50 Emergency Reserve Beds to ${acc.name}. Zone pressure recalculated instantly.`);
                       }}
@@ -332,6 +333,7 @@ export const OperatorsScreen: React.FC = () => {
                     </span>
                     <button
                       onClick={() => {
+                        if (!window.confirm(`Inject 4 Emergency Shuttles on ${route.name}? This action cannot be undone.`)) return;
                         addEmergencyShuttle(route.id, 4);
                         showNotification(`Injected 4 Extra Electric Shuttles into ${route.name}. Dwell time reduced.`);
                       }}

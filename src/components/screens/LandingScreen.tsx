@@ -141,35 +141,52 @@ export const LandingScreen: React.FC = () => {
             <div className="p-5 rounded-2xl panel-elevated space-y-3 relative shadow-2xl">
               <div className="flex items-center justify-between text-xs font-mono pb-2 border-b border-white/[0.08]">
                 <span className="text-slate-400 uppercase tracking-wider font-semibold">Venue Grid Status</span>
-                <span className="text-amber-400 font-bold flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                  ELEVATED WATCH
+                <span className={`font-bold flex items-center gap-1 ${
+                  Math.round(zones.reduce((s, z) => s + z.pressureScore, 0) / Math.max(zones.length, 1)) > 75
+                    ? 'text-rose-400' : Math.round(zones.reduce((s, z) => s + z.pressureScore, 0) / Math.max(zones.length, 1)) > 55
+                    ? 'text-amber-400' : 'text-emerald-400'
+                }`}>
+                  <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
+                  {Math.round(zones.reduce((s, z) => s + z.pressureScore, 0) / Math.max(zones.length, 1)) > 75
+                    ? 'CRITICAL WATCH' : Math.round(zones.reduce((s, z) => s + z.pressureScore, 0) / Math.max(zones.length, 1)) > 55
+                    ? 'ELEVATED WATCH' : 'STABLE OPS'}
                 </span>
               </div>
 
               <div className="flex items-baseline justify-between pt-1">
                 <div>
-                  <div className="text-3xl font-extrabold font-mono text-white">67 <span className="text-xs text-slate-400 font-normal">/ 100</span></div>
+                  <div className="text-3xl font-extrabold font-mono text-white">
+                    {Math.round(zones.reduce((s, z) => s + z.pressureScore, 0) / Math.max(zones.length, 1))} <span className="text-xs text-slate-400 font-normal">/ 100</span>
+                  </div>
                   <div className="text-xs text-slate-300 font-sans mt-0.5">Composite Metropolitan Pressure</div>
                 </div>
                 <span className="text-xs font-mono text-cyan-300 bg-cyan-500/10 px-2 py-1 rounded-lg border border-cyan-500/20">
-                  BKC · Dadar · Virār
+                  {zones.slice(0, 3).map(z => z.shortName).join(' · ')}
                 </span>
               </div>
 
               {/* Progress Gauge */}
               <div className="h-2 w-full bg-white/[0.08] rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 w-[67%]"></div>
+                <div 
+                  className="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 transition-all duration-700" 
+                  style={{ width: `${Math.round(zones.reduce((s, z) => s + z.pressureScore, 0) / Math.max(zones.length, 1))}%` }}
+                />
               </div>
 
               <div className="grid grid-cols-2 gap-2 pt-2 text-xs font-mono">
                 <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
                   <div className="text-slate-400">Transit Load</div>
-                  <div className="text-sm font-bold text-white mt-0.5">76% Dynamic</div>
+                  <div className="text-sm font-bold text-white mt-0.5">
+                    {Math.round(zones.reduce((s, z) => s + z.transitLoad, 0) / Math.max(zones.length, 1))}% Dynamic
+                  </div>
                 </div>
                 <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
                   <div className="text-slate-400">Hospitality Surge</div>
-                  <div className="text-sm font-bold text-amber-300 mt-0.5">96% BKC Hub</div>
+                  <div className={`text-sm font-bold mt-0.5 ${
+                    Math.max(...zones.map(z => z.accommodationOccupancy)) > 90 ? 'text-amber-300' : 'text-white'
+                  }`}>
+                    {Math.max(...zones.map(z => z.accommodationOccupancy))}% {zones.find(z => z.accommodationOccupancy === Math.max(...zones.map(z2 => z2.accommodationOccupancy)))?.shortName || 'BKC'}
+                  </div>
                 </div>
               </div>
 

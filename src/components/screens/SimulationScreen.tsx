@@ -38,6 +38,22 @@ export const SimulationScreen: React.FC = () => {
     }
   }, []);
 
+  // Improvement: Auto-run simulation on parameter change (300ms debounce)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      runSimulation();
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [
+    simulationParams.attendanceDelta,
+    simulationParams.weatherCondition,
+    simulationParams.eventDelayMin,
+    simulationParams.transitDisruption,
+    simulationParams.gateClosure,
+    simulationParams.hotelCapacityLoss,
+    simulationParams.emergencyShuttleAdded
+  ]);
+
   const currentAvgPressure = Math.round(zones.reduce((s, z) => s + z.pressureScore, 0) / zones.length);
   const currentCritical = zones.filter(z => z.status === 'critical').length;
 
@@ -78,7 +94,7 @@ export const SimulationScreen: React.FC = () => {
             <FlaskConical className="w-5 h-5 text-indigo-400" />
             <span>Simulation Lab — Event Digital Twin</span>
           </h1>
-          <p className="text-xs text-[#94A3B8]">
+          <p className="text-xs text-slate-400">
             Stress-test operations under multi-hazard scenarios. Compare pre-intervention strain against post-mitigation stabilization.
           </p>
         </div>
@@ -114,7 +130,7 @@ export const SimulationScreen: React.FC = () => {
                 });
                 runSimulation();
               }}
-              className="text-xs font-mono text-[#94A3B8] hover:text-white flex items-center gap-1"
+              className="text-xs font-mono text-slate-400 hover:text-white flex items-center gap-1"
             >
               <RotateCcw className="w-3 h-3" /> Reset
             </button>
@@ -165,7 +181,7 @@ export const SimulationScreen: React.FC = () => {
                   className={`py-1.5 rounded-lg text-center border transition-colors ${
                     simulationParams.weatherCondition === w.id
                       ? 'bg-cyan-500/20 text-cyan-electric border-cyan-500/40 font-bold shadow-[0_0_12px_rgba(6,182,212,0.2)]'
-                      : 'glass-tab text-[#94A3B8] hover:text-white'
+                      : 'glass-tab text-slate-400 hover:text-white'
                   }`}
                 >
                   {w.label}
@@ -198,13 +214,50 @@ export const SimulationScreen: React.FC = () => {
 
           {/* Specific Stress Toggles */}
           <div className="space-y-1.5 pt-2 border-t border-white/[0.08] text-xs font-mono">
+
+            {/* Transit Disruption Selector */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-mono text-slate-300 flex items-center gap-1.5">
+                <Bus className="w-3.5 h-3.5 text-indigo-400" />
+                Transit Disruption:
+              </label>
+              <div className="grid grid-cols-3 gap-2 text-xs font-mono">
+                {[
+                  { id: 'none', label: 'None' },
+                  { id: 'partial', label: 'Partial' },
+                  { id: 'major', label: 'Major Halt' },
+                ].map(t => (
+                  <button
+                    key={t.id}
+                    onClick={() => setSimulationParams({ transitDisruption: t.id as any })}
+                    className={`py-1.5 rounded-lg text-center border transition-colors ${
+                      simulationParams.transitDisruption === t.id
+                        ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40 font-bold shadow-[0_0_12px_rgba(99,102,241,0.2)]'
+                        : 'glass-tab text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <label className="flex items-center justify-between p-2.5 rounded-xl glass-tab cursor-pointer">
-              <span className="text-[#94A3B8]">Gate 1 Security Concourse Hold</span>
+              <span className="text-slate-400">Gate 1 Security Concourse Hold</span>
               <input
                 type="checkbox"
                 checked={simulationParams.gateClosure}
                 onChange={e => setSimulationParams({ gateClosure: e.target.checked })}
                 className="accent-cyan-400"
+              />
+            </label>
+            <label className="flex items-center justify-between p-2.5 rounded-xl glass-tab cursor-pointer">
+              <span className="text-amber-400 font-medium">Hotel Capacity Loss (BKC Saturation)</span>
+              <input
+                type="checkbox"
+                checked={simulationParams.hotelCapacityLoss}
+                onChange={e => setSimulationParams({ hotelCapacityLoss: e.target.checked })}
+                className="accent-amber-400"
               />
             </label>
             <label className="flex items-center justify-between p-2.5 rounded-xl glass-tab cursor-pointer">
@@ -224,15 +277,15 @@ export const SimulationScreen: React.FC = () => {
           
           {/* Below Sequence: CURRENT → SIMULATED → AFTER INTERVENTION (Section 12) */}
           <div className="p-4 rounded-2xl panel-elevated">
-            <div className="text-xs font-mono uppercase tracking-wider text-[#94A3B8] mb-3 font-semibold">
+            <div className="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3 font-semibold">
               Three-Tier Progression Model:
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-mono">
               
               <div className="p-3 rounded-xl glass-tab space-y-1">
-                <span className="text-xs text-[#94A3B8] uppercase">1. CURRENT BASELINE</span>
-                <div className="text-xl font-bold text-[#F8FAFC]">Pressure {currentAvgPressure}</div>
-                <span className="text-xs text-[#94A3B8]">Normal Metropolitan Load</span>
+                <span className="text-xs text-slate-400 uppercase">1. CURRENT BASELINE</span>
+                <div className="text-xl font-bold text-slate-50">Pressure {currentAvgPressure}</div>
+                <span className="text-xs text-slate-400">Normal Metropolitan Load</span>
               </div>
 
               <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/25 space-y-1 backdrop-blur-md">

@@ -80,6 +80,8 @@ export const Sidebar: React.FC = () => {
             key={item.id}
             onClick={() => setActiveScreen(item.id as any)}
             title={isCollapsed ? item.label : undefined}
+            tabIndex={0}
+            aria-label={`Navigate to ${item.label}`}
             className={`w-full flex items-center ${isCollapsed ? 'justify-center px-2 py-2.5' : 'justify-between px-3 py-2'} rounded-xl text-xs font-medium transition-all group relative ${
               isActive
                 ? 'glass-tab-active text-slate-100 font-semibold shadow-md'

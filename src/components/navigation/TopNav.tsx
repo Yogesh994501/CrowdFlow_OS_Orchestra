@@ -48,6 +48,14 @@ export const TopNav: React.FC = () => {
   const [isDataSourcesOpen, setIsDataSourcesOpen] = useState(false);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
   const [secondsAgo, setSecondsAgo] = useState(2);
+  const [roleToast, setRoleToast] = useState<string | null>(null);
+
+  const handleRoleSwitch = (role: UserRole) => {
+    const label = roles.find(r => r.role === role)?.label || role;
+    setRole(role);
+    setRoleToast(`Switched to ${label}`);
+    setTimeout(() => setRoleToast(null), 3000);
+  };
 
   // Live updated ticker
   useEffect(() => {
@@ -202,7 +210,7 @@ export const TopNav: React.FC = () => {
             {/* Notifications Button */}
             <button
               onClick={() => setIsNotificationDrawerOpen(!isNotificationDrawerOpen)}
-              className="relative p-1.5 rounded-lg glass-tab text-[#94A3B8] hover:text-white transition-colors"
+              className="relative p-1.5 rounded-lg glass-tab text-slate-400 hover:text-white transition-colors"
               title="Operational Alerts"
             >
               <Bell className="w-4 h-4" />
@@ -220,7 +228,7 @@ export const TopNav: React.FC = () => {
               className={`hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono border transition-colors ${
                 isMobileDeviceFrame
                   ? 'bg-cyan-500/20 text-cyan-electric border-cyan-500/40 shadow-[0_0_12px_rgba(6,182,212,0.25)]'
-                  : 'glass-tab text-[#94A3B8] hover:text-white'
+                  : 'glass-tab text-slate-400 hover:text-white'
               }`}
             >
               <Smartphone className="w-3.5 h-3.5" />
@@ -231,7 +239,7 @@ export const TopNav: React.FC = () => {
             <div className="relative group">
               <button className="flex items-center gap-2 px-2.5 py-1 rounded-lg glass-tab hover:border-cyan-500/40 transition-colors text-xs font-mono">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-electric"></span>
-                <span className="text-[#F8FAFC] font-semibold">
+                <span className="text-slate-50 font-semibold">
                   {roles.find(r => r.role === currentRole)?.label || 'Organizer'}
                 </span>
                 <ChevronDown className="w-3 h-3 text-slate-400 group-hover:rotate-180 transition-transform" />
@@ -247,11 +255,11 @@ export const TopNav: React.FC = () => {
                   return (
                     <button
                       key={r.role}
-                      onClick={() => setRole(r.role)}
+                      onClick={() => handleRoleSwitch(r.role)}
                       className={`w-full text-left px-2.5 py-1.5 rounded-lg flex items-center justify-between text-xs font-mono transition-colors ${
                         isSelected
                           ? 'bg-cyan-500/20 text-cyan-electric font-semibold border border-cyan-500/30'
-                          : 'text-[#94A3B8] hover:bg-white/10 hover:text-white'
+                          : 'text-slate-400 hover:bg-white/10 hover:text-white'
                       }`}
                     >
                       <span className="flex items-center gap-2">
@@ -269,6 +277,16 @@ export const TopNav: React.FC = () => {
 
         </div>
       </header>
+
+      {/* Role Switch Toast Notification */}
+      {roleToast && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-slide-up">
+          <div className="px-5 py-2.5 rounded-xl bg-dark-900/95 backdrop-blur-xl border border-cyan-500/30 shadow-[0_0_20px_rgba(6,182,212,0.2)] text-sm font-mono text-cyan-300 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+            {roleToast}
+          </div>
+        </div>
+      )}
 
       {/* System Health Explainability Modal */}
       {isHealthModalOpen && (
@@ -294,7 +312,7 @@ export const TopNav: React.FC = () => {
 
             <div className="p-3.5 rounded-xl glass-tab text-xs text-slate-300 space-y-2">
               <div className="font-semibold text-white">Why is CrowdFlow OS currently in WATCH status?</div>
-              <ul className="space-y-1.5 list-disc list-inside text-[#94A3B8]">
+              <ul className="space-y-1.5 list-disc list-inside text-slate-400">
                 <li><strong className="text-rose-400">BKC (Bandra-Kurla Complex):</strong> Accommodation occupancy reached 96% with 14,200 incoming arrivals predicted.</li>
                 <li><strong className="text-amber-400">Dadar Transit Core:</strong> Platform interchange density approaches safe physical margins.</li>
                 <li><strong className="text-emerald-400">Buffer Reserves Healthy:</strong> Virār and Navi Mumbai offer 1,830+ available beds and &lt;45% transit load to absorb demand.</li>
@@ -354,7 +372,7 @@ export const TopNav: React.FC = () => {
                   <div className="font-semibold text-white leading-tight">
                     {alert.title}
                   </div>
-                  <div className="text-[#94A3B8] text-xs line-clamp-2">
+                  <div className="text-slate-400 text-xs line-clamp-2">
                     {alert.message}
                   </div>
                 </div>

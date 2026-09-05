@@ -109,6 +109,9 @@ export const MapScreen: React.FC = () => {
 
       polygon.on('click', () => {
         setSelectedZoneId(zone.id);
+        if (mapInstanceRef.current) {
+          mapInstanceRef.current.flyTo(zone.coordinates, 13, { duration: 0.8 });
+        }
       });
 
       polygon.bindTooltip(`
@@ -148,7 +151,12 @@ export const MapScreen: React.FC = () => {
         });
 
         const marker = L.marker(zone.coordinates, { icon: centerIcon });
-        marker.on('click', () => setSelectedZoneId(zone.id));
+        marker.on('click', () => {
+          setSelectedZoneId(zone.id);
+          if (mapInstanceRef.current) {
+            mapInstanceRef.current.flyTo(zone.coordinates, 13, { duration: 0.8 });
+          }
+        });
         lg.addLayer(marker);
       }
     });
@@ -236,7 +244,7 @@ export const MapScreen: React.FC = () => {
             <MapPin className="w-5 h-5 text-cyan-electric" />
             <span>Live City Operations Map</span>
           </h1>
-          <p className="text-xs text-[#94A3B8]">
+          <p className="text-xs text-slate-400">
             Real-time geospatial crowd density, arterial transit flow lines, and contextual zone diagnostics.
           </p>
         </div>
@@ -244,7 +252,7 @@ export const MapScreen: React.FC = () => {
         {/* Layer Controls Pill (Section 10) */}
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl glass-tab text-xs font-mono">
           <Layers className="w-3.5 h-3.5 text-cyan-electric" />
-          <span className="text-[#94A3B8] text-xs hidden sm:inline">Layers:</span>
+          <span className="text-slate-400 text-xs hidden sm:inline">Layers:</span>
           <label className="flex items-center gap-1 cursor-pointer select-none">
             <input
               type="checkbox"
@@ -252,7 +260,7 @@ export const MapScreen: React.FC = () => {
               onChange={e => setLayers({ ...layers, venues: e.target.checked })}
               className="accent-cyan-400 w-3 h-3 cursor-pointer"
             />
-            <span className="text-[#F8FAFC]">Venues</span>
+            <span className="text-slate-50">Venues</span>
           </label>
           <label className="flex items-center gap-1 cursor-pointer select-none">
             <input
@@ -261,7 +269,7 @@ export const MapScreen: React.FC = () => {
               onChange={e => setLayers({ ...layers, transit: e.target.checked })}
               className="accent-cyan-400 w-3 h-3 cursor-pointer"
             />
-            <span className="text-[#F8FAFC]">Transit</span>
+            <span className="text-slate-50">Transit</span>
           </label>
           <label className="flex items-center gap-1 cursor-pointer select-none">
             <input
@@ -270,7 +278,7 @@ export const MapScreen: React.FC = () => {
               onChange={e => setLayers({ ...layers, shuttleRoutes: e.target.checked })}
               className="accent-cyan-400 w-3 h-3 cursor-pointer"
             />
-            <span className="text-[#F8FAFC]">Shuttles</span>
+            <span className="text-slate-50">Shuttles</span>
           </label>
           <label className="flex items-center gap-1 cursor-pointer select-none">
             <input
@@ -279,7 +287,7 @@ export const MapScreen: React.FC = () => {
               onChange={e => setLayers({ ...layers, accommodations: e.target.checked })}
               className="accent-cyan-400 w-3 h-3 cursor-pointer"
             />
-            <span className="text-[#F8FAFC]">Hotels</span>
+            <span className="text-slate-50">Hotels</span>
           </label>
           <label className="flex items-center gap-1 cursor-pointer select-none">
             <input
@@ -288,7 +296,7 @@ export const MapScreen: React.FC = () => {
               onChange={e => setLayers({ ...layers, crowdDensity: e.target.checked })}
               className="accent-cyan-400 w-3 h-3 cursor-pointer"
             />
-            <span className="text-[#F8FAFC]">Density</span>
+            <span className="text-slate-50">Density</span>
           </label>
         </div>
       </div>
@@ -304,10 +312,10 @@ export const MapScreen: React.FC = () => {
           <div className="absolute bottom-3 left-3 right-3 z-10 p-2.5 rounded-xl glass-overlay flex items-center justify-between text-xs font-mono shadow-lg">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span className="text-[#F8FAFC] font-semibold">Corridor Inflow:</span>
+              <span className="text-slate-50 font-semibold">Corridor Inflow:</span>
               <span className="text-cyan-electric">14,200/hr peak rate</span>
             </div>
-            <div className="flex items-center gap-3 text-xs text-[#94A3B8]">
+            <div className="flex items-center gap-3 text-xs text-slate-400">
               <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#22C55E]"></span> Stable</span>
               <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#F59E0B]"></span> Watch</span>
               <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#F97316]"></span> High</span>
@@ -334,7 +342,7 @@ export const MapScreen: React.FC = () => {
                 <div className="text-right">
                   <StatusBadge status={selectedZone.status} size="sm" />
                   <div className="text-base font-mono font-bold text-white mt-1">
-                    {selectedZone.pressureScore} <span className="text-xs text-[#94A3B8] font-normal">/ 100</span>
+                    {selectedZone.pressureScore} <span className="text-xs text-slate-400 font-normal">/ 100</span>
                   </div>
                 </div>
               </div>
@@ -342,27 +350,27 @@ export const MapScreen: React.FC = () => {
               {/* 4 Core Metrics Tiles */}
               <div className="grid grid-cols-2 gap-2 text-xs font-mono">
                 <div className="p-2.5 rounded-xl glass-tab space-y-0.5 shadow-sm">
-                  <span className="text-xs text-[#94A3B8] uppercase">Active Crowd</span>
-                  <div className="text-base font-bold text-[#F8FAFC]">{selectedZone.activeVisitors.toLocaleString()}</div>
-                  <span className="text-xs text-[#94A3B8]">Limit: {selectedZone.capacityLimit.toLocaleString()}</span>
+                  <span className="text-xs text-slate-400 uppercase">Active Crowd</span>
+                  <div className="text-base font-bold text-slate-50">{selectedZone.activeVisitors.toLocaleString()}</div>
+                  <span className="text-xs text-slate-400">Limit: {selectedZone.capacityLimit.toLocaleString()}</span>
                 </div>
 
                 <div className="p-2.5 rounded-xl glass-tab space-y-0.5 shadow-sm">
-                  <span className="text-xs text-[#94A3B8] uppercase">Hotels</span>
-                  <div className={`text-base font-bold ${selectedZone.accommodationOccupancy > 90 ? 'text-rose-400' : 'text-[#F8FAFC]'}`}>
+                  <span className="text-xs text-slate-400 uppercase">Hotels</span>
+                  <div className={`text-base font-bold ${selectedZone.accommodationOccupancy > 90 ? 'text-rose-400' : 'text-slate-50'}`}>
                     {selectedZone.accommodationOccupancy}%
                   </div>
-                  <span className="text-xs text-[#94A3B8]">Occupancy</span>
+                  <span className="text-xs text-slate-400">Occupancy</span>
                 </div>
 
                 <div className="p-2.5 rounded-xl glass-tab space-y-0.5 shadow-sm">
-                  <span className="text-xs text-[#94A3B8] uppercase">Transit Load</span>
-                  <div className="text-base font-bold text-[#F8FAFC]">{selectedZone.transitLoad}%</div>
-                  <span className="text-xs text-[#94A3B8]">Arterial Dwell</span>
+                  <span className="text-xs text-slate-400 uppercase">Transit Load</span>
+                  <div className="text-base font-bold text-slate-50">{selectedZone.transitLoad}%</div>
+                  <span className="text-xs text-slate-400">Arterial Dwell</span>
                 </div>
 
                 <div className="p-2.5 rounded-xl glass-tab space-y-0.5 shadow-sm">
-                  <span className="text-xs text-[#94A3B8] uppercase">Peak Window</span>
+                  <span className="text-xs text-slate-400 uppercase">Peak Window</span>
                   <div className="text-xs font-bold text-cyan-electric mt-1">{selectedZone.predictedPeak}</div>
                 </div>
               </div>
@@ -380,13 +388,13 @@ export const MapScreen: React.FC = () => {
 
               {/* Contributing Weights */}
               <div className="space-y-1 text-xs">
-                <span className="text-xs font-mono uppercase tracking-wider text-[#94A3B8] font-semibold">
+                <span className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold">
                   Contributing Factors:
                 </span>
                 <div className="space-y-1">
                   {selectedZone.topContributors.map((c, i) => (
                     <div key={i} className="p-1.5 rounded-lg glass-tab flex items-center justify-between text-xs font-mono">
-                      <span className="text-[#94A3B8]">{c.split(': ')[0]}</span>
+                      <span className="text-slate-400">{c.split(': ')[0]}</span>
                       <span className="font-bold text-white">{c.split(': ')[1]}</span>
                     </div>
                   ))}

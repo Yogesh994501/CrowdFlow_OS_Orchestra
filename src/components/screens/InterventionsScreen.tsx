@@ -120,6 +120,15 @@ export const InterventionsScreen: React.FC = () => {
       ) : (
         /* History View with Before/After Pressure Delta */
         <div className="space-y-4">
+          {historyInterventions.length === 0 ? (
+            <div className="p-12 text-center rounded-2xl panel-elevated space-y-2">
+              <History className="w-8 h-8 text-slate-400 mx-auto" />
+              <h3 className="text-base font-bold text-white">No Interventions Executed Yet</h3>
+              <p className="text-xs text-slate-400">
+                Approve and execute active recommendations to see their measured impact here.
+              </p>
+            </div>
+          ) : (
           <div className="overflow-x-auto rounded-2xl panel-elevated p-5">
             <h3 className="text-base font-bold text-white mb-1">
               Executed Interventions Audit Log
@@ -170,6 +179,7 @@ export const InterventionsScreen: React.FC = () => {
               </tbody>
             </table>
           </div>
+          )}
         </div>
       )}
 

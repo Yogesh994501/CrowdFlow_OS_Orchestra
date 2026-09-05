@@ -29,7 +29,41 @@ interface DependencyNode {
 }
 
 export const DependencyScreen: React.FC = () => {
-  const { setActiveScreen } = useCrowdFlowStore();
+  const { setActiveScreen, currentScenario } = useCrowdFlowStore();
+
+  // Improvement 11: Derive cascade severity from active scenario
+  const getNodeStatus = (nodeId: string): 'critical' | 'high' | 'watch' | 'stable' => {
+    if (currentScenario === 'normal') {
+      return nodeId === 'weather' || nodeId === 'accommodation' ? 'stable' : 'watch';
+    }
+    if (currentScenario === 'heavy_rain') {
+      if (nodeId === 'weather' || nodeId === 'transit' || nodeId === 'arrival') return 'critical';
+      if (nodeId === 'gate') return 'critical';
+      return 'high';
+    }
+    if (currentScenario === 'hotel_saturation') {
+      if (nodeId === 'accommodation') return 'critical';
+      if (nodeId === 'venue') return 'high';
+      return 'watch';
+    }
+    if (currentScenario === 'metro_disruption') {
+      if (nodeId === 'transit' || nodeId === 'arrival') return 'critical';
+      if (nodeId === 'gate') return 'high';
+      return 'watch';
+    }
+    if (currentScenario === 'gate_closure') {
+      if (nodeId === 'gate' || nodeId === 'arrival') return 'critical';
+      if (nodeId === 'venue') return 'high';
+      return 'watch';
+    }
+    if (currentScenario === 'demand_surge') {
+      if (nodeId === 'arrival' || nodeId === 'gate') return 'critical';
+      if (nodeId === 'transit' || nodeId === 'venue') return 'high';
+      return 'watch';
+    }
+    // Fallback
+    return 'watch';
+  };
 
   const nodes: DependencyNode[] = [
     {
@@ -39,7 +73,7 @@ export const DependencyScreen: React.FC = () => {
       category: 'Meteorological Telemetry',
       icon: CloudRain,
       color: '#06B6D4',
-      status: 'high',
+      status: getNodeStatus('weather'),
       cause: 'Arabian Sea coastal depression generates 78% rain risk and wind gusts of 38 km/h during stadium egress window.',
       downstreamImpact: 'Slowing outdoor vehicular transit, reduced bus operating speeds by 30%, and slippery pedestrian footbridges.',
       affectedResources: ['Eastern Freeway', 'Bandra-Worli Sea Link', 'Marine Drive Promenade'],
@@ -52,7 +86,7 @@ export const DependencyScreen: React.FC = () => {
       category: 'Mobility Network',
       icon: Bus,
       color: '#F97316',
-      status: 'critical',
+      status: getNodeStatus('transit'),
       cause: 'Rain slowdown combined with Dadar platform interchange density creates 22-minute train boarding backlogs.',
       downstreamImpact: 'Arrival waves bunch up instead of staggering uniformly; 14,000 attendees delayed in transit.',
       affectedResources: ['Western Railway Platform 3', 'Metro Line 3 Sahar Station', 'Kalanagar Flyover'],
@@ -65,7 +99,7 @@ export const DependencyScreen: React.FC = () => {
       category: 'Crowd Dynamics',
       icon: Users,
       color: '#EF4444',
-      status: 'critical',
+      status: getNodeStatus('arrival'),
       cause: 'Delayed trains discharge 8,000 attendees simultaneously in a single 15-minute window rather than over 60 minutes.',
       downstreamImpact: 'Plaza crowd density peaks at 4.6 persons/m², overwhelming standard security concourse flow.',
       affectedResources: ['Jio World Convention Concourse', 'MMRDA Arena East Plaza'],
@@ -78,7 +112,7 @@ export const DependencyScreen: React.FC = () => {
       category: 'Venue Access Control',
       icon: DoorOpen,
       color: '#EF4444',
-      status: 'critical',
+      status: getNodeStatus('gate'),
       cause: 'Surge hits Gate 1 faster than manual bag checking flow; queue wait time shoots to 32 minutes.',
       downstreamImpact: 'Spillover queue backs up across pedestrian road, blocking emergency vehicle access lanes.',
       affectedResources: ['Turnstiles 1-6', 'Security Magnetometers', 'VIP Concourse Lane'],
@@ -91,7 +125,7 @@ export const DependencyScreen: React.FC = () => {
       category: 'Facility Operations',
       icon: Building2,
       color: '#F59E0B',
-      status: 'watch',
+      status: getNodeStatus('venue'),
       cause: 'Late entry shifts plenary hall seating schedule by 40 minutes, causing food court and restroom queue spikes.',
       downstreamImpact: 'Evening session ending delayed past 21:30, forcing late departure into night transit hours.',
       affectedResources: ['Grand Concourse Dining', 'Restroom Clusters A-D', 'Main Auditorium'],
@@ -104,7 +138,7 @@ export const DependencyScreen: React.FC = () => {
       category: 'Accommodation & Hospitality',
       icon: Hotel,
       color: '#6366F1',
-      status: 'high',
+      status: getNodeStatus('accommodation'),
       cause: 'Delayed end time forces same-day travelers to seek emergency overnight lodging in central Mumbai.',
       downstreamImpact: 'BKC and Dadar standard hotel rooms reach 100% saturation; prices surge unpredictably.',
       affectedResources: ['BKC Hotels (Trident/Sofitel)', 'Dadar Heritage Inns', 'Short-Stay Hostels'],

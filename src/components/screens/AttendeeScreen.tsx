@@ -199,7 +199,7 @@ export const AttendeeScreen: React.FC = () => {
             </div>
 
             {/* Weather Alert */}
-            {weather.weatherRisk > 25 && (
+            {weather.weatherRisk >= 40 && (
               <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300 flex items-start gap-2.5">
                 <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                 <div className="font-sans">
@@ -282,7 +282,7 @@ export const AttendeeScreen: React.FC = () => {
                   </div>
 
                   <button
-                    onClick={() => handleClaimReward('rew_hotel')}
+                    onClick={() => handleReserveInterest(stay.id, stay.name)}
                     className="w-full py-2 rounded-xl bg-cyan-500/15 text-cyan-300 hover:bg-cyan-500/25 border border-cyan-500/30 font-bold transition-colors font-mono text-xs"
                   >
                     Reserve Buffer Stay

@@ -494,11 +494,11 @@ export const OverviewScreen: React.FC = () => {
             <div>
               <h2 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
                 <span>ZONE PRESSURE MATRIX</span>
-                <span className="text-xs text-[#94A3B8] font-normal font-mono">
+                <span className="text-xs text-slate-400 font-normal font-mono">
                   (8 Orchestrated City Sectors)
                 </span>
               </h2>
-              <p className="text-xs text-[#94A3B8] mt-0.5">
+              <p className="text-xs text-slate-400 mt-0.5">
                 Click any zone for contextual diagnostic breakdown & intervention options.
               </p>
             </div>
@@ -533,7 +533,7 @@ export const OverviewScreen: React.FC = () => {
                         <div className="text-sm font-semibold text-white group-hover:text-cyan-electric transition-colors">
                           {zone.name}
                         </div>
-                        <div className="flex items-center gap-2 text-xs font-mono text-[#94A3B8]">
+                        <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
                           <span className="uppercase text-rose-400 font-bold">{zone.status}</span>
                           <span>·</span>
                           <span>{zone.activeVisitors.toLocaleString()} visitors</span>
@@ -619,7 +619,7 @@ export const OverviewScreen: React.FC = () => {
                         <div className="text-xl font-bold font-mono text-emerald-400">
                           {zone.pressureScore}
                         </div>
-                        <div className="text-xs font-mono text-[#94A3B8] flex items-center justify-end">
+                        <div className="text-xs font-mono text-slate-400 flex items-center justify-end">
                           <Minus className="w-2.5 h-2.5" />
                         </div>
                       </div>
@@ -638,11 +638,11 @@ export const OverviewScreen: React.FC = () => {
           
           <div className="space-y-3">
             <div className="flex items-center justify-between pb-3 border-b border-white/[0.06]">
-              <span className="text-xs font-mono uppercase tracking-wider text-[#94A3B8] font-semibold flex items-center gap-1.5">
+              <span className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold flex items-center gap-1.5">
                 <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
                 ACTIVE ALERTS
               </span>
-              <span className="text-xs font-mono text-[#94A3B8]">
+              <span className="text-xs font-mono text-slate-400">
                 <strong className="text-rose-400">{criticalAlerts.length} Critical</strong> · {alerts.length - criticalAlerts.length} Watch
               </span>
             </div>
@@ -663,7 +663,7 @@ export const OverviewScreen: React.FC = () => {
                   <div className="text-xs font-semibold text-white group-hover:text-cyan-electric transition-colors truncate">
                     {alert.title}
                   </div>
-                  <p className="text-xs text-[#94A3B8] line-clamp-1">
+                  <p className="text-xs text-slate-400 line-clamp-1">
                     {alert.cause || alert.message}
                   </p>
                 </div>
@@ -703,7 +703,7 @@ export const OverviewScreen: React.FC = () => {
                   <h3 className="text-xl font-bold text-white mt-1">
                     {selectedZone.name}
                   </h3>
-                  <div className="text-xs text-[#94A3B8] font-mono mt-0.5">
+                  <div className="text-xs text-slate-400 font-mono mt-0.5">
                     ID: {selectedZone.id.toUpperCase()} · Peak: {selectedZone.predictedPeak}
                   </div>
                 </div>
@@ -719,11 +719,11 @@ export const OverviewScreen: React.FC = () => {
               {/* Pressure Score & Status */}
               <div className="p-4 rounded-xl glass-tab flex items-center justify-between shadow-sm">
                 <div>
-                  <div className="text-xs font-mono uppercase tracking-wider text-[#94A3B8]">
+                  <div className="text-xs font-mono uppercase tracking-wider text-slate-400">
                     CALCULATED PRESSURE
                   </div>
                   <div className="text-3xl font-extrabold font-mono text-white mt-0.5">
-                    {selectedZone.pressureScore} <span className="text-xs text-[#94A3B8] font-normal">/ 100</span>
+                    {selectedZone.pressureScore} <span className="text-xs text-slate-400 font-normal">/ 100</span>
                   </div>
                 </div>
                 <StatusBadge status={selectedZone.status} size="md" />
@@ -737,7 +737,7 @@ export const OverviewScreen: React.FC = () => {
 
                 {/* Accommodation */}
                 <div className="space-y-1">
-                  <div className="flex justify-between text-xs text-[#94A3B8]">
+                  <div className="flex justify-between text-xs text-slate-400">
                     <span>Accommodation Occupancy</span>
                     <span className="font-mono font-bold text-white">{selectedZone.accommodationOccupancy}%</span>
                   </div>
@@ -751,7 +751,7 @@ export const OverviewScreen: React.FC = () => {
 
                 {/* Predicted Arrivals */}
                 <div className="space-y-1">
-                  <div className="flex justify-between text-xs text-[#94A3B8]">
+                  <div className="flex justify-between text-xs text-slate-400">
                     <span>Predicted Arrivals</span>
                     <span className="font-mono font-bold text-white">{selectedZone.predictedArrivalsNorm}% ({selectedZone.predictedArrivals.toLocaleString()})</span>
                   </div>
@@ -765,7 +765,7 @@ export const OverviewScreen: React.FC = () => {
 
                 {/* Transit Load */}
                 <div className="space-y-1">
-                  <div className="flex justify-between text-xs text-[#94A3B8]">
+                  <div className="flex justify-between text-xs text-slate-400">
                     <span>Transit Corridor Load</span>
                     <span className="font-mono font-bold text-white">{selectedZone.transitLoad}%</span>
                   </div>
@@ -779,7 +779,7 @@ export const OverviewScreen: React.FC = () => {
 
                 {/* Venue Turnstile Load */}
                 <div className="space-y-1">
-                  <div className="flex justify-between text-xs text-[#94A3B8]">
+                  <div className="flex justify-between text-xs text-slate-400">
                     <span>Venue Load</span>
                     <span className="font-mono font-bold text-white">{selectedZone.venueLoad}%</span>
                   </div>
@@ -793,7 +793,7 @@ export const OverviewScreen: React.FC = () => {
 
                 {/* Weather Risk */}
                 <div className="space-y-1">
-                  <div className="flex justify-between text-xs text-[#94A3B8]">
+                  <div className="flex justify-between text-xs text-slate-400">
                     <span>Weather Risk Factor</span>
                     <span className="font-mono font-bold text-white">{selectedZone.weatherRisk}%</span>
                   </div>

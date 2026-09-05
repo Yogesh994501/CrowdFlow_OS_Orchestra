@@ -45,7 +45,7 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
               <Database className="w-4 h-4 text-cyan-electric" />
             </div>
             <div>
-              <h3 className="text-sm font-bold font-mono tracking-tight text-[#F8FAFC]">
+              <h3 className="text-sm font-bold font-mono tracking-tight text-slate-50">
                 CENTRAL DATA SOURCES & FAILOVER STATUS
               </h3>
               <p className="text-xs text-slate-400 font-mono">
@@ -58,14 +58,14 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
             <button
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className="p-1.5 rounded-lg glass-tab text-[#94A3B8] hover:text-white transition-colors"
+              className="p-1.5 rounded-lg glass-tab text-slate-400 hover:text-white transition-colors"
               title="Refresh Feeds Status"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
             </button>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg glass-tab text-[#94A3B8] hover:text-white transition-colors"
+              className="p-1.5 rounded-lg glass-tab text-slate-400 hover:text-white transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -126,7 +126,7 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
                   >
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-semibold text-[#F8FAFC]">{s.name}</span>
+                        <span className="text-xs font-semibold text-slate-50">{s.name}</span>
                         <span className={`text-xs font-mono px-2 py-0.5 rounded-full border ${
                           isLive 
                             ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25 font-bold'
@@ -189,7 +189,7 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
                 className="p-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.05] transition-colors flex items-center justify-between group"
               >
                 <div>
-                  <div className="font-semibold text-[#F8FAFC] group-hover:text-cyan-electric transition-colors">Open-Meteo</div>
+                  <div className="font-semibold text-slate-50 group-hover:text-cyan-electric transition-colors">Open-Meteo</div>
                   <div className="text-xs text-slate-400">Free open-meteo weather API terms</div>
                 </div>
                 <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-cyan-electric shrink-0" />
@@ -202,7 +202,7 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
                 className="p-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.05] transition-colors flex items-center justify-between group"
               >
                 <div>
-                  <div className="font-semibold text-[#F8FAFC] group-hover:text-cyan-electric transition-colors">OpenStreetMap Policies</div>
+                  <div className="font-semibold text-slate-50 group-hover:text-cyan-electric transition-colors">OpenStreetMap Policies</div>
                   <div className="text-xs text-slate-400">OSMF tile usage & fair-use rules</div>
                 </div>
                 <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-cyan-electric shrink-0" />
@@ -215,7 +215,7 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
                 className="p-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.05] transition-colors flex items-center justify-between group"
               >
                 <div>
-                  <div className="font-semibold text-[#F8FAFC] group-hover:text-cyan-electric transition-colors">Nominatim Usage Policy</div>
+                  <div className="font-semibold text-slate-50 group-hover:text-cyan-electric transition-colors">Nominatim Usage Policy</div>
                   <div className="text-xs text-slate-400">1 req/s max, no auto-complete spam</div>
                 </div>
                 <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-cyan-electric shrink-0" />
@@ -228,7 +228,7 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
                 className="p-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.05] transition-colors flex items-center justify-between group"
               >
                 <div>
-                  <div className="font-semibold text-[#F8FAFC] group-hover:text-cyan-electric transition-colors">OSRM Documentation</div>
+                  <div className="font-semibold text-slate-50 group-hover:text-cyan-electric transition-colors">OSRM Documentation</div>
                   <div className="text-xs text-slate-400">Routing protocol & HTTP endpoints</div>
                 </div>
                 <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-cyan-electric shrink-0" />
@@ -239,7 +239,7 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-3 border-t border-white/[0.08] flex items-center justify-between text-xs font-mono text-[#94A3B8]">
+        <div className="px-6 py-3 border-t border-white/[0.08] flex items-center justify-between text-xs font-mono text-slate-400">
           <span>MUMBAI CLUSTER: AP-SOUTH-1</span>
           <button
             onClick={onClose}
