@@ -146,7 +146,7 @@ export function App() {
         {currentRole !== 'attendee' && <Sidebar />}
 
         {/* Dynamic Screen Viewport */}
-        <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto max-w-[1600px] mx-auto w-full">
+        <main className={`flex-1 ${activeScreen === 'attendee' ? 'p-0 md:p-6 lg:p-8' : 'p-4 md:p-6 lg:p-8'} overflow-y-auto max-w-[1600px] mx-auto w-full`}>
           {renderScreen()}
         </main>
 

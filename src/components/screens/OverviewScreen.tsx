@@ -153,7 +153,7 @@ export const OverviewScreen: React.FC = () => {
                     <span className="text-xs font-mono uppercase tracking-widest text-slate-400 mt-1">
                       PRESSURE
                     </span>
-                    <span className="text-xs font-mono text-slate-500">
+                    <span className="text-xs font-mono text-slate-400">
                       /100
                     </span>
                   </div>
@@ -331,12 +331,12 @@ export const OverviewScreen: React.FC = () => {
               </div>
               <div className="flex flex-wrap items-center gap-3 text-xs font-mono text-slate-300">
                 <span className="text-rose-400 font-bold">94% Occupancy</span>
-                <span className="text-slate-500">•</span>
+                <span className="text-slate-400">•</span>
                 <span className="text-amber-300 flex items-center gap-1 font-semibold">
                   <TrendingUp className="w-3.5 h-3.5" />
                   ↑ 8% increase in the last 10 minutes
                 </span>
-                <span className="text-slate-500">•</span>
+                <span className="text-slate-400">•</span>
                 <span className="text-slate-300">
                   Recommended response: <strong className="text-cyan-300 font-semibold">Redirect incoming attendees toward Gate B & Kurla buffer</strong>
                 </span>
@@ -658,7 +658,7 @@ export const OverviewScreen: React.FC = () => {
                     <span className={`font-bold uppercase ${alert.severity === 'critical' ? 'text-rose-400' : 'text-amber-400'}`}>
                       {alert.severity}
                     </span>
-                    <span className="text-slate-500">{alert.timestamp}</span>
+                    <span className="text-slate-400">{alert.timestamp}</span>
                   </div>
                   <div className="text-xs font-semibold text-white group-hover:text-cyan-electric transition-colors truncate">
                     {alert.title}

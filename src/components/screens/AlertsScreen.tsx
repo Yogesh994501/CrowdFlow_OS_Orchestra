@@ -113,7 +113,7 @@ export const AlertsScreen: React.FC = () => {
                       ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
                       : step.state === 'active'
                       ? 'bg-cyan-400 text-slate-950 shadow-md animate-pulse'
-                      : 'bg-white/5 text-slate-500 border border-white/10'
+                      : 'bg-white/5 text-slate-400 border border-white/10'
                   }`}>
                     {step.state === 'complete' ? '✓' : idx + 1}
                   </div>
@@ -122,7 +122,7 @@ export const AlertsScreen: React.FC = () => {
                       ? 'text-emerald-400' 
                       : step.state === 'active' 
                       ? 'text-cyan-300 font-bold' 
-                      : 'text-slate-500'
+                      : 'text-slate-400'
                   }`}>
                     {step.label}
                   </span>
@@ -157,7 +157,7 @@ export const AlertsScreen: React.FC = () => {
                   <span className="text-xs font-mono text-cyan-300 font-bold">
                     {alert.zoneName}
                   </span>
-                  <span className="text-slate-500">•</span>
+                  <span className="text-slate-400">•</span>
                   <span className="text-xs font-mono text-slate-400">
                     {alert.timestamp}
                   </span>

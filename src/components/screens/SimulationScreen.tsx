@@ -140,7 +140,7 @@ export const SimulationScreen: React.FC = () => {
               onChange={e => setSimulationParams({ attendanceDelta: Number(e.target.value) })}
               className="w-full accent-cyan-400 cursor-pointer"
             />
-            <div className="flex justify-between text-xs font-mono text-slate-500">
+            <div className="flex justify-between text-xs font-mono text-slate-400">
               <span>-30%</span>
               <span>Baseline (184k)</span>
               <span>+50%</span>

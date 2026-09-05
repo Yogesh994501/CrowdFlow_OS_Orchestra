@@ -59,7 +59,7 @@ export const AttendeeScreen: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-sm mx-auto min-h-[680px] panel-elevated text-slate-100 rounded-[32px] border border-white/15 shadow-2xl overflow-hidden flex flex-col justify-between relative font-sans">
+    <div className="w-full md:max-w-sm mx-auto min-h-screen md:min-h-[680px] panel-elevated text-slate-100 rounded-none md:rounded-[32px] border-0 md:border md:border-white/15 shadow-none md:shadow-2xl overflow-hidden flex flex-col justify-between relative font-sans">
       
       {/* Mobile Top Bar */}
       <div className="pt-3 px-5 pb-2 flex items-center justify-between text-xs font-mono text-slate-400 border-b border-white/[0.08] bg-black/40 backdrop-blur-md">

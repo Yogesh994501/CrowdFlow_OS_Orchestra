@@ -37,6 +37,12 @@ export default {
           watch: '#F59E0B',
           high: '#F97316',
           critical: '#EF4444',
+        },
+        dark: {
+          800: '#141A26',
+          850: '#0E1420',
+          900: '#0B0F19',
+          950: '#06090F',
         }
       },
       borderRadius: {
@@ -51,6 +57,10 @@ export default {
         'subtle': '0 1px 2px 0 rgba(0, 0, 0, 0.4)',
         'elevated': '0 4px 20px -2px rgba(0, 0, 0, 0.5)',
         'card': '0 8px 24px -4px rgba(0, 0, 0, 0.6)',
+        'glow-cyan-sm': '0 0 12px rgba(6, 182, 212, 0.25)',
+        'glow-critical': '0 0 16px rgba(239, 68, 68, 0.30)',
+        'glow-amber': '0 0 16px rgba(245, 158, 11, 0.30)',
+        'glow-green': '0 0 16px rgba(34, 197, 94, 0.30)',
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',

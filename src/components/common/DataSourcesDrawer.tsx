@@ -11,6 +11,7 @@ import {
   RefreshCw,
   Server
 } from 'lucide-react';
+import { SkeletonLoader } from './SkeletonLoader';
 
 interface DataSourcesDrawerProps {
   isOpen: boolean;
@@ -88,52 +89,79 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
 
           {/* Sources List */}
           <div className="space-y-2.5">
-            {statuses.map(s => {
-              const isLive = s.source === 'live';
-              const isCached = s.source === 'cached';
-
-              return (
+            {isRefreshing ? (
+              Array.from({ length: 6 }).map((_, idx) => (
                 <div 
-                  key={s.id}
-                  className="p-3.5 rounded-xl glass-tab hover:border-white/20 transition-all flex items-center justify-between gap-4 shadow-sm"
+                  key={idx}
+                  className="p-3.5 rounded-xl glass-tab flex items-center justify-between gap-4 animate-fade-in"
                 >
-                  <div className="space-y-1">
+                  <div className="space-y-2 flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-semibold text-[#F8FAFC]">{s.name}</span>
-                      <span className={`text-xs font-mono px-2 py-0.5 rounded-full border ${
-                        isLive 
-                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25 font-bold'
-                          : isCached
-                          ? 'bg-cyan-500/10 text-cyan-electric border-cyan-500/25 font-bold'
-                          : 'bg-amber-500/10 text-amber-400 border-amber-500/25 font-bold'
-                      }`}>
-                        {isLive ? '● LIVE' : isCached ? '● CACHED' : '● SIMULATED'}
-                      </span>
+                      <SkeletonLoader className="h-4 w-32 rounded-md" />
+                      <SkeletonLoader className="h-4 w-16 rounded-full" />
                     </div>
-
-                    {s.fallbackReason && (
-                      <p className="text-xs text-slate-400 font-mono">
-                        {s.fallbackReason}
-                      </p>
-                    )}
+                    <SkeletonLoader className="h-3 w-48 rounded" />
                   </div>
-
                   <div className="flex items-center gap-4 text-right shrink-0">
-                    <div>
-                      <div className="text-xs font-mono text-slate-400">LATENCY</div>
-                      <div className="text-xs font-mono font-bold text-white">{s.latencyMs} ms</div>
+                    <div className="space-y-1">
+                      <SkeletonLoader className="h-3 w-12 rounded ml-auto" />
+                      <SkeletonLoader className="h-3 w-16 rounded ml-auto" />
                     </div>
-                    <div>
-                      <div className="text-xs font-mono text-slate-400">STATUS</div>
-                      <div className="flex items-center gap-1 text-xs font-mono text-emerald-400">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        <span className="capitalize">{s.status}</span>
-                      </div>
+                    <div className="space-y-1">
+                      <SkeletonLoader className="h-3 w-10 rounded ml-auto" />
+                      <SkeletonLoader className="h-3 w-14 rounded ml-auto" />
                     </div>
                   </div>
                 </div>
-              );
-            })}
+              ))
+            ) : (
+              statuses.map(s => {
+                const isLive = s.source === 'live';
+                const isCached = s.source === 'cached';
+
+                return (
+                  <div 
+                    key={s.id}
+                    className="p-3.5 rounded-xl glass-tab hover:border-white/20 transition-all flex items-center justify-between gap-4 shadow-sm"
+                  >
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-semibold text-[#F8FAFC]">{s.name}</span>
+                        <span className={`text-xs font-mono px-2 py-0.5 rounded-full border ${
+                          isLive 
+                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25 font-bold'
+                            : isCached
+                            ? 'bg-cyan-500/10 text-cyan-electric border-cyan-500/25 font-bold'
+                            : 'bg-amber-500/10 text-amber-400 border-amber-500/25 font-bold'
+                        }`}>
+                          {isLive ? '● LIVE' : isCached ? '● CACHED' : '● SIMULATED'}
+                        </span>
+                      </div>
+
+                      {s.fallbackReason && (
+                        <p className="text-xs text-slate-400 font-mono">
+                          {s.fallbackReason}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-4 text-right shrink-0">
+                      <div>
+                        <div className="text-xs font-mono text-slate-400">LATENCY</div>
+                        <div className="text-xs font-mono font-bold text-white">{s.latencyMs} ms</div>
+                      </div>
+                      <div>
+                        <div className="text-xs font-mono text-slate-400">STATUS</div>
+                        <div className="flex items-center gap-1 text-xs font-mono text-emerald-400">
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          <span className="capitalize">{s.status}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </div>
 
           {/* Orchestration Pipeline Architecture Summary */}
@@ -164,7 +192,7 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
                   <div className="font-semibold text-[#F8FAFC] group-hover:text-cyan-electric transition-colors">Open-Meteo</div>
                   <div className="text-xs text-slate-400">Free open-meteo weather API terms</div>
                 </div>
-                <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-electric shrink-0" />
+                <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-cyan-electric shrink-0" />
               </a>
 
               <a 
@@ -177,7 +205,7 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
                   <div className="font-semibold text-[#F8FAFC] group-hover:text-cyan-electric transition-colors">OpenStreetMap Policies</div>
                   <div className="text-xs text-slate-400">OSMF tile usage & fair-use rules</div>
                 </div>
-                <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-electric shrink-0" />
+                <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-cyan-electric shrink-0" />
               </a>
 
               <a 
@@ -190,7 +218,7 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
                   <div className="font-semibold text-[#F8FAFC] group-hover:text-cyan-electric transition-colors">Nominatim Usage Policy</div>
                   <div className="text-xs text-slate-400">1 req/s max, no auto-complete spam</div>
                 </div>
-                <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-electric shrink-0" />
+                <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-cyan-electric shrink-0" />
               </a>
 
               <a 
@@ -203,7 +231,7 @@ export const DataSourcesDrawer: React.FC<DataSourcesDrawerProps> = ({ isOpen, on
                   <div className="font-semibold text-[#F8FAFC] group-hover:text-cyan-electric transition-colors">OSRM Documentation</div>
                   <div className="text-xs text-slate-400">Routing protocol & HTTP endpoints</div>
                 </div>
-                <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-electric shrink-0" />
+                <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-cyan-electric shrink-0" />
               </a>
             </div>
           </div>

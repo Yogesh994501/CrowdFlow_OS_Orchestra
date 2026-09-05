@@ -198,7 +198,7 @@ export const MobilityScreen: React.FC = () => {
                 <Sparkles className="w-4 h-4 text-cyan-300 animate-pulse" />
                 Contextual Intelligence
               </span>
-              <span className="text-slate-500 font-mono">Real-time inference</span>
+              <span className="text-slate-400 font-mono">Real-time inference</span>
             </div>
             
             <div className="p-3.5 rounded-xl bg-cyan-950/40 border border-cyan-500/20 text-xs space-y-2">

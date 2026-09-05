@@ -57,6 +57,19 @@ export const TopNav: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
+  // ESC key dismissal for accessible drawer control
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsMobileDrawerOpen(false);
+      }
+    };
+    if (isMobileDrawerOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isMobileDrawerOpen]);
+
   const unreadAlerts = alerts.filter(a => !a.acknowledged);
 
   const roles: { role: UserRole; label: string; icon: React.ElementType }[] = [
@@ -138,7 +151,7 @@ export const TopNav: React.FC = () => {
             <div className="hidden lg:flex items-center gap-2 text-xs font-mono text-slate-300 px-3 py-1.5 rounded-xl glass-tab">
               <CloudRain className="w-3.5 h-3.5 text-cyan-400" />
               <span>{weather.temperature}°C</span>
-              <span className="text-slate-500">•</span>
+              <span className="text-slate-400">•</span>
               <span className="text-slate-400">{weather.condition}</span>
             </div>
 
@@ -520,6 +533,24 @@ export const TopNav: React.FC = () => {
                     <Smartphone className="w-4 h-4 text-emerald-400" />
                     <span>Attendee Portal</span>
                   </button>
+                </div>
+
+                {/* Mobile Operational Scenario Picker */}
+                <div className="space-y-1.5 pt-2 border-t border-white/10">
+                  <div className="text-xs uppercase tracking-widest text-slate-400 font-semibold px-2">
+                    SIMULATION SCENARIO
+                  </div>
+                  <select
+                    value={currentScenario}
+                    onChange={e => { setScenario(e.target.value as any); setIsMobileDrawerOpen(false); }}
+                    className="w-full bg-dark-900 border border-white/10 rounded-xl px-3 py-2 text-xs font-mono text-cyan-300 focus:outline-none focus:border-cyan-500/50"
+                  >
+                    {scenarios.map(s => (
+                      <option key={s.id} value={s.id} className="bg-dark-950 text-white">
+                        {s.label} ({s.tag})
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
               </div>

@@ -323,7 +323,7 @@ export const DataSourcePanel: React.FC = () => {
 
           {/* Open Data Policies Link Footer (Fair Use Transparency) */}
           <div className="px-3 py-2 bg-[#090C14] border-t border-white/[0.04] flex items-center justify-between text-xs text-slate-400 font-mono">
-            <span className="flex items-center gap-1 text-slate-500">
+            <span className="flex items-center gap-1 text-slate-400">
               <ShieldCheck className="w-3 h-3 text-cyan-400" />
               Free Open Services Only
             </span>

@@ -318,7 +318,7 @@ export const CapacityScreen: React.FC = () => {
                 placeholder="Search hotel or zone..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="pl-8 pr-3 py-1.5 rounded-xl bg-dark-900 border border-white/10 text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 w-48"
+                className="pl-8 pr-3 py-1.5 rounded-xl bg-dark-900 border border-white/10 text-xs font-mono text-white placeholder-slate-400 focus:outline-none focus:border-cyan-500/50 w-48"
               />
             </div>
 

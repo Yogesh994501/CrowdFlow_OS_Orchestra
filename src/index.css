@@ -21,8 +21,24 @@
   }
 
   /* Strict WCAG minimum font size safeguard */
-  body, button, input, select, textarea {
-    font-size: 12px;
+  body, button, input, select, textarea, span, p, a, label {
+    min-font-size: 12px;
+  }
+
+  /* Monospace Tabular Figures - Prevents numeric layout jitter */
+  .font-mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Accessible Keyboard Focus Rings */
+  button:focus-visible, 
+  a:focus-visible, 
+  input:focus-visible, 
+  select:focus-visible, 
+  textarea:focus-visible {
+    outline: 2px solid rgba(6, 182, 212, 0.8) !important;
+    outline-offset: 2px !important;
   }
 
   /* Global Sleek Slim Webkit Scrollbars */
@@ -45,6 +61,28 @@
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.22);
   }
+}
+
+/* Engineered Skeleton Loading States */
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.09) 50%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.8s infinite ease-in-out;
+  border-radius: 8px;
 }
 
 /* ========================================================================= */
