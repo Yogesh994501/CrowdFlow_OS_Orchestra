@@ -33,10 +33,79 @@ import { soundService } from '../services/soundService';
 
 export type OpsTheme = 'rail' | 'monsoon' | 'metro' | 'glass';
 
+export interface MegaEvent {
+  id: string;
+  name: string;
+  shortName: string;
+  venue: string;
+  date: string;
+  currentDay: string;
+  expectedAttendance: number;
+  description: string;
+  primaryZone: string;
+  tag: string;
+}
+
+export const DEFAULT_EVENTS: MegaEvent[] = [
+  {
+    id: 'mumbai_tech_2026',
+    name: 'Mumbai Mega Event 2026',
+    shortName: 'Mega Event 2026',
+    venue: 'Jio World Convention Centre (BKC)',
+    date: 'Oct 24-26, 2026',
+    currentDay: 'Day 1 of 3',
+    expectedAttendance: 65000,
+    description: 'International delegations, business summits & multi-sector keynotes across BKC.',
+    primaryZone: 'bkc',
+    tag: 'Flagship Tech Summit'
+  },
+  {
+    id: 'wankhede_icc_final',
+    name: 'Wankhede Cricket World Final',
+    shortName: 'ICC Final 2026',
+    venue: 'Wankhede Stadium (Marine Lines)',
+    date: 'Nov 14, 2026',
+    currentDay: 'Match Day (Evening)',
+    expectedAttendance: 48000,
+    description: 'Championship final with high railway surge at Churchgate and Marine Drive arterial hold.',
+    primaryZone: 'colaba',
+    tag: 'Stadium Ingress Peak'
+  },
+  {
+    id: 'ganesh_visarjan',
+    name: 'Ganesh Utsav Maha Visarjan',
+    shortName: 'Ganesh Visarjan',
+    venue: 'Girgaon Chowpatty & Coastal Corridor',
+    date: 'Sep 28, 2026',
+    currentDay: 'Anant Chaturdashi',
+    expectedAttendance: 250000,
+    description: 'Massive public congregation with multi-line suburban railway diversions and pedestrian plazas.',
+    primaryZone: 'dadar',
+    tag: 'Civic Scale Concourse'
+  },
+  {
+    id: 'mmrda_cultural_fest',
+    name: 'MMRDA Global Music & Cultural Expo',
+    shortName: 'MMRDA Expo 2026',
+    venue: 'MMRDA Open Grounds (BKC North)',
+    date: 'Dec 18-19, 2026',
+    currentDay: 'Day 2 of 2',
+    expectedAttendance: 85000,
+    description: 'Night headline concert with dedicated shuttle loops to Bandra East and Kurla interchanges.',
+    primaryZone: 'andheri',
+    tag: 'Nocturnal Egress Surge'
+  }
+];
+
 interface CrowdFlowState {
   // Visual Theme Engine
   activeTheme: OpsTheme;
   setTheme: (theme: OpsTheme) => void;
+
+  // Active Event Context
+  events: MegaEvent[];
+  activeEventId: string;
+  setActiveEvent: (eventId: string) => void;
 
   // Temporal Prediction Engine
   temporalMinutes: number;
@@ -311,6 +380,17 @@ export const useCrowdFlowStore = create<CrowdFlowState>((set, get) => ({
     }
     soundService.playTickClick();
     set({ activeTheme: theme });
+  },
+
+  // Active Event Context
+  events: DEFAULT_EVENTS,
+  activeEventId: (typeof window !== 'undefined' ? localStorage.getItem('crowdflow_active_event') || 'mumbai_tech_2026' : 'mumbai_tech_2026'),
+  setActiveEvent: (eventId: string) => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('crowdflow_active_event', eventId);
+    }
+    soundService.playTickClick();
+    set({ activeEventId: eventId });
   },
 
   // Temporal Prediction Engine

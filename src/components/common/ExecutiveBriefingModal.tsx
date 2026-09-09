@@ -29,8 +29,16 @@ export const ExecutiveBriefingModal: React.FC<ExecutiveBriefingModalProps> = ({
     interventions, 
     currentScenario, 
     weather,
-    temporalMinutes 
+    temporalMinutes,
+    events,
+    activeEventId
   } = useCrowdFlowStore();
+
+  const currentEvent = events?.find(e => e.id === activeEventId) || events?.[0] || {
+    name: 'Mumbai Mega Event 2026',
+    venue: 'Jio World Convention Centre (BKC)',
+    currentDay: 'Day 1 of 3'
+  };
 
   const [copied, setCopied] = useState(false);
 
@@ -51,7 +59,7 @@ export const ExecutiveBriefingModal: React.FC<ExecutiveBriefingModalProps> = ({
 
   const generateMarkdown = () => {
     return `# CrowdFlow OS - Executive Incident Briefing
-**Event**: Mumbai Mega Event 2026 (Jio World Convention Centre & Metropolitan Sectors)
+**Event**: ${currentEvent.name} (${currentEvent.venue}) • ${currentEvent.currentDay}
 **Generated**: ${reportDate} at ${reportTime}
 **Active Scenario**: ${currentScenario.toUpperCase()}
 **Metropolitan Risk Index**: ${avgPressure} / 100
@@ -166,7 +174,7 @@ ${alerts.slice(0, 5).map(a => `- **[${a.severity.toUpperCase()}]** ${a.title} ($
               </span>
             </div>
             <h1 className="text-2xl font-extrabold text-white tracking-tight mt-1 print:text-black">
-              Mumbai Mega Event 2026 — Operations Briefing
+              {currentEvent.name} — Operations Briefing
             </h1>
             <p className="text-xs text-slate-300 mt-1 print:text-slate-700">
               Generated via CrowdFlow OS Automated Decision Intelligence Engine.

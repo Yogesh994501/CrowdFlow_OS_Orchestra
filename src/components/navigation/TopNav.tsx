@@ -57,7 +57,10 @@ export const TopNav: React.FC = () => {
     toggleAudioMute,
     isAudioMuted,
     activeTheme,
-    setTheme
+    setTheme,
+    events,
+    activeEventId,
+    setActiveEvent
   } = useCrowdFlowStore();
 
   const [isHealthModalOpen, setIsHealthModalOpen] = useState(false);
@@ -67,8 +70,22 @@ export const TopNav: React.FC = () => {
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isBriefingModalOpen, setIsBriefingModalOpen] = useState(false);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+  const [isEventDropdownOpen, setIsEventDropdownOpen] = useState(false);
   const [secondsAgo, setSecondsAgo] = useState(2);
   const [roleToast, setRoleToast] = useState<string | null>(null);
+
+  const currentEvent = events?.find(e => e.id === activeEventId) || events?.[0] || {
+    id: 'mumbai_tech_2026',
+    name: 'Mumbai Mega Event 2026',
+    shortName: 'Mega Event 2026',
+    venue: 'Jio World Convention Centre (BKC)',
+    date: 'Oct 24-26, 2026',
+    currentDay: 'Day 1 of 3',
+    expectedAttendance: 65000,
+    description: 'International delegations, business summits & multi-sector keynotes across BKC.',
+    primaryZone: 'bkc',
+    tag: 'Flagship Tech Summit'
+  };
 
   // Global Ctrl+K / Cmd+K listener for Command Palette
   useEffect(() => {
@@ -184,11 +201,79 @@ export const TopNav: React.FC = () => {
 
             <div className="h-4 w-[1px] bg-white/[0.08] hidden md:block"></div>
 
-            {/* Event Context Pill */}
-            <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full glass-tab text-xs">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
-              <span className="text-slate-200 font-semibold">Mumbai Mega Event 2026</span>
-              <span className="text-slate-400 font-mono">• Day 1</span>
+            {/* Event Context Selector Dropdown */}
+            <div className="relative hidden md:block">
+              <button
+                onClick={() => setIsEventDropdownOpen(prev => !prev)}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-full glass-tab text-xs hover:border-cyan-400/50 transition-all cursor-pointer border border-white/10 group"
+                title="Click to Switch Active Event"
+                aria-label="Change Active Mega Event"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shrink-0" />
+                <span className="text-slate-200 font-semibold group-hover:text-cyan-300 transition-colors">
+                  {currentEvent.name}
+                </span>
+                <span className="text-slate-400 font-mono">• {currentEvent.currentDay}</span>
+                <ChevronDown className={`w-3 h-3 text-slate-400 group-hover:text-white transition-transform ${isEventDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {isEventDropdownOpen && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setIsEventDropdownOpen(false)} 
+                  />
+                  <div className="absolute left-0 mt-2 w-84 rounded-2xl glass-overlay border border-white/15 p-3 shadow-2xl z-50 space-y-2 animate-fade-in">
+                    <div className="flex items-center justify-between pb-2 border-b border-white/10 px-1">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-semibold flex items-center gap-1.5">
+                        <Calendar className="w-3 h-3 text-cyan-400" />
+                        SWITCH ACTIVE EVENT
+                      </span>
+                      <span className="text-[10px] font-mono text-cyan-300">
+                        {events?.length || 4} Configured
+                      </span>
+                    </div>
+
+                    <div className="space-y-1.5 max-h-80 overflow-y-auto pr-1">
+                      {events?.map(ev => {
+                        const isSelected = ev.id === activeEventId;
+                        return (
+                          <button
+                            key={ev.id}
+                            onClick={() => {
+                              setActiveEvent(ev.id);
+                              setIsEventDropdownOpen(false);
+                              setRoleToast(`Switched event context to ${ev.name}`);
+                              setTimeout(() => setRoleToast(null), 3000);
+                            }}
+                            className={`w-full p-2.5 rounded-xl text-left border transition-all ${
+                              isSelected
+                                ? 'bg-cyan-500/20 text-white border-cyan-400/60 shadow-md'
+                                : 'glass-tab text-slate-300 hover:text-white hover:border-white/20'
+                            }`}
+                          >
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="font-bold text-xs leading-snug">{ev.name}</div>
+                              {isSelected && (
+                                <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-cyan-400 text-slate-950 font-bold uppercase shrink-0">
+                                  Active
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-[11px] text-cyan-300 font-mono mt-0.5 truncate">
+                              📍 {ev.venue}
+                            </div>
+                            <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 mt-1.5 pt-1 border-t border-white/[0.06]">
+                              <span>🗓 {ev.date} ({ev.currentDay})</span>
+                              <span>👥 {(ev.expectedAttendance / 1000).toFixed(0)}k cap</span>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Real-time Status & Live Updated Ticker */}
@@ -624,6 +709,33 @@ export const TopNav: React.FC = () => {
                     Return
                   </span>
                 </button>
+
+                {/* Active Event Selector */}
+                <div className="p-3 rounded-xl glass-tab space-y-2 border border-white/10">
+                  <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-semibold flex items-center justify-between">
+                    <span className="flex items-center gap-1.5">
+                      <Calendar className="w-3.5 h-3.5 text-cyan-400" />
+                      Active Event Context
+                    </span>
+                    <span className="text-cyan-300 font-mono text-[9px]">{currentEvent.currentDay}</span>
+                  </div>
+                  <select
+                    value={activeEventId}
+                    onChange={(e) => {
+                      setActiveEvent(e.target.value);
+                      setIsMobileDrawerOpen(false);
+                      setRoleToast(`Switched event to ${events?.find(ev => ev.id === e.target.value)?.name}`);
+                      setTimeout(() => setRoleToast(null), 3000);
+                    }}
+                    className="w-full bg-slate-900 text-white text-xs rounded-lg px-2.5 py-2 border border-white/15 focus:outline-none focus:border-cyan-400 font-mono cursor-pointer"
+                  >
+                    {events?.map(ev => (
+                      <option key={ev.id} value={ev.id} className="bg-slate-900 text-white">
+                        {ev.name} ({ev.currentDay})
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
                 {/* Event Overview */}
                 <div className="space-y-1">

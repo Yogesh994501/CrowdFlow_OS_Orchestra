@@ -21,13 +21,14 @@ import {
   VolumeX,
   X,
   ArrowRight,
-  Palette
+  Palette,
+  Calendar
 } from 'lucide-react';
 import type { ScreenType, DemoScenario } from '../../types';
 
 interface CommandItem {
   id: string;
-  category: 'Screen' | 'Scenario' | 'Zone' | 'Temporal' | 'Action' | 'Theme';
+  category: 'Screen' | 'Scenario' | 'Zone' | 'Temporal' | 'Action' | 'Theme' | 'Event';
   title: string;
   subtitle?: string;
   icon: React.ComponentType<{ className?: string }>;
@@ -55,7 +56,10 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     isForecastPlaying,
     toggleAudioMute,
     isAudioMuted,
-    setTheme
+    setTheme,
+    events,
+    activeEventId,
+    setActiveEvent
   } = useCrowdFlowStore();
 
   const [query, setQuery] = useState('');
@@ -232,6 +236,20 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       icon: RotateCcw,
       onSelect: () => { setScenario('normal'); onClose(); }
     },
+
+    // Mega Events Context
+    ...(events || []).map(ev => ({
+      id: `event-${ev.id}`,
+      category: 'Event' as const,
+      title: `Switch Event: ${ev.name}`,
+      subtitle: `${ev.venue} • ${ev.currentDay} (${(ev.expectedAttendance / 1000).toFixed(0)}k capacity)`,
+      icon: Calendar,
+      shortcut: ev.id === activeEventId ? 'ACTIVE' : undefined,
+      onSelect: () => {
+        setActiveEvent(ev.id);
+        onClose();
+      }
+    })),
 
     // Zone Inspectors
     {
