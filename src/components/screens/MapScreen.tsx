@@ -20,6 +20,7 @@ import {
   RotateCcw
 } from 'lucide-react';
 import L from 'leaflet';
+import { TemporalScrubber } from '../common/TemporalScrubber';
 
 export const MapScreen: React.FC = () => {
   const { 
@@ -428,6 +429,9 @@ export const MapScreen: React.FC = () => {
         </div>
 
       </div>
+
+      {/* 4D Temporal Prediction Scrubber Dock */}
+      <TemporalScrubber />
 
     </div>
   );

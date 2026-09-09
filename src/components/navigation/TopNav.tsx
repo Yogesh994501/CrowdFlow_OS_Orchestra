@@ -29,10 +29,16 @@ import {
   Home,
   HelpCircle,
   Radio,
-  AlertOctagon
+  AlertOctagon,
+  Search,
+  FileText,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 import { DataSourcesDrawer } from '../common/DataSourcesDrawer';
 import { PressureFormulaModal } from '../common/PressureFormulaModal';
+import { CommandPalette } from '../common/CommandPalette';
+import { ExecutiveBriefingModal } from '../common/ExecutiveBriefingModal';
 
 export const TopNav: React.FC = () => {
   const { 
@@ -46,16 +52,32 @@ export const TopNav: React.FC = () => {
     isMobileDeviceFrame,
     toggleMobileDeviceFrame,
     setActiveScreen,
-    activeScreen
+    activeScreen,
+    toggleAudioMute,
+    isAudioMuted
   } = useCrowdFlowStore();
 
   const [isHealthModalOpen, setIsHealthModalOpen] = useState(false);
   const [isNotificationDrawerOpen, setIsNotificationDrawerOpen] = useState(false);
   const [isDataSourcesOpen, setIsDataSourcesOpen] = useState(false);
   const [isFormulaModalOpen, setIsFormulaModalOpen] = useState(false);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const [isBriefingModalOpen, setIsBriefingModalOpen] = useState(false);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
   const [secondsAgo, setSecondsAgo] = useState(2);
   const [roleToast, setRoleToast] = useState<string | null>(null);
+
+  // Global Ctrl+K / Cmd+K listener for Command Palette
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsCommandPaletteOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, []);
 
   const pendingInterventions = interventions.filter(i => i.status === 'pending');
   const criticalAlerts = alerts.filter(a => a.severity === 'critical');
@@ -188,6 +210,47 @@ export const TopNav: React.FC = () => {
             </div>
 
             <div className="h-4 w-[1px] bg-white/[0.08] hidden sm:block"></div>
+
+            {/* Spotlight Command Palette Trigger */}
+            <button
+              onClick={() => setIsCommandPaletteOpen(true)}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl glass-tab text-slate-300 hover:text-white transition-all text-xs font-mono border-white/10 hover:border-cyan-400/40"
+              title="Spotlight Search & Command Palette (Ctrl+K / ⌘K)"
+              aria-label="Spotlight Command Palette"
+            >
+              <Search className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="hidden xl:inline text-slate-400">Search</span>
+              <kbd className="hidden sm:inline px-1.5 py-0.5 rounded bg-white/[0.08] text-[10px] text-slate-300 border border-white/10">⌘K</kbd>
+            </button>
+
+            {/* Mission-Control Audio Mute Toggle */}
+            <button
+              onClick={toggleAudioMute}
+              className={`p-2 rounded-xl glass-tab transition-all text-xs font-mono border-white/10 ${
+                !isAudioMuted 
+                  ? 'text-cyan-300 border-cyan-400/40 bg-cyan-500/10 shadow-[0_0_12px_rgba(6,182,212,0.25)]' 
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+              title={isAudioMuted ? 'Unmute Operational Audio Alarms' : 'Mute Operational Audio Alarms'}
+              aria-label="Toggle Operational Audio"
+            >
+              {!isAudioMuted ? (
+                <Volume2 className="w-3.5 h-3.5 text-cyan-400" />
+              ) : (
+                <VolumeX className="w-3.5 h-3.5" />
+              )}
+            </button>
+
+            {/* Executive Incident Briefing Exporter */}
+            <button
+              onClick={() => setIsBriefingModalOpen(true)}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl glass-tab text-slate-300 hover:text-white transition-all text-xs font-mono border-white/10 hover:border-cyan-400/40"
+              title="Export Executive Incident Briefing (Print/PDF/Markdown)"
+              aria-label="Export Ops Briefing"
+            >
+              <FileText className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="hidden xl:inline">Briefing</span>
+            </button>
 
             {/* Pressure Formula & Thresholds Guide Button */}
             <button
@@ -719,6 +782,19 @@ export const TopNav: React.FC = () => {
       <PressureFormulaModal
         isOpen={isFormulaModalOpen}
         onClose={() => setIsFormulaModalOpen(false)}
+      />
+
+      {/* Spotlight Command Palette */}
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+        onOpenExportModal={() => setIsBriefingModalOpen(true)}
+      />
+
+      {/* Executive Incident Briefing Modal */}
+      <ExecutiveBriefingModal
+        isOpen={isBriefingModalOpen}
+        onClose={() => setIsBriefingModalOpen(false)}
       />
     </>
   );

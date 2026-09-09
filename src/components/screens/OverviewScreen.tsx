@@ -14,6 +14,7 @@ import { ZonePressureMatrix } from './overview/ZonePressureMatrix';
 import { ActiveAlertsStream } from './overview/ActiveAlertsStream';
 import { ZoneDetailDrawer } from './overview/ZoneDetailDrawer';
 import { PressureFormulaModal } from '../common/PressureFormulaModal';
+import { TemporalScrubber } from '../common/TemporalScrubber';
 
 export const OverviewScreen: React.FC = () => {
   const { 
@@ -293,6 +294,9 @@ export const OverviewScreen: React.FC = () => {
         isOpen={isFormulaModalOpen}
         onClose={() => setIsFormulaModalOpen(false)}
       />
+
+      {/* 7. 4D TEMPORAL PREDICTION SCRUBBER DOCK */}
+      <TemporalScrubber />
 
     </div>
   );

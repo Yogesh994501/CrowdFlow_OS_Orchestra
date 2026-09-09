@@ -27,8 +27,18 @@ import { fallbackManager } from '../orchestrator/fallbackManager';
 import type { DataSourceStatus, OrchestrationHealth } from '../orchestrator/fallbackManager';
 import { EventContextBuilder } from '../orchestrator/eventContextBuilder';
 import type { ZoneContext } from '../orchestrator/eventContextBuilder';
+import { getProjectedZoneTelemetry } from '../services/temporalEngine';
+import type { ScenarioId } from '../services/temporalEngine';
+import { soundService } from '../services/soundService';
 
 interface CrowdFlowState {
+  // Temporal Prediction Engine
+  temporalMinutes: number;
+  isForecastPlaying: boolean;
+  isAudioMuted: boolean;
+  setTemporalMinutes: (minutes: number) => void;
+  setIsForecastPlaying: (playing: boolean) => void;
+  toggleAudioMute: () => void;
   // Navigation & Role
   currentRole: UserRole;
   currentScenario: DemoScenario;
@@ -286,6 +296,57 @@ export const useCrowdFlowStore = create<CrowdFlowState>((set, get) => ({
   },
   simulationResult: null,
 
+  // Temporal Prediction Engine
+  temporalMinutes: 0,
+  isForecastPlaying: false,
+  isAudioMuted: soundService.getIsMuted(),
+
+  setTemporalMinutes: (minutes: number) => {
+    const clamped = Math.max(0, Math.min(180, minutes));
+    const { currentScenario, zones, isAudioMuted } = get();
+
+    if (clamped === 0) {
+      // Revert to current scenario base zones
+      get().setScenario(currentScenario);
+      set({ temporalMinutes: 0 });
+      return;
+    }
+
+    const prevBkc = zones.find(z => z.id === 'bkc')?.pressureScore ?? 0;
+
+    const updatedZones = zones.map(zone => {
+      const telemetry = getProjectedZoneTelemetry(currentScenario as ScenarioId, zone.id, clamped);
+      let status: PressureStatus = 'stable';
+      if (telemetry.pressure >= 85) status = 'critical';
+      else if (telemetry.pressure >= 70) status = 'high';
+      else if (telemetry.pressure >= 50) status = 'watch';
+
+      return {
+        ...zone,
+        pressureScore: telemetry.pressure,
+        transitLoad: telemetry.transitCongestion,
+        predictedArrivals: telemetry.arrivals,
+        status
+      };
+    });
+
+    const newBkc = updatedZones.find(z => z.id === 'bkc')?.pressureScore ?? 0;
+    if (prevBkc < 75 && newBkc >= 75 && !isAudioMuted) {
+      soundService.playWarningBeep();
+    }
+
+    set({ temporalMinutes: clamped, zones: updatedZones });
+  },
+
+  setIsForecastPlaying: (playing: boolean) => {
+    set({ isForecastPlaying: playing });
+  },
+
+  toggleAudioMute: () => {
+    const newMuted = soundService.toggleMute();
+    set({ isAudioMuted: newMuted });
+  },
+
   setRole: (role: UserRole) => {
     let nextScreen: CrowdFlowState['activeScreen'] = get().activeScreen;
     if (role === 'attendee') {
@@ -528,6 +589,10 @@ export const useCrowdFlowStore = create<CrowdFlowState>((set, get) => ({
       zones: updatedZones,
       alerts: updatedAlerts
     });
+
+    if (!get().isAudioMuted) {
+      soundService.playSuccessChime();
+    }
   },
 
   acknowledgeAlert: (id: string) => {
