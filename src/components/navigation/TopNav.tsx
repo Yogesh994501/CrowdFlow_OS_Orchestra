@@ -141,11 +141,12 @@ export const TopNav: React.FC = () => {
           
           {/* Left: Hamburger (Mobile) & Operation Breadcrumb & Brand */}
           <div className="flex items-center gap-2.5 shrink-0">
-            {/* Operator Mobile Drawer Hamburger Button */}
+            {/* Command Center Navigation Menu Hamburger Button */}
             <button
               onClick={() => setIsMobileDrawerOpen(true)}
-              className="md:hidden p-2 rounded-xl glass-tab text-slate-300 hover:text-white transition-colors"
-              title="Open Operator Navigation"
+              className="p-2 rounded-xl glass-tab text-slate-300 hover:text-white transition-colors border border-white/10 hover:border-cyan-400/40 flex items-center justify-center shrink-0"
+              title="Open Command Center Navigation Menu"
+              aria-label="Open Command Center Navigation Menu"
             >
               <Menu className="w-4 h-4 text-cyan-400" />
             </button>
@@ -571,9 +572,9 @@ export const TopNav: React.FC = () => {
         </div>
       )}
 
-      {/* Operator Mobile Navigation Drawer (< md screens) */}
+      {/* Operator & Command Center Navigation Drawer */}
       {isMobileDrawerOpen && (
-        <div className="fixed inset-0 z-50 flex md:hidden animate-fade-in">
+        <div className="fixed inset-0 z-50 flex animate-fade-in">
           {/* Backdrop */}
           <div 
             className="fixed inset-0 bg-black/70 backdrop-blur-md" 
