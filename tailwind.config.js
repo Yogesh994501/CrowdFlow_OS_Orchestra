@@ -53,6 +53,9 @@ export default {
         sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
+      fontSize: {
+        'xs': ['clamp(12px, 0.75rem, 13px)', { lineHeight: '1.15rem' }],
+      },
       boxShadow: {
         'subtle': '0 1px 2px 0 rgba(0, 0, 0, 0.4)',
         'elevated': '0 4px 20px -2px rgba(0, 0, 0, 0.5)',

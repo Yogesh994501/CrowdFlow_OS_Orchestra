@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useCrowdFlowStore } from '../../store/useCrowdFlowStore';
 import { 
   FlaskConical, 
@@ -54,35 +54,48 @@ export const SimulationScreen: React.FC = () => {
     simulationParams.emergencyShuttleAdded
   ]);
 
-  const currentAvgPressure = Math.round(zones.reduce((s, z) => s + z.pressureScore, 0) / zones.length);
-  const currentCritical = zones.filter(z => z.status === 'critical').length;
+  const currentAvgPressure = useMemo(() => {
+    if (zones.length === 0) return 0;
+    return Math.round(zones.reduce((s, z) => s + z.pressureScore, 0) / zones.length);
+  }, [zones]);
 
-  const comparisonData = [
+  const currentCritical = useMemo(() => {
+    return zones.filter(z => z.status === 'critical').length;
+  }, [zones]);
+
+  const simulatedPressure = simulationResult?.simulatedPressureAverage ?? Math.min(100, currentAvgPressure + 14);
+  const afterPressure = simulationResult?.afterInterventionPressure ?? Math.max(20, currentAvgPressure - 6);
+  const simulatedCritical = simulationResult?.simulatedCriticalZones ?? Math.min(8, currentCritical + 2);
+  const afterCritical = simulationResult?.afterInterventionCriticalZones ?? Math.max(0, currentCritical - 1);
+  const simulatedDelay = simulationResult?.simulatedTransitDelay ?? 32;
+  const simulatedQueue = simulationResult?.simulatedQueueTime ?? 28;
+
+  const comparisonData = useMemo(() => [
     {
       metric: 'Pressure',
       Current: currentAvgPressure,
-      Simulated: simulationResult?.simulatedPressureAverage || 86,
-      AfterIntervention: simulationResult?.afterInterventionPressure || 68,
+      Simulated: simulatedPressure,
+      AfterIntervention: afterPressure,
     },
     {
       metric: 'Critical Zones',
       Current: currentCritical,
-      Simulated: simulationResult?.simulatedCriticalZones || 4,
-      AfterIntervention: simulationResult?.afterInterventionCriticalZones || 1,
+      Simulated: simulatedCritical,
+      AfterIntervention: afterCritical,
     },
     {
       metric: 'Delay (min)',
       Current: 18,
-      Simulated: simulationResult?.simulatedTransitDelay || 46,
+      Simulated: simulatedDelay,
       AfterIntervention: 24,
     },
     {
       metric: 'Queue (min)',
       Current: 22,
-      Simulated: simulationResult?.simulatedQueueTime || 44,
+      Simulated: simulatedQueue,
       AfterIntervention: 16,
     },
-  ];
+  ], [currentAvgPressure, simulatedPressure, afterPressure, currentCritical, simulatedCritical, afterCritical, simulatedDelay, simulatedQueue]);
 
   return (
     <div className="space-y-6 pb-12 max-w-[1400px] mx-auto">
@@ -90,8 +103,8 @@ export const SimulationScreen: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-white/[0.08]">
         <div>
-          <h1 className="text-xl font-extrabold text-white flex items-center gap-2">
-            <FlaskConical className="w-5 h-5 text-indigo-400" />
+          <h1 className="text-2xl font-extrabold text-white tracking-tight flex items-center gap-2.5">
+            <FlaskConical className="w-6 h-6 text-indigo-400" />
             <span>Simulation Lab — Event Digital Twin</span>
           </h1>
           <p className="text-xs text-slate-400">
@@ -291,18 +304,18 @@ export const SimulationScreen: React.FC = () => {
               <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/25 space-y-1 backdrop-blur-md">
                 <span className="text-xs text-rose-400 uppercase font-bold">2. SIMULATED STRAIN</span>
                 <div className="text-xl font-bold text-rose-400">
-                  Pressure {simulationResult?.simulatedPressureAverage || 86}
+                  Pressure {simulatedPressure}
                 </div>
-                <span className="text-xs text-rose-300">+{Math.max(0, (simulationResult?.simulatedPressureAverage || 86) - currentAvgPressure)} pts increase</span>
+                <span className="text-xs text-rose-300">+{Math.max(0, simulatedPressure - currentAvgPressure)} pts increase</span>
               </div>
 
               <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/25 space-y-1 backdrop-blur-md">
                 <span className="text-xs text-emerald-400 uppercase font-bold">3. AFTER INTERVENTION</span>
                 <div className="text-xl font-bold text-emerald-400">
-                  Pressure {simulationResult?.afterInterventionPressure || 68}
+                  Pressure {afterPressure}
                 </div>
                 <span className="text-xs text-emerald-300 font-semibold">
-                  -{Math.max(0, (simulationResult?.simulatedPressureAverage || 86) - (simulationResult?.afterInterventionPressure || 68))} pts recovered
+                  -{Math.max(0, simulatedPressure - afterPressure)} pts recovered
                 </span>
               </div>
 

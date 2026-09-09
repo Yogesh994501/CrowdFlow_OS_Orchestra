@@ -53,7 +53,7 @@ export const MapScreen: React.FC = () => {
       center: [19.0760, 72.8777],
       zoom: 11,
       zoomControl: false,
-      attributionControl: false,
+      attributionControl: true,
     });
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -240,8 +240,8 @@ export const MapScreen: React.FC = () => {
       {/* Header Bar with quick stats */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-1">
         <div>
-          <h1 className="text-xl font-extrabold text-white flex items-center gap-2">
-            <MapPin className="w-5 h-5 text-cyan-electric" />
+          <h1 className="text-2xl font-extrabold text-white tracking-tight flex items-center gap-2.5">
+            <MapPin className="w-6 h-6 text-cyan-400" />
             <span>Live City Operations Map</span>
           </h1>
           <p className="text-xs text-slate-400">

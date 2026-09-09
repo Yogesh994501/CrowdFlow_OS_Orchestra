@@ -1,25 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useCrowdFlowStore } from '../../store/useCrowdFlowStore';
 import { HyperspeedBackground } from '../backgrounds/HyperspeedBackground';
+import { SkeletonLoader } from '../common/SkeletonLoader';
+import { PressureFormulaModal } from '../common/PressureFormulaModal';
 import { 
   ArrowRight, 
   Smartphone, 
   Activity, 
   ShieldCheck, 
-  ShieldAlert,
-  Radio,
-  Building2,
-  CheckCircle2
+  ShieldAlert, 
+  Radio, 
+  Building2, 
+  CheckCircle2, 
+  HelpCircle 
 } from 'lucide-react';
 
 export const LandingScreen: React.FC = () => {
   const { setActiveScreen, setRole, zones, alerts } = useCrowdFlowStore();
   const [isWarping, setIsWarping] = useState(false);
+  const [isFormulaModalOpen, setIsFormulaModalOpen] = useState(false);
 
-  const totalVisitors = zones.reduce((acc, z) => acc + z.activeVisitors, 0);
-  const activeAttendees = totalVisitors > 0 ? totalVisitors : 48392;
-  const operationalZones = zones.length > 0 ? zones.length : 12;
-  const criticalAlertsCount = alerts.filter(a => a.severity === 'critical').length || 2;
+  const isLoading = zones.length === 0;
+
+  // Memoized aggregated metrics without fabricated fallback numbers
+  const totalVisitors = useMemo(() => {
+    return zones.reduce((acc, z) => acc + z.activeVisitors, 0);
+  }, [zones]);
+
+  const activeAttendees = totalVisitors;
+  const operationalZones = zones.length;
+
+  const criticalAlertsCount = useMemo(() => {
+    return alerts.filter(a => a.severity === 'critical').length;
+  }, [alerts]);
+
+  const avgPressureScore = useMemo(() => {
+    if (zones.length === 0) return 0;
+    return Math.round(zones.reduce((s, z) => s + z.pressureScore, 0) / zones.length);
+  }, [zones]);
+
+  const transitLoadAvg = useMemo(() => {
+    if (zones.length === 0) return 0;
+    return Math.round(zones.reduce((s, z) => s + z.transitLoad, 0) / zones.length);
+  }, [zones]);
+
+  const maxOccupancyInfo = useMemo(() => {
+    if (zones.length === 0) return { maxOcc: 0, zoneName: 'BKC' };
+    const maxOcc = Math.max(...zones.map(z => z.accommodationOccupancy));
+    const found = zones.find(z => z.accommodationOccupancy === maxOcc);
+    return { maxOcc, zoneName: found?.shortName || found?.name || 'BKC' };
+  }, [zones]);
 
   const handleEnterCommandCenter = () => {
     setIsWarping(true);
@@ -63,6 +93,15 @@ export const LandingScreen: React.FC = () => {
           </div>
 
           <button
+            onClick={() => setIsFormulaModalOpen(true)}
+            className="text-xs font-mono text-slate-300 hover:text-white transition-colors hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl glass-tab"
+            title="View Pressure Score Formula & 4-Tier Thresholds"
+          >
+            <HelpCircle className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Formula Guide</span>
+          </button>
+
+          <button
             onClick={handleExploreAttendee}
             className="text-xs font-mono text-slate-300 hover:text-white transition-colors hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl glass-tab"
           >
@@ -80,7 +119,7 @@ export const LandingScreen: React.FC = () => {
         </div>
       </header>
 
-      {/* 3. Hero Section (Section 2 Checklist Structure) */}
+      {/* 3. Hero Section */}
       <main className="relative z-20 max-w-7xl mx-auto px-6 lg:px-12 py-10 flex-1 flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
@@ -141,52 +180,81 @@ export const LandingScreen: React.FC = () => {
             <div className="p-5 rounded-2xl panel-elevated space-y-3 relative shadow-2xl">
               <div className="flex items-center justify-between text-xs font-mono pb-2 border-b border-white/[0.08]">
                 <span className="text-slate-400 uppercase tracking-wider font-semibold">Venue Grid Status</span>
-                <span className={`font-bold flex items-center gap-1 ${
-                  Math.round(zones.reduce((s, z) => s + z.pressureScore, 0) / Math.max(zones.length, 1)) > 75
-                    ? 'text-rose-400' : Math.round(zones.reduce((s, z) => s + z.pressureScore, 0) / Math.max(zones.length, 1)) > 55
-                    ? 'text-amber-400' : 'text-emerald-400'
-                }`}>
-                  <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
-                  {Math.round(zones.reduce((s, z) => s + z.pressureScore, 0) / Math.max(zones.length, 1)) > 75
-                    ? 'CRITICAL WATCH' : Math.round(zones.reduce((s, z) => s + z.pressureScore, 0) / Math.max(zones.length, 1)) > 55
-                    ? 'ELEVATED WATCH' : 'STABLE OPS'}
-                </span>
+                {isLoading ? (
+                  <SkeletonLoader className="h-4 w-28 rounded-md" />
+                ) : (
+                  <span className={`font-bold flex items-center gap-1 ${
+                    avgPressureScore > 75
+                      ? 'text-rose-400' : avgPressureScore > 55
+                      ? 'text-amber-400' : 'text-emerald-400'
+                  }`}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
+                    {avgPressureScore > 75
+                      ? 'CRITICAL WATCH' : avgPressureScore > 55
+                      ? 'ELEVATED WATCH' : 'STABLE OPS'}
+                  </span>
+                )}
               </div>
 
               <div className="flex items-baseline justify-between pt-1">
                 <div>
-                  <div className="text-3xl font-extrabold font-mono text-white">
-                    {Math.round(zones.reduce((s, z) => s + z.pressureScore, 0) / Math.max(zones.length, 1))} <span className="text-xs text-slate-400 font-normal">/ 100</span>
-                  </div>
-                  <div className="text-xs text-slate-300 font-sans mt-0.5">Composite Metropolitan Pressure</div>
+                  {isLoading ? (
+                    <div className="space-y-1">
+                      <SkeletonLoader className="h-9 w-24 rounded-lg" />
+                      <SkeletonLoader className="h-3 w-40 rounded" />
+                    </div>
+                  ) : (
+                    <>
+                      <div className="text-3xl font-extrabold font-mono text-white">
+                        {avgPressureScore} <span className="text-xs text-slate-400 font-normal">/ 100</span>
+                      </div>
+                      <div className="text-xs text-slate-300 font-sans mt-0.5">Composite Metropolitan Pressure</div>
+                    </>
+                  )}
                 </div>
-                <span className="text-xs font-mono text-cyan-300 bg-cyan-500/10 px-2 py-1 rounded-lg border border-cyan-500/20">
-                  {zones.slice(0, 3).map(z => z.shortName).join(' · ')}
-                </span>
+                {isLoading ? (
+                  <SkeletonLoader className="h-6 w-24 rounded-lg" />
+                ) : (
+                  <span className="text-xs font-mono text-cyan-300 bg-cyan-500/10 px-2 py-1 rounded-lg border border-cyan-500/20">
+                    {zones.slice(0, 3).map(z => z.shortName || z.name).join(' · ')}
+                  </span>
+                )}
               </div>
 
               {/* Progress Gauge */}
               <div className="h-2 w-full bg-white/[0.08] rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 transition-all duration-700" 
-                  style={{ width: `${Math.round(zones.reduce((s, z) => s + z.pressureScore, 0) / Math.max(zones.length, 1))}%` }}
-                />
+                {isLoading ? (
+                  <SkeletonLoader className="h-full w-full rounded-full" />
+                ) : (
+                  <div 
+                    className="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 transition-all duration-700" 
+                    style={{ width: `${avgPressureScore}%` }}
+                  />
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-2 pt-2 text-xs font-mono">
                 <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
                   <div className="text-slate-400">Transit Load</div>
-                  <div className="text-sm font-bold text-white mt-0.5">
-                    {Math.round(zones.reduce((s, z) => s + z.transitLoad, 0) / Math.max(zones.length, 1))}% Dynamic
-                  </div>
+                  {isLoading ? (
+                    <SkeletonLoader className="h-4 w-20 rounded mt-1" />
+                  ) : (
+                    <div className="text-sm font-bold text-white mt-0.5">
+                      {transitLoadAvg}% Dynamic
+                    </div>
+                  )}
                 </div>
                 <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
                   <div className="text-slate-400">Hospitality Surge</div>
-                  <div className={`text-sm font-bold mt-0.5 ${
-                    Math.max(...zones.map(z => z.accommodationOccupancy)) > 90 ? 'text-amber-300' : 'text-white'
-                  }`}>
-                    {Math.max(...zones.map(z => z.accommodationOccupancy))}% {zones.find(z => z.accommodationOccupancy === Math.max(...zones.map(z2 => z2.accommodationOccupancy)))?.shortName || 'BKC'}
-                  </div>
+                  {isLoading ? (
+                    <SkeletonLoader className="h-4 w-20 rounded mt-1" />
+                  ) : (
+                    <div className={`text-sm font-bold mt-0.5 ${
+                      maxOccupancyInfo.maxOcc > 90 ? 'text-amber-300' : 'text-white'
+                    }`}>
+                      {maxOccupancyInfo.maxOcc}% {maxOccupancyInfo.zoneName}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -196,44 +264,80 @@ export const LandingScreen: React.FC = () => {
 
         </div>
 
-        {/* 4. Live Metric Pillars (Section 2 Checklist Exact Structure) */}
+        {/* 4. Live Metric Pillars (Never Render Fabricated Numbers) */}
         <div className="mt-14 pt-8 border-t border-white/[0.08] grid grid-cols-2 md:grid-cols-4 gap-6">
           
           <div className="space-y-1">
-            <div className="text-3xl sm:text-4xl font-extrabold font-mono text-white tracking-tight">
-              {activeAttendees.toLocaleString()}
-            </div>
-            <div className="text-xs font-medium text-slate-400 font-sans">
-              Active Attendees
-            </div>
+            {isLoading ? (
+              <div className="space-y-1.5">
+                <SkeletonLoader className="h-9 w-28 rounded-lg" />
+                <SkeletonLoader className="h-3 w-24 rounded" />
+              </div>
+            ) : (
+              <>
+                <div className="text-3xl sm:text-4xl font-extrabold font-mono text-white tracking-tight">
+                  {activeAttendees.toLocaleString()}
+                </div>
+                <div className="text-xs font-medium text-slate-400 font-sans">
+                  Active Attendees
+                </div>
+              </>
+            )}
           </div>
 
           <div className="space-y-1">
-            <div className="text-3xl sm:text-4xl font-extrabold font-mono text-cyan-300 tracking-tight">
-              {operationalZones}
-            </div>
-            <div className="text-xs font-medium text-slate-400 font-sans">
-              Operational Zones
-            </div>
+            {isLoading ? (
+              <div className="space-y-1.5">
+                <SkeletonLoader className="h-9 w-20 rounded-lg" />
+                <SkeletonLoader className="h-3 w-28 rounded" />
+              </div>
+            ) : (
+              <>
+                <div className="text-3xl sm:text-4xl font-extrabold font-mono text-cyan-300 tracking-tight">
+                  {operationalZones}
+                </div>
+                <div className="text-xs font-medium text-slate-400 font-sans">
+                  Operational Zones
+                </div>
+              </>
+            )}
           </div>
 
           <div className="space-y-1">
-            <div className="text-3xl sm:text-4xl font-extrabold font-mono text-emerald-400 tracking-tight">
-              97.8%
-            </div>
-            <div className="text-xs font-medium text-slate-400 font-sans">
-              System Readiness
-            </div>
+            {isLoading ? (
+              <div className="space-y-1.5">
+                <SkeletonLoader className="h-9 w-24 rounded-lg" />
+                <SkeletonLoader className="h-3 w-24 rounded" />
+              </div>
+            ) : (
+              <>
+                <div className="text-3xl sm:text-4xl font-extrabold font-mono text-emerald-400 tracking-tight">
+                  97.8%
+                </div>
+                <div className="text-xs font-medium text-slate-400 font-sans">
+                  System Readiness
+                </div>
+              </>
+            )}
           </div>
 
           <div className="space-y-1">
-            <div className="text-3xl sm:text-4xl font-extrabold font-mono text-rose-400 tracking-tight flex items-center gap-2">
-              <span>{criticalAlertsCount}</span>
-              <ShieldAlert className="w-5 h-5 text-rose-400 opacity-80" />
-            </div>
-            <div className="text-xs font-medium text-slate-400 font-sans">
-              Critical Alerts
-            </div>
+            {isLoading ? (
+              <div className="space-y-1.5">
+                <SkeletonLoader className="h-9 w-20 rounded-lg" />
+                <SkeletonLoader className="h-3 w-24 rounded" />
+              </div>
+            ) : (
+              <>
+                <div className="text-3xl sm:text-4xl font-extrabold font-mono text-rose-400 tracking-tight flex items-center gap-2">
+                  <span>{criticalAlertsCount}</span>
+                  <ShieldAlert className="w-5 h-5 text-rose-400 opacity-80" />
+                </div>
+                <div className="text-xs font-medium text-slate-400 font-sans">
+                  Critical Alerts
+                </div>
+              </>
+            )}
           </div>
 
         </div>
@@ -246,7 +350,12 @@ export const LandingScreen: React.FC = () => {
         <span className="hidden sm:inline">FLOW → DETECTION → PREDICTION → INTERVENTION → IMPACT</span>
       </footer>
 
+      {/* Pressure Score Formula & Thresholds Guide Modal */}
+      <PressureFormulaModal
+        isOpen={isFormulaModalOpen}
+        onClose={() => setIsFormulaModalOpen(false)}
+      />
+
     </div>
   );
 };
-

@@ -13,7 +13,8 @@ import {
   Smartphone,
   ChevronLeft,
   ChevronRight,
-  Radio
+  Radio,
+  AlertOctagon
 } from 'lucide-react';
 
 interface SidebarNavItem {
@@ -22,6 +23,7 @@ interface SidebarNavItem {
   icon: React.ComponentType<{ className?: string }>;
   badge?: string | null;
   badgeColor?: string;
+  badgeIcon?: React.ComponentType<{ className?: string }>;
 }
 
 export const Sidebar: React.FC = () => {
@@ -33,7 +35,7 @@ export const Sidebar: React.FC = () => {
 
   const overviewNav: SidebarNavItem[] = [
     { id: 'overview', label: 'Command Center', icon: LayoutDashboard, badge: null },
-    { id: 'map', label: 'Live City Map', icon: MapPin, badge: 'Live', badgeColor: 'bg-cyan-500/10 text-cyan-300 border-cyan-500/25' },
+    { id: 'map', label: 'Live City Map', icon: MapPin, badge: 'Live', badgeColor: 'bg-cyan-500/10 text-cyan-300 border-cyan-500/25', badgeIcon: Radio },
   ];
 
   const intelligenceNav: SidebarNavItem[] = [
@@ -44,7 +46,8 @@ export const Sidebar: React.FC = () => {
       label: 'Alert Center', 
       icon: ShieldAlert, 
       badge: criticalAlerts.length > 0 ? `${criticalAlerts.length}` : null,
-      badgeColor: 'bg-rose-500/15 text-rose-400 border-rose-500/25'
+      badgeColor: 'bg-rose-500/15 text-rose-400 border-rose-500/25',
+      badgeIcon: AlertOctagon
     },
   ];
 
@@ -54,7 +57,8 @@ export const Sidebar: React.FC = () => {
       label: 'Interventions', 
       icon: Sparkles, 
       badge: pendingInterventions.length > 0 ? `${pendingInterventions.length}` : null,
-      badgeColor: 'bg-cyan-500/10 text-cyan-300 border-cyan-500/25'
+      badgeColor: 'bg-cyan-500/10 text-cyan-300 border-cyan-500/25',
+      badgeIcon: Sparkles
     },
     { id: 'simulation', label: 'Simulation Lab', icon: FlaskConical, badge: 'Twin', badgeColor: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/25' },
     { id: 'dependency', label: 'Resource Cascades', icon: GitBranch, badge: null },
@@ -74,12 +78,13 @@ export const Sidebar: React.FC = () => {
       )}
       {items.map(item => {
         const Icon = item.icon;
+        const BadgeIcon = item.badgeIcon;
         const isActive = activeScreen === item.id;
         return (
           <button
             key={item.id}
             onClick={() => setActiveScreen(item.id as any)}
-            title={isCollapsed ? item.label : undefined}
+            title={isCollapsed ? `${item.label}${item.badge ? ` (${item.badge})` : ''}` : undefined}
             tabIndex={0}
             aria-label={`Navigate to ${item.label}`}
             className={`w-full flex items-center ${isCollapsed ? 'justify-center px-2 py-2.5' : 'justify-between px-3 py-2'} rounded-xl text-xs font-medium transition-all group relative ${
@@ -92,12 +97,18 @@ export const Sidebar: React.FC = () => {
               {isActive && (
                 <span className="absolute -left-3 w-1.5 h-5 bg-cyan-400 rounded-r-full shadow-[0_0_12px_rgba(6,182,212,0.8)]" />
               )}
-              <Icon className={`w-4 h-4 shrink-0 transition-colors ${isActive ? 'text-cyan-300' : 'text-slate-400 group-hover:text-cyan-300'}`} />
+              <div className="relative">
+                <Icon className={`w-4 h-4 shrink-0 transition-colors ${isActive ? 'text-cyan-300' : 'text-slate-400 group-hover:text-cyan-300'}`} />
+                {isCollapsed && item.badge && (
+                  <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_6px_rgba(6,182,212,0.8)]" />
+                )}
+              </div>
               {!isCollapsed && <span className="tracking-tight truncate">{item.label}</span>}
             </div>
             {!isCollapsed && item.badge && (
-              <span className={`text-xs font-mono px-2 py-0.5 rounded border ${item.badgeColor} shrink-0`}>
-                {item.badge}
+              <span className={`text-xs font-mono px-2 py-0.5 rounded border ${item.badgeColor} shrink-0 flex items-center gap-1`}>
+                {BadgeIcon && <BadgeIcon className="w-3 h-3 shrink-0" />}
+                <span>{item.badge}</span>
               </span>
             )}
           </button>

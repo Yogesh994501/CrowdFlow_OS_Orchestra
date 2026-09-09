@@ -66,7 +66,7 @@ export const ExplainabilityPanel: React.FC<ExplainabilityPanelProps> = ({
               🔴 Current State (Bottleneck)
             </span>
             <span className="text-xs font-mono font-bold text-rose-300">
-              Pressure: {intervention.beforePressure ?? 91}/100
+              Pressure: {intervention.beforePressure !== undefined ? `${intervention.beforePressure}/100` : 'Critical'}
             </span>
           </div>
           <p className="text-xs text-rose-200/90 leading-relaxed font-sans">
@@ -78,11 +78,14 @@ export const ExplainabilityPanel: React.FC<ExplainabilityPanelProps> = ({
         <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/25 space-y-1.5">
           <div className="flex items-center justify-between">
             <span className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold flex items-center gap-1">
-              🟢 Predicted State (Post-Action)
+              🟢 Target State (Mitigated)
             </span>
-            <span className="text-xs font-mono font-bold text-emerald-300 flex items-center gap-1">
-              <TrendingDown className="w-3.5 h-3.5" />
-              -{intervention.pressureReduction} pts reduction
+            <span className="text-xs font-mono font-bold text-emerald-300">
+              Pressure: {intervention.afterPressure !== undefined 
+                ? `${intervention.afterPressure}/100` 
+                : intervention.beforePressure 
+                ? `${Math.max(0, intervention.beforePressure - intervention.pressureReduction)}/100` 
+                : 'Controlled'}
             </span>
           </div>
           <p className="text-xs text-emerald-200/90 leading-relaxed font-sans">

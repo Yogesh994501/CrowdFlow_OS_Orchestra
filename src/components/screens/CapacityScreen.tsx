@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useCrowdFlowStore } from '../../store/useCrowdFlowStore';
 import { StatusBadge } from '../common/StatusBadge';
 import { accommodationService } from '../../services/accommodationService';
@@ -42,20 +42,32 @@ export const CapacityScreen: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [publishSuccessMsg, setPublishSuccessMsg] = useState<string | null>(null);
 
-  // Overflow ranked recommendations
-  const bkcZone = zones.find(z => z.id === 'bkc');
-  const overflowOptions = accommodationService.getRankedOverflowOptions(accommodations, bkcZone?.pressureScore ?? 91);
+  // Memoized overflow ranked recommendations based on live store data
+  const bkcZone = useMemo(() => zones.find(z => z.id === 'bkc'), [zones]);
+  const bkcPressure = useMemo(() => {
+    if (bkcZone) return bkcZone.pressureScore;
+    if (zones.length === 0) return 0;
+    return Math.round(zones.reduce((s, z) => s + z.pressureScore, 0) / zones.length);
+  }, [bkcZone, zones]);
 
-  // Filtered accommodations
-  const filteredAccommodations = accommodations.filter(acc => {
-    const matchesZone = selectedZoneFilter === 'all' || acc.zoneId === selectedZoneFilter;
-    const matchesStatus = selectedStatusFilter === 'all' || acc.status === selectedStatusFilter;
-    const matchesQuery = acc.name.toLowerCase().includes(searchQuery.toLowerCase()) || acc.zoneName.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesZone && matchesStatus && matchesQuery;
-  });
+  const overflowOptions = useMemo(() => {
+    return accommodationService.getRankedOverflowOptions(accommodations, bkcPressure);
+  }, [accommodations, bkcPressure]);
+
+  // Filtered accommodations with memoization
+  const filteredAccommodations = useMemo(() => {
+    return accommodations.filter(acc => {
+      const matchesZone = selectedZoneFilter === 'all' || acc.zoneId === selectedZoneFilter;
+      const matchesStatus = selectedStatusFilter === 'all' || acc.status === selectedStatusFilter;
+      const matchesQuery = !searchQuery || 
+        acc.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        acc.zoneName.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesZone && matchesStatus && matchesQuery;
+    });
+  }, [accommodations, selectedZoneFilter, selectedStatusFilter, searchQuery]);
 
   // Recharts Capacity Trend Data
-  const capacityTrendData = [
+  const capacityTrendData = useMemo(() => [
     { time: '14:00', BKC: 78, Dadar: 70, Goregaon: 48, NaviMumbai: 35, Virar: 22 },
     { time: '15:00', BKC: 84, Dadar: 76, Goregaon: 52, NaviMumbai: 38, Virar: 24 },
     { time: '16:00', BKC: 89, Dadar: 82, Goregaon: 58, NaviMumbai: 42, Virar: 26 },
@@ -63,7 +75,7 @@ export const CapacityScreen: React.FC = () => {
     { time: '18:00', BKC: 98, Dadar: 91, Goregaon: 66, NaviMumbai: 50, Virar: 32 },
     { time: '19:00', BKC: 96, Dadar: 88, Goregaon: 68, NaviMumbai: 52, Virar: 34 },
     { time: '20:00', BKC: 92, Dadar: 84, Goregaon: 65, NaviMumbai: 48, Virar: 30 },
-  ];
+  ], []);
 
   const handlePublishUpdate = () => {
     setPublishSuccessMsg('Capacity telemetry published. Synchronized with Command Center & Attendee Portals.');
@@ -163,7 +175,7 @@ export const CapacityScreen: React.FC = () => {
                 Automated Buffer Diversion
               </span>
               <span className="text-xs font-mono text-slate-300">
-                Active Benchmark: BKC Pressure Score (91/100)
+                Active Benchmark: BKC Pressure Score ({bkcPressure}/100)
               </span>
             </div>
             <h3 className="text-base font-bold text-white mt-1">

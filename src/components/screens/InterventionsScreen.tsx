@@ -163,16 +163,16 @@ export const InterventionsScreen: React.FC = () => {
                       {int.assignedOperator}
                     </td>
                     <td className="py-3 px-3 text-center text-rose-400 font-bold">
-                      {int.beforePressure ?? 91}
+                      {int.beforePressure ?? '—'}
                     </td>
                     <td className="py-3 px-3 text-center text-emerald-400 font-bold">
-                      {int.afterPressure ?? (91 - int.pressureReduction)}
+                      {int.afterPressure ?? (int.beforePressure ? Math.max(0, int.beforePressure - int.pressureReduction) : '—')}
                     </td>
                     <td className="py-3 px-3 text-right text-emerald-300 font-bold">
                       -{int.pressureReduction} pts
                     </td>
                     <td className="py-3 px-3 text-right text-slate-400">
-                      {int.executedAt || '18:15:22'}
+                      {int.executedAt || 'Executed'}
                     </td>
                   </tr>
                 ))}

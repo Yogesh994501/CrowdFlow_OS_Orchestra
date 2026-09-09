@@ -11,18 +11,24 @@
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }
 
+  html {
+    font-size: clamp(14px, 0.95rem + 0.2vw, 16px);
+  }
+
   body {
     background-color: #060A12;
     color: #F8FAFC;
     font-family: var(--font-sans);
+    font-size: clamp(13px, 0.85rem + 0.15vw, 15px);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
 
-  /* Strict WCAG minimum font size safeguard */
-  body, button, input, select, textarea, span, p, a, label {
-    min-font-size: 12px;
+  /* Strict WCAG minimum font size safeguard (enforceable via clamp) */
+  .text-xs, small, sub, sup {
+    font-size: clamp(12px, 0.75rem, 13px) !important;
+    line-height: clamp(16px, 1.15rem, 18px);
   }
 
   /* Monospace Tabular Figures - Prevents numeric layout jitter */
@@ -228,6 +234,29 @@
 
 .leaflet-popup-tip {
   background: #0B1324 !important;
+}
+
+/* Glassmorphic Dark Leaflet Attribution Safeguard */
+.leaflet-control-attribution {
+  background: rgba(6, 10, 18, 0.75) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  color: #94A3B8 !important;
+  font-family: var(--font-mono) !important;
+  font-size: 11px !important;
+  padding: 2px 8px !important;
+  border-radius: 6px 0 0 0 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.leaflet-control-attribution a {
+  color: #22D3EE !important;
+  text-decoration: none !important;
+}
+
+.leaflet-control-attribution a:hover {
+  text-decoration: underline !important;
 }
 
 /* Subtle Animated Flow for Transit */

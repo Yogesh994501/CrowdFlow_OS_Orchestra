@@ -97,9 +97,9 @@ export const AttendeeScreen: React.FC = () => {
                   Entry Normal
                 </span>
               </div>
-              <h2 className="text-xl font-extrabold text-white tracking-tight">
-                Aarav Sharma
-              </h2>
+              <h1 className="text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
+                <span>Aarav Sharma</span>
+              </h1>
             </div>
 
             {/* DOMINANT HERO CARD: Recommended Action (Section 17) */}

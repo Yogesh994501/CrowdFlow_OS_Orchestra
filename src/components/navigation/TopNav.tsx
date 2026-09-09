@@ -25,9 +25,14 @@ import {
   Sparkles,
   FlaskConical,
   GitBranch,
-  Sliders
+  Sliders,
+  Home,
+  HelpCircle,
+  Radio,
+  AlertOctagon
 } from 'lucide-react';
 import { DataSourcesDrawer } from '../common/DataSourcesDrawer';
+import { PressureFormulaModal } from '../common/PressureFormulaModal';
 
 export const TopNav: React.FC = () => {
   const { 
@@ -36,6 +41,7 @@ export const TopNav: React.FC = () => {
     currentScenario, 
     setScenario, 
     alerts, 
+    interventions,
     weather,
     isMobileDeviceFrame,
     toggleMobileDeviceFrame,
@@ -46,9 +52,13 @@ export const TopNav: React.FC = () => {
   const [isHealthModalOpen, setIsHealthModalOpen] = useState(false);
   const [isNotificationDrawerOpen, setIsNotificationDrawerOpen] = useState(false);
   const [isDataSourcesOpen, setIsDataSourcesOpen] = useState(false);
+  const [isFormulaModalOpen, setIsFormulaModalOpen] = useState(false);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
   const [secondsAgo, setSecondsAgo] = useState(2);
   const [roleToast, setRoleToast] = useState<string | null>(null);
+
+  const pendingInterventions = interventions.filter(i => i.status === 'pending');
+  const criticalAlerts = alerts.filter(a => a.severity === 'critical');
 
   const handleRoleSwitch = (role: UserRole) => {
     const label = roles.find(r => r.role === role)?.label || role;
@@ -116,14 +126,15 @@ export const TopNav: React.FC = () => {
             </button>
 
             <div 
-              onClick={() => setActiveScreen('overview')}
+              onClick={() => setActiveScreen('landing')}
               className="flex items-center gap-2.5 cursor-pointer group select-none"
+              title="Return to Home / Landing"
             >
-              <div className="w-8 h-8 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center shadow-[0_0_12px_rgba(6,182,212,0.25)]">
+              <div className="w-8 h-8 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center shadow-[0_0_12px_rgba(6,182,212,0.25)] group-hover:border-cyan-400/60 transition-colors">
                 <Activity className="w-4 h-4 text-cyan-400" />
               </div>
               <div className="flex items-baseline gap-2">
-                <span className="font-bold text-sm tracking-tight text-slate-100">
+                <span className="font-bold text-sm tracking-tight text-slate-100 group-hover:text-cyan-300 transition-colors">
                   CrowdFlow <span className="text-cyan-400 font-mono text-xs">OS</span>
                 </span>
                 <span className="text-xs text-slate-400 hidden sm:inline font-mono">
@@ -131,6 +142,19 @@ export const TopNav: React.FC = () => {
                 </span>
               </div>
             </div>
+
+            {/* Dedicated Home Button */}
+            {activeScreen !== 'landing' && (
+              <button
+                onClick={() => setActiveScreen('landing')}
+                className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl glass-tab text-slate-300 hover:text-white transition-colors flex items-center gap-1.5 text-xs font-mono border-white/10 hover:border-cyan-400/40"
+                title="Back to Home / Landing Screen"
+                aria-label="Back to Home"
+              >
+                <Home className="w-3.5 h-3.5 text-cyan-400" />
+                <span className="hidden sm:inline font-semibold">Home</span>
+              </button>
+            )}
 
             <div className="h-4 w-[1px] bg-white/[0.08] hidden md:block"></div>
 
@@ -164,6 +188,17 @@ export const TopNav: React.FC = () => {
             </div>
 
             <div className="h-4 w-[1px] bg-white/[0.08] hidden sm:block"></div>
+
+            {/* Pressure Formula & Thresholds Guide Button */}
+            <button
+              onClick={() => setIsFormulaModalOpen(true)}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl glass-tab text-slate-300 hover:text-white transition-all text-xs font-mono border-white/10 hover:border-cyan-400/40"
+              title="View Pressure Score Formula & 4-Tier Thresholds"
+              aria-label="Pressure Formula & Thresholds Guide"
+            >
+              <HelpCircle className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="hidden xl:inline">Formula Guide</span>
+            </button>
 
             {/* Unified Data Sources Indicator */}
             <button
@@ -428,6 +463,25 @@ export const TopNav: React.FC = () => {
 
               {/* Navigation Categories */}
               <div className="space-y-4 text-xs font-mono">
+                
+                {/* Home / Landing Navigation Option */}
+                <button
+                  onClick={() => { setActiveScreen('landing'); setIsMobileDrawerOpen(false); }}
+                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all border ${
+                    activeScreen === 'landing'
+                      ? 'glass-tab-active font-bold text-white border-cyan-400/50 shadow-md'
+                      : 'glass-tab text-cyan-300 border-cyan-500/30 hover:border-cyan-400/60'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Home className="w-4 h-4 text-cyan-400" />
+                    <span className="font-semibold">Home / Landing Screen</span>
+                  </div>
+                  <span className="text-xs font-mono px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+                    Return
+                  </span>
+                </button>
+
                 {/* Event Overview */}
                 <div className="space-y-1">
                   <div className="text-xs uppercase tracking-widest text-slate-400 font-semibold px-2 py-0.5">
@@ -444,12 +498,18 @@ export const TopNav: React.FC = () => {
                   </button>
                   <button
                     onClick={() => { setActiveScreen('map'); setIsMobileDrawerOpen(false); }}
-                    className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all ${
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all ${
                       activeScreen === 'map' ? 'glass-tab-active font-bold text-white' : 'glass-tab text-slate-300'
                     }`}
                   >
-                    <MapPin className="w-4 h-4 text-cyan-400" />
-                    <span>Live City Map</span>
+                    <div className="flex items-center gap-2.5">
+                      <MapPin className="w-4 h-4 text-cyan-400" />
+                      <span>Live City Map</span>
+                    </div>
+                    <span className="text-xs font-mono px-2 py-0.5 rounded border bg-cyan-500/10 text-cyan-300 border-cyan-500/25 flex items-center gap-1">
+                      <Radio className="w-3 h-3" />
+                      <span>Live</span>
+                    </span>
                   </button>
                 </div>
 
@@ -486,9 +546,10 @@ export const TopNav: React.FC = () => {
                       <ShieldAlert className="w-4 h-4 text-rose-400" />
                       <span>Alert Center</span>
                     </div>
-                    {unreadAlerts.length > 0 && (
-                      <span className="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs">
-                        {unreadAlerts.length}
+                    {criticalAlerts.length > 0 && (
+                      <span className="px-2 py-0.5 rounded border bg-rose-500/15 text-rose-400 border-rose-500/25 text-xs flex items-center gap-1">
+                        <AlertOctagon className="w-3 h-3" />
+                        <span>{criticalAlerts.length}</span>
                       </span>
                     )}
                   </button>
@@ -501,21 +562,34 @@ export const TopNav: React.FC = () => {
                   </div>
                   <button
                     onClick={() => { setActiveScreen('interventions'); setIsMobileDrawerOpen(false); }}
-                    className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all ${
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all ${
                       activeScreen === 'interventions' ? 'glass-tab-active font-bold text-white' : 'glass-tab text-slate-300'
                     }`}
                   >
-                    <Sparkles className="w-4 h-4 text-cyan-400" />
-                    <span>Interventions</span>
+                    <div className="flex items-center gap-2.5">
+                      <Sparkles className="w-4 h-4 text-cyan-400" />
+                      <span>Interventions</span>
+                    </div>
+                    {pendingInterventions.length > 0 && (
+                      <span className="px-2 py-0.5 rounded border bg-cyan-500/10 text-cyan-300 border-cyan-500/25 text-xs flex items-center gap-1">
+                        <Sparkles className="w-3 h-3" />
+                        <span>{pendingInterventions.length}</span>
+                      </span>
+                    )}
                   </button>
                   <button
                     onClick={() => { setActiveScreen('simulation'); setIsMobileDrawerOpen(false); }}
-                    className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all ${
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all ${
                       activeScreen === 'simulation' ? 'glass-tab-active font-bold text-white' : 'glass-tab text-slate-300'
                     }`}
                   >
-                    <FlaskConical className="w-4 h-4 text-indigo-400" />
-                    <span>Simulation Lab</span>
+                    <div className="flex items-center gap-2.5">
+                      <FlaskConical className="w-4 h-4 text-indigo-400" />
+                      <span>Simulation Lab</span>
+                    </div>
+                    <span className="px-2 py-0.5 rounded border bg-indigo-500/15 text-indigo-300 border-indigo-500/25 text-xs">
+                      Twin
+                    </span>
                   </button>
                   <button
                     onClick={() => { setActiveScreen('dependency'); setIsMobileDrawerOpen(false); }}
@@ -544,13 +618,57 @@ export const TopNav: React.FC = () => {
                   </div>
                   <button
                     onClick={() => { setActiveScreen('attendee'); setIsMobileDrawerOpen(false); }}
-                    className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all ${
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all ${
                       activeScreen === 'attendee' ? 'glass-tab-active font-bold text-white' : 'glass-tab text-emerald-400'
                     }`}
                   >
-                    <Smartphone className="w-4 h-4 text-emerald-400" />
-                    <span>Attendee Portal</span>
+                    <div className="flex items-center gap-2.5">
+                      <Smartphone className="w-4 h-4 text-emerald-400" />
+                      <span>Attendee Portal</span>
+                    </div>
+                    <span className="px-2 py-0.5 rounded border bg-emerald-500/10 text-emerald-400 border-emerald-500/20 text-xs">
+                      App
+                    </span>
                   </button>
+                </div>
+
+                {/* Pressure Formula & Telemetry Guide */}
+                <div className="pt-1">
+                  <button
+                    onClick={() => { setIsFormulaModalOpen(true); setIsMobileDrawerOpen(false); }}
+                    className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all glass-tab text-cyan-300 border-cyan-500/25"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <HelpCircle className="w-4 h-4 text-cyan-400" />
+                      <span>Pressure Formula & Tiers</span>
+                    </div>
+                    <span className="text-xs text-slate-400 font-mono">Guide</span>
+                  </button>
+                </div>
+
+                {/* Mobile Operational Role Switcher */}
+                <div className="space-y-1.5 pt-2 border-t border-white/10">
+                  <div className="text-xs uppercase tracking-widest text-slate-400 font-semibold px-2">
+                    SWITCH OPERATIONAL ROLE
+                  </div>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {roles.map(r => {
+                      const RoleIcon = r.icon;
+                      const isSelected = currentRole === r.role;
+                      return (
+                        <button
+                          key={r.role}
+                          onClick={() => { handleRoleSwitch(r.role); setIsMobileDrawerOpen(false); }}
+                          className={`flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs transition-all ${
+                            isSelected ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold' : 'glass-tab text-slate-300'
+                          }`}
+                        >
+                          <RoleIcon className="w-3.5 h-3.5 shrink-0" />
+                          <span className="truncate">{r.label.split(' ')[0]}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 {/* Mobile Operational Scenario Picker */}
@@ -595,6 +713,12 @@ export const TopNav: React.FC = () => {
       <DataSourcesDrawer 
         isOpen={isDataSourcesOpen} 
         onClose={() => setIsDataSourcesOpen(false)} 
+      />
+
+      {/* Pressure Score Formula & Thresholds Guide Modal */}
+      <PressureFormulaModal
+        isOpen={isFormulaModalOpen}
+        onClose={() => setIsFormulaModalOpen(false)}
       />
     </>
   );

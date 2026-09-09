@@ -81,14 +81,17 @@ export const AlertsScreen: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2 text-xs font-mono">
-          <span className="px-2.5 py-1 rounded-xl bg-rose-500/15 text-rose-400 border border-rose-500/30 font-bold">
-            {criticalIncidents.length} Critical
+          <span className="px-2.5 py-1 rounded-xl bg-rose-500/15 text-rose-400 border border-rose-500/30 font-bold flex items-center gap-1.5">
+            <AlertOctagon className="w-3.5 h-3.5 shrink-0" />
+            <span>{criticalIncidents.length} Critical</span>
           </span>
-          <span className="px-2.5 py-1 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/20 font-bold">
-            {highPriorityAlerts.length} High
+          <span className="px-2.5 py-1 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/20 font-bold flex items-center gap-1.5">
+            <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+            <span>{highPriorityAlerts.length} High</span>
           </span>
-          <span className="px-2.5 py-1 rounded-xl glass-tab text-slate-300">
-            {resolvedAlerts.length} Resolved
+          <span className="px-2.5 py-1 rounded-xl glass-tab text-slate-300 flex items-center gap-1.5">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            <span>{resolvedAlerts.length} Resolved</span>
           </span>
         </div>
       </div>
@@ -139,7 +142,7 @@ export const AlertsScreen: React.FC = () => {
       {/* 1. ACTIVE CRITICAL INCIDENTS (Dominant Visual Priority) */}
       <section className="space-y-3">
         <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-rose-400">
-          <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+          <AlertOctagon className="w-3.5 h-3.5 animate-pulse" />
           ACTIVE CRITICAL INCIDENTS ({criticalIncidents.length})
         </div>
 
@@ -151,8 +154,9 @@ export const AlertsScreen: React.FC = () => {
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-1 rounded-md text-xs font-mono font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30 uppercase">
-                    CRITICAL
+                  <span className="px-2.5 py-1 rounded-md text-xs font-mono font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30 uppercase flex items-center gap-1.5">
+                    <AlertOctagon className="w-3 h-3" />
+                    <span>CRITICAL</span>
                   </span>
                   <span className="text-xs font-mono text-cyan-300 font-bold">
                     {alert.zoneName}
@@ -238,7 +242,7 @@ export const AlertsScreen: React.FC = () => {
       {/* 2. HIGH PRIORITY (Contained cards) */}
       <section className="space-y-3 pt-2">
         <div className="flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-amber-400">
-          <span className="w-2 h-2 rounded-full bg-amber-400"></span>
+          <AlertTriangle className="w-3.5 h-3.5" />
           HIGH PRIORITY ({highPriorityAlerts.length})
         </div>
 
@@ -249,7 +253,10 @@ export const AlertsScreen: React.FC = () => {
               className="p-4 rounded-2xl panel-elevated border-amber-500/25 space-y-2.5 shadow-sm"
             >
               <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-amber-400 font-bold uppercase">{alert.zoneName}</span>
+                <span className="text-amber-400 font-bold uppercase flex items-center gap-1.5">
+                  <AlertTriangle className="w-3 h-3 shrink-0" />
+                  <span>{alert.zoneName}</span>
+                </span>
                 <span className="text-slate-400">{alert.timestamp}</span>
               </div>
               <h4 className="text-sm font-bold text-white leading-snug">{alert.title}</h4>
@@ -273,7 +280,7 @@ export const AlertsScreen: React.FC = () => {
       {/* 3. MONITORING & ADVISORY (Receded visually) */}
       <section className="space-y-3 pt-2">
         <div className="flex items-center gap-2 text-xs font-mono font-medium uppercase tracking-wider text-slate-400">
-          <span className="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+          <Info className="w-3.5 h-3.5 text-cyan-400" />
           MONITORING & ADVISORY ({monitoringAlerts.length})
         </div>
 
@@ -284,7 +291,10 @@ export const AlertsScreen: React.FC = () => {
               className="p-3 rounded-xl glass-tab flex items-center justify-between text-xs font-mono"
             >
               <div className="flex items-center gap-3">
-                <span className="text-slate-400">{alert.timestamp}</span>
+                <span className="text-slate-400 flex items-center gap-1">
+                  <Info className="w-3 h-3 text-cyan-400 shrink-0" />
+                  <span>{alert.timestamp}</span>
+                </span>
                 <span className="text-cyan-300 font-semibold uppercase">{alert.zoneName}</span>
                 <span className="text-slate-300 font-sans">{alert.title}</span>
               </div>
