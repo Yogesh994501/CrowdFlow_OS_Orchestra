@@ -33,7 +33,8 @@ import {
   Search,
   FileText,
   Volume2,
-  VolumeX
+  VolumeX,
+  Palette
 } from 'lucide-react';
 import { DataSourcesDrawer } from '../common/DataSourcesDrawer';
 import { PressureFormulaModal } from '../common/PressureFormulaModal';
@@ -54,7 +55,9 @@ export const TopNav: React.FC = () => {
     setActiveScreen,
     activeScreen,
     toggleAudioMute,
-    isAudioMuted
+    isAudioMuted,
+    activeTheme,
+    setTheme
   } = useCrowdFlowStore();
 
   const [isHealthModalOpen, setIsHealthModalOpen] = useState(false);
@@ -273,6 +276,82 @@ export const TopNav: React.FC = () => {
               <span className="hidden xl:inline">Data Sources</span>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"></span>
             </button>
+
+            {/* Live Mumbai Ops Theme Switcher */}
+            <div className="relative group">
+              <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl glass-tab text-xs font-mono text-slate-300 cursor-pointer hover:text-white transition-all border-white/10 hover:border-cyan-400/40">
+                <Palette className="w-3.5 h-3.5 text-cyan-400" />
+                <span className="hidden sm:inline font-semibold">
+                  {activeTheme === 'rail' && '🚆 Suburban Rail'}
+                  {activeTheme === 'monsoon' && '⛈️ Monsoon Radar'}
+                  {activeTheme === 'metro' && '🚇 Metro Signage'}
+                  {activeTheme === 'glass' && '💎 Deep Glass'}
+                </span>
+                <ChevronDown className="w-3 h-3 text-slate-400 group-hover:rotate-180 transition-transform" />
+              </div>
+
+              <div className="absolute right-0 mt-1 w-64 rounded-2xl glass-overlay p-2 shadow-2xl opacity-0 translate-y-1 invisible group-hover:opacity-100 group-hover:translate-y-0 group-hover:visible transition-all z-50">
+                <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 px-2 py-1 border-b border-white/[0.06] mb-1">
+                  MUMBAI OPS AESTHETIC:
+                </div>
+                <button
+                  onClick={() => setTheme('rail')}
+                  className={`w-full text-left px-2.5 py-2 rounded-xl text-xs font-mono flex items-center justify-between transition-all ${
+                    activeTheme === 'rail' 
+                      ? 'bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30' 
+                      : 'text-slate-300 hover:bg-white/[0.05]'
+                  }`}
+                >
+                  <div>
+                    <div className="font-bold">🚆 Suburban Rail (CR/WR)</div>
+                    <div className="text-[10px] text-slate-400">Amber phosphor, hard edges</div>
+                  </div>
+                  {activeTheme === 'rail' && <span className="text-amber-400">●</span>}
+                </button>
+                <button
+                  onClick={() => setTheme('monsoon')}
+                  className={`w-full text-left px-2.5 py-2 rounded-xl text-xs font-mono flex items-center justify-between transition-all ${
+                    activeTheme === 'monsoon' 
+                      ? 'bg-sky-500/20 text-sky-300 font-bold border border-sky-500/30' 
+                      : 'text-slate-300 hover:bg-white/[0.05]'
+                  }`}
+                >
+                  <div>
+                    <div className="font-bold">⛈️ Monsoon Radar (IMD)</div>
+                    <div className="text-[10px] text-slate-400">Deep rain-blue, storm gradient</div>
+                  </div>
+                  {activeTheme === 'monsoon' && <span className="text-sky-400">●</span>}
+                </button>
+                <button
+                  onClick={() => setTheme('metro')}
+                  className={`w-full text-left px-2.5 py-2 rounded-xl text-xs font-mono flex items-center justify-between transition-all ${
+                    activeTheme === 'metro' 
+                      ? 'bg-blue-500/20 text-blue-300 font-bold border border-blue-500/30' 
+                      : 'text-slate-300 hover:bg-white/[0.05]'
+                  }`}
+                >
+                  <div>
+                    <div className="font-bold">🚇 Metro Wayfinding</div>
+                    <div className="text-[10px] text-slate-400">Line-color municipal signage</div>
+                  </div>
+                  {activeTheme === 'metro' && <span className="text-blue-400">●</span>}
+                </button>
+                <button
+                  onClick={() => setTheme('glass')}
+                  className={`w-full text-left px-2.5 py-2 rounded-xl text-xs font-mono flex items-center justify-between transition-all ${
+                    activeTheme === 'glass' 
+                      ? 'bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/30' 
+                      : 'text-slate-300 hover:bg-white/[0.05]'
+                  }`}
+                >
+                  <div>
+                    <div className="font-bold">💎 Deep Glassmorphic</div>
+                    <div className="text-[10px] text-slate-400">Classic dark command center</div>
+                  </div>
+                  {activeTheme === 'glass' && <span className="text-cyan-400">●</span>}
+                </button>
+              </div>
+            </div>
 
             {/* Scenario Picker */}
             <div className="relative group hidden xl:block">

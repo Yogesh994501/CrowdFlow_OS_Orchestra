@@ -28,8 +28,14 @@ export function App() {
     isMobileDeviceFrame, 
     toggleMobileDeviceFrame,
     currentRole,
-    currentScenario 
+    currentScenario,
+    activeTheme 
   } = useCrowdFlowStore();
+
+  // Synchronize data-theme on html element
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', activeTheme);
+  }, [activeTheme]);
 
   // 1. Start live 3.5s metric simulation ticker
   useEffect(() => {

@@ -270,3 +270,167 @@
   stroke-dasharray: 6, 6;
   animation: transitDash 2s linear infinite;
 }
+
+/* ==========================================================================
+   MUMBAI THEME 1: SUBURBAN RAIL CONTROL ROOM (CR / WR INTERLOCKING HARDWARE)
+   Reference: Indian Railways indicator boards, amber phosphor, flat rectangles,
+   hard edges, high-contrast monospace hardware.
+   ========================================================================== */
+[data-theme="rail"] {
+  --theme-bg: #0A0A08;
+  --theme-panel: #141410;
+  --theme-border: #2A2A20;
+  --theme-primary: #F5A623;
+  --theme-success: #4ADE80;
+  --theme-danger: #EF4444;
+}
+
+[data-theme="rail"] body {
+  background-color: #0A0A08 !important;
+  color: #E6E6DC !important;
+  font-family: var(--font-mono) !important;
+}
+
+[data-theme="rail"] .glass-panel,
+[data-theme="rail"] .glass-card,
+[data-theme="rail"] .glass-tile,
+[data-theme="rail"] .glass-tab,
+[data-theme="rail"] .glass-sidebar,
+[data-theme="rail"] .glass-header,
+[data-theme="rail"] .glass-overlay,
+[data-theme="rail"] .glass-panel-glow {
+  background: #141410 !important;
+  border-color: #2A2A20 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  border-radius: 4px !important;
+}
+
+[data-theme="rail"] .rounded-3xl,
+[data-theme="rail"] .rounded-2xl,
+[data-theme="rail"] .rounded-xl {
+  border-radius: 4px !important;
+}
+
+[data-theme="rail"] .glass-tab-active {
+  background: #242216 !important;
+  border-color: #F5A623 !important;
+  color: #F5A623 !important;
+  box-shadow: inset 0 0 0 1px #F5A623 !important;
+}
+
+[data-theme="rail"] .text-cyan-400,
+[data-theme="rail"] .text-cyan-300 {
+  color: #F5A623 !important;
+}
+
+[data-theme="rail"] .bg-cyan-500,
+[data-theme="rail"] .bg-cyan-400 {
+  background-color: #F5A623 !important;
+  color: #0A0A08 !important;
+}
+
+[data-theme="rail"] .border-cyan-500,
+[data-theme="rail"] .border-cyan-400,
+[data-theme="rail"] .border-cyan-500\/30,
+[data-theme="rail"] .border-cyan-500\/25,
+[data-theme="rail"] .border-cyan-500\/40 {
+  border-color: rgba(245, 166, 35, 0.45) !important;
+}
+
+[data-theme="rail"] .bg-cyan-500\/10,
+[data-theme="rail"] .bg-cyan-500\/15,
+[data-theme="rail"] .bg-cyan-500\/20,
+[data-theme="rail"] .bg-cyan-500\/\[0\.07\] {
+  background-color: rgba(245, 166, 35, 0.12) !important;
+}
+
+/* ==========================================================================
+   MUMBAI THEME 2: MONSOON METEOROLOGICAL OPS (IMD RADAR ROOM)
+   Reference: India Meteorological Department doppler radar tracking,
+   deep maritime blue/teal, precipitation gradient fills.
+   ========================================================================== */
+[data-theme="monsoon"] {
+  --theme-bg: #070F18;
+  --theme-panel: rgba(11, 23, 38, 0.88);
+  --theme-border: rgba(56, 189, 248, 0.22);
+  --theme-primary: #38BDF8;
+}
+
+[data-theme="monsoon"] body {
+  background-color: #070F18 !important;
+  color: #F0F9FF !important;
+}
+
+[data-theme="monsoon"] .glass-panel,
+[data-theme="monsoon"] .glass-card,
+[data-theme="monsoon"] .glass-tile,
+[data-theme="monsoon"] .glass-tab,
+[data-theme="monsoon"] .glass-sidebar,
+[data-theme="monsoon"] .glass-header,
+[data-theme="monsoon"] .glass-overlay {
+  background: rgba(11, 23, 38, 0.88) !important;
+  border-color: rgba(56, 189, 248, 0.22) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+[data-theme="monsoon"] .glass-tab-active {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.3) 0%, rgba(2, 132, 199, 0.4) 100%) !important;
+  border-color: #38BDF8 !important;
+  color: #F0F9FF !important;
+  box-shadow: 0 0 16px rgba(14, 165, 233, 0.3) !important;
+}
+
+/* ==========================================================================
+   MUMBAI THEME 3: CIVIC METRO SIGNAGE (MUMBAI METRO LINE WAYFINDING)
+   Reference: MMRDA Mumbai Metro line-color wayfinding, bold municipal signage,
+   flat high-contrast, bold display type, zero blur.
+   ========================================================================== */
+[data-theme="metro"] {
+  --theme-bg: #0D1117;
+  --theme-panel: #161B22;
+  --theme-border: #30363D;
+  --theme-line-blue: #2563EB;
+  --theme-line-yellow: #EAB308;
+  --theme-line-aqua: #06B6D4;
+  --theme-line-red: #E11D48;
+}
+
+[data-theme="metro"] body {
+  background-color: #0D1117 !important;
+  color: #FFFFFF !important;
+  font-family: var(--font-sans) !important;
+  font-weight: 500;
+}
+
+[data-theme="metro"] .glass-panel,
+[data-theme="metro"] .glass-card,
+[data-theme="metro"] .glass-tile,
+[data-theme="metro"] .glass-tab,
+[data-theme="metro"] .glass-sidebar,
+[data-theme="metro"] .glass-header,
+[data-theme="metro"] .glass-overlay {
+  background: #161B22 !important;
+  border: 2px solid #30363D !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: 0 3px 0 #000000 !important;
+  border-radius: 8px !important;
+}
+
+[data-theme="metro"] .rounded-3xl,
+[data-theme="metro"] .rounded-2xl,
+[data-theme="metro"] .rounded-xl {
+  border-radius: 8px !important;
+}
+
+[data-theme="metro"] .glass-tab-active {
+  background: #2563EB !important;
+  border: 2px solid #3B82F6 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 0 #000000 !important;
+  font-weight: 700 !important;
+}
+

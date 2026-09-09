@@ -31,7 +31,13 @@ import { getProjectedZoneTelemetry } from '../services/temporalEngine';
 import type { ScenarioId } from '../services/temporalEngine';
 import { soundService } from '../services/soundService';
 
+export type OpsTheme = 'rail' | 'monsoon' | 'metro' | 'glass';
+
 interface CrowdFlowState {
+  // Visual Theme Engine
+  activeTheme: OpsTheme;
+  setTheme: (theme: OpsTheme) => void;
+
   // Temporal Prediction Engine
   temporalMinutes: number;
   isForecastPlaying: boolean;
@@ -295,6 +301,17 @@ export const useCrowdFlowStore = create<CrowdFlowState>((set, get) => ({
     emergencyShuttleAdded: true
   },
   simulationResult: null,
+
+  // Visual Theme Engine
+  activeTheme: (typeof window !== 'undefined' ? (localStorage.getItem('crowdflow_ops_theme') as OpsTheme) || 'rail' : 'rail'),
+  setTheme: (theme: OpsTheme) => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('crowdflow_ops_theme', theme);
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+    soundService.playTickClick();
+    set({ activeTheme: theme });
+  },
 
   // Temporal Prediction Engine
   temporalMinutes: 0,

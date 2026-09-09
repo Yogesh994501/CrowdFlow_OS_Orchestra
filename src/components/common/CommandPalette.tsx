@@ -20,13 +20,14 @@ import {
   Volume2,
   VolumeX,
   X,
-  ArrowRight
+  ArrowRight,
+  Palette
 } from 'lucide-react';
 import type { ScreenType, DemoScenario } from '../../types';
 
 interface CommandItem {
   id: string;
-  category: 'Screen' | 'Scenario' | 'Zone' | 'Temporal' | 'Action';
+  category: 'Screen' | 'Scenario' | 'Zone' | 'Temporal' | 'Action' | 'Theme';
   title: string;
   subtitle?: string;
   icon: React.ComponentType<{ className?: string }>;
@@ -53,7 +54,8 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     setIsForecastPlaying,
     isForecastPlaying,
     toggleAudioMute,
-    isAudioMuted
+    isAudioMuted,
+    setTheme
   } = useCrowdFlowStore();
 
   const [query, setQuery] = useState('');
@@ -290,6 +292,52 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       icon: isAudioMuted ? Volume2 : VolumeX,
       onSelect: () => {
         toggleAudioMute();
+        onClose();
+      }
+    },
+
+    // Mumbai Operational Themes
+    {
+      id: 'theme-rail',
+      category: 'Theme',
+      title: 'Switch Aesthetic: Suburban Rail Control Room (CR/WR)',
+      subtitle: 'Indian Railways amber phosphor, hard edges, flat hardware console',
+      icon: Palette,
+      onSelect: () => {
+        setTheme('rail');
+        onClose();
+      }
+    },
+    {
+      id: 'theme-monsoon',
+      category: 'Theme',
+      title: 'Switch Aesthetic: Monsoon Meteorological Ops (IMD)',
+      subtitle: 'India Meteorological Department deep rain-blue, doppler radar gradients',
+      icon: Palette,
+      onSelect: () => {
+        setTheme('monsoon');
+        onClose();
+      }
+    },
+    {
+      id: 'theme-metro',
+      category: 'Theme',
+      title: 'Switch Aesthetic: Civic Metro Line Signage',
+      subtitle: 'Mumbai Metro line-coded wayfinding, high-contrast municipal styling',
+      icon: Palette,
+      onSelect: () => {
+        setTheme('metro');
+        onClose();
+      }
+    },
+    {
+      id: 'theme-glass',
+      category: 'Theme',
+      title: 'Switch Aesthetic: Classic Deep Glassmorphic',
+      subtitle: 'Dark translucent glass cards with cyan accents',
+      icon: Palette,
+      onSelect: () => {
+        setTheme('glass');
         onClose();
       }
     }
